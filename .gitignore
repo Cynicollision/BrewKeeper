@@ -1,0 +1,6 @@
+.vscode
+**/node_modules
+client/dist
+public
+server/**/*.js*
+shared/**/*.js*
