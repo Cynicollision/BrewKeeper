@@ -9,6 +9,8 @@ import { MatButtonModule, MatInputModule, MatSelectModule, MatRadioModule, MatCa
 import { FormTestComponent } from './form-test/form-test.component';
 import { NavComponent } from './nav/nav.component';
 import { HomeComponent } from './home/home.component';
+import { ListComponent } from './list/list.component';
+import { BrewListComponent } from './brew-list/brew-list.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +18,8 @@ import { HomeComponent } from './home/home.component';
     FormTestComponent,
     NavComponent,
     HomeComponent,
+    ListComponent,
+    BrewListComponent,
   ],
   imports: [
     BrowserModule,
