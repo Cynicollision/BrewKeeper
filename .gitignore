@@ -2,5 +2,7 @@
 **/node_modules
 client/dist
 public
-server/**/*.js*
-shared/**/*.js*
+server/**/*.js
+server/**/*.js.map
+shared/**/*.js
+shared/**/*.js.map

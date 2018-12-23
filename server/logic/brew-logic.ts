@@ -22,6 +22,7 @@ export class BrewLogic implements IBrewLogic {
             // validate the request
             if (!brewName) {
                 resolve({ success: false, message: 'Brew name is required.' });
+                return;
             }
 
             let brewID = ID.new(ObjectIDType.Brew);
@@ -45,7 +46,8 @@ export class BrewLogic implements IBrewLogic {
 
             // validate the request
             if (!brewID) {
-                return resolve({ success: false, message: 'Brew ID is required.' });
+                resolve({ success: false, message: 'Brew ID is required.' });
+                return;
             }
 
             return this.brewData.get(brewID)
