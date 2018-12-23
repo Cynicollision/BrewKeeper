@@ -17,26 +17,7 @@ export class BrewKeeperAppServer {
         this.configureRoutes(app);
 
         app.listen(Config.serverPort, () => {
-            console.log('Starting %s mode', (Config.isDev ? 'DEVELOPMENT' : 'PRODUCTION'));
-            console.log('Express server listening on port ' + Config.serverPort);
-        });
-    }
-
-    private configureRoutes(app: express.Application): void {
-        // API routes
-        app.post('/api/brew', (req: express.Request, res: express.Response) => {
-            let brewName = req.body.brewName;
-            this.brewLogic.create(brewName).then(response => res.send(response));
-        });
-
-        app.get('/api/brew', (req: express.Request, res: express.Response) => {
-            let brewID = req.query.id;
-            this.brewLogic.get(brewID).then(response => res.send(response));
-        });
-
-        // View route
-        app.get('', (req: express.Request, res: express.Response) => {
-            res.render('index', { message: 'Hello Brew Keeper' });
+            console.log(`Brew Keeper server listening on port ${Config.serverPort} (${Config.isDev ? 'DEVELOPMENT' : 'PRODUCTION'} mode).`);
         });
     }
 
@@ -64,5 +45,23 @@ export class BrewKeeperAppServer {
         if (Config.isDev) {
             app.use(logger('dev'));
         }
+    }
+
+    private configureRoutes(app: express.Application): void {
+        // API routes
+        app.post('/api/brew', (req: express.Request, res: express.Response) => {
+            let brewName = req.body.brewName;
+            this.brewLogic.create(brewName).then(response => res.send(response));
+        });
+
+        app.get('/api/brew', (req: express.Request, res: express.Response) => {
+            let brewID = req.query.id;
+            this.brewLogic.get(brewID).then(response => res.send(response));
+        });
+
+        // View route
+        app.get('*', (req: express.Request, res: express.Response) => {
+            res.render('index');
+        });
     }
 }

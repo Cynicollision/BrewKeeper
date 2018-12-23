@@ -7,8 +7,8 @@ describe('workspace-project App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
+  it('should display the title', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('Welcome to BrewKeeperClient!');
+    expect(page.getTitleText()).toEqual('Brew Keeper');
   });
 });

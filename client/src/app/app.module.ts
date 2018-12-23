@@ -8,24 +8,27 @@ import { AppComponent } from './app.component';
 import { MatButtonModule, MatInputModule, MatSelectModule, MatRadioModule, MatCardModule, MatToolbarModule, MatSidenavModule, MatIconModule, MatListModule } from '@angular/material';
 import { FormTestComponent } from './form-test/form-test.component';
 import { NavComponent } from './nav/nav.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FormTestComponent,
     NavComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    LayoutModule,
+    ReactiveFormsModule,
     MatButtonModule,
     MatInputModule,
     MatSelectModule,
     MatRadioModule,
     MatCardModule,
-    ReactiveFormsModule,
-    LayoutModule,
+    
     MatToolbarModule,
     MatSidenavModule,
     MatIconModule,
