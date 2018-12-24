@@ -4,10 +4,10 @@ node_js:
   - "8"
 install:
   - npm install -g @angular/cli
-  - cd client
+  - cd $TRAVIS_BUILD_DIR/client
   - npm install
-  - cd ../server
+  - cd $TRAVIS_BUILD_DIR/server
   - npm install
 script:
-  - cd client
+  - cd $TRAVIS_BUILD_DIR/client
   - npm test
