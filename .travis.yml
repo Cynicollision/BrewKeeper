@@ -9,6 +9,5 @@ install:
   - cd ../server
   - npm install
 script:
-  - set NODE_ENV=production
   - cd client
   - npm test
