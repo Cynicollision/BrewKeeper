@@ -1,0 +1,14 @@
+language: node_js
+sudo: false
+node_js:
+  - "8"
+install:
+  - npm install -g @angular/cli
+  - cd client
+  - npm install
+  - cd ../server
+  - npm install
+script:
+  - set NODE_ENV=production
+  - cd client
+  - npm test
