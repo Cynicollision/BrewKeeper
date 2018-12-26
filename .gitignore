@@ -6,3 +6,4 @@ server/**/*.js
 server/**/*.js.map
 shared/**/*.js
 shared/**/*.js.map
+!gulpfile.js
