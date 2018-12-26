@@ -4,7 +4,7 @@
   "description": "Home brew journal app",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/jasmine-node spec"
   },
   "repository": {
     "type": "git",
@@ -28,13 +28,10 @@
     "@types/express-session": "^1.15.11",
     "@types/jasmine": "^3.3.5",
     "@types/morgan": "^1.7.35",
+    "jasmine": "^3.3.1",
     "jasmine-core": "^3.3.0",
+    "jasmine-node": "^1.16.2",
     "jasmine-spec-reporter": "^4.2.1",
-    "karma": "^3.1.4",
-    "karma-chrome-launcher": "^2.2.0",
-    "karma-coverage-istanbul-reporter": "^2.0.4",
-    "karma-jasmine": "^2.0.1",
-    "karma-jasmine-html-reporter": "^1.4.0",
     "typescript": "~3.1.6"
   }
 }

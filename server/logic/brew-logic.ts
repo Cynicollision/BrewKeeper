@@ -5,7 +5,7 @@ import { IBrewData } from '../data/brew-data';
 import { ID } from './../util/object-id';
 
 export interface IBrewLogic {
-    create(brewName: string): Promise<EmptyOperationResponse>;
+    create(brewName: string): Promise<OperationResponse<Brew>>;
     get(brewID: string): Promise<OperationResponse<Brew>>;
 }
 
@@ -16,13 +16,14 @@ export class BrewLogic implements IBrewLogic {
         this.brewData = brewData;
     }
 
-    create(brewName: string): Promise<EmptyOperationResponse> {
-        return new Promise<EmptyOperationResponse>((resolve, reject) => {
+    create(brewName: string): Promise<OperationResponse<Brew>> {
+        return new Promise<OperationResponse<Brew>>((resolve, reject) => {
 
             // validate the request
             if (!brewName) {
-                resolve({ success: false, message: 'Brew name is required.' });
+                resolve({ success: false, message: 'Couldn\'t create brew: Name is required.' });
                 return;
+                
             }
 
             let brewID = ID.new(ObjectIDType.Brew);
@@ -36,6 +37,7 @@ export class BrewLogic implements IBrewLogic {
                     resolve({ 
                         success: response.success, 
                         message: response.message,
+                        data: response.data,
                     })
                 );
         });
@@ -46,7 +48,7 @@ export class BrewLogic implements IBrewLogic {
 
             // validate the request
             if (!brewID) {
-                resolve({ success: false, message: 'Brew ID is required.' });
+                resolve({ success: false, message: 'Couldn\'t fetch brew: ID is required.' });
                 return;
             }
 

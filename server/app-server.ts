@@ -24,7 +24,7 @@ export class BrewKeeperAppServer {
     private configureMiddleware(app: express.Application): void {
 
         // request-parsing middleware
-        app.use(bodyParser.urlencoded({ extended: true })); // TODO: not sure if needed
+        app.use(bodyParser.urlencoded({ extended: true }));
         app.use(bodyParser.json());
 
         // session middleware
@@ -44,6 +44,13 @@ export class BrewKeeperAppServer {
         // development-only middleware
         if (Config.isDev) {
             app.use(logger('dev'));
+
+            // CORS for Angular development server 
+            app.use((req, res, next) => {
+                res.header('Access-Control-Allow-Origin', '*');
+                res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+                next();
+            });
         }
     }
 

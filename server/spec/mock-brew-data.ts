@@ -14,10 +14,10 @@ export class MockBrewData implements IBrewData {
     get(brewID: string): Promise<OperationResponse<Brew>> {
         return new Promise((resolve, reject) => {
             // TODO
-            let newBrew = new Brew();
-            newBrew.name = 'Test Brew';
-            newBrew.id = brewID;
-            return resolve({ success: true, data: newBrew });
+            let testBRew = new Brew();
+            testBRew.name = 'Test Brew';
+            testBRew.id = brewID;
+            return resolve({ success: true, data: testBRew });
         });
     }
 }
