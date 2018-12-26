@@ -31,7 +31,7 @@ npm install
 tsc
 npm test
 ```
-Then start the sever:
+Then start the server:
 ```
 node app
 ```
