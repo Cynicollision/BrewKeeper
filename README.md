@@ -42,3 +42,14 @@ Copy Angular build output to folder served by the Express app:
 cd server
 gulp publish
 ```
+
+## Dependency Status
+Client 
+
+[![Dependency Status (client)](https://david-dm.org/Cynicollision/BrewKeeper/status.svg?path=client)](https://david-dm.org/Cynicollision/BrewKeeper?path=client)
+[![Dependency Status (client)](https://david-dm.org/Cynicollision/BrewKeeper/dev-status.svg?path=client)](https://david-dm.org/Cynicollision/BrewKeeper?path=client&type=dev)
+
+Server
+
+[![Dependency Status (server)](https://david-dm.org/Cynicollision/BrewKeeper/status.svg?path=server)](https://david-dm.org/Cynicollision/BrewKeeper?path=server)
+[![Dependency Status (server)](https://david-dm.org/Cynicollision/BrewKeeper/dev-status.svg?path=server&type=dev)](https://david-dm.org/Cynicollision/BrewKeeper?path=server&type=dev)
