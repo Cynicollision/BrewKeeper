@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatListModule } from '@angular/material';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatListModule, MatSnackBarModule } from '@angular/material';
 import { ListComponent } from './../list/list.component';
 import { BrewListComponent } from './brew-list.component';
 
@@ -9,7 +10,7 @@ describe('BrewListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ MatListModule ],
+      imports: [ MatListModule, MatSnackBarModule, HttpClientTestingModule ],
       declarations: [ BrewListComponent, ListComponent ]
     })
     .compileComponents();
