@@ -1,1 +1,2 @@
-<app-list [collection]="brews"></app-list>
+<button mat-fab class="add-brew" (click)="addBrew($event)">+</button>
+<app-list [collection]="brews" (itemSelected)="viewBrew($event)"></app-list>

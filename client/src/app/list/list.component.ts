@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Brew } from './../../../../shared/models/Brew';
 
 export interface ListItem {
+  id: string;
   name: string;
 }
 
@@ -14,11 +15,17 @@ export interface ListItem {
 export class ListComponent implements OnInit {
 
   @Input()
-  collection: ListItem[];
+  collection: ListItem[] = [];
 
+  @Output('itemSelected')
+  itemSelectedEvent = new EventEmitter<string>();
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  itemSelected(itemID: string): void {
+    this.itemSelectedEvent.emit(itemID);
   }
 }

@@ -1,10 +1,18 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
-    "target": "es2015",
-    "module": "commonjs",
+    "baseUrl": "./",
     "sourceMap": true,
-    "strict": false,
-    "skipLibCheck": true
+    "declaration": false,
+    "module": "es2015",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es6",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
   },
   "include": [
     "**/*"
