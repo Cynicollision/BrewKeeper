@@ -1,3 +1,12 @@
-<p>
-  home works!
-</p>
+<div id="home" *ngIf="ready">
+  <div class="welcome" *ngIf="authService.isAuthenticated">
+    <h3>Welcome, {{userName}}</h3>
+    <p>Message text/active brew summary here</p>
+  </div>
+
+  <div class="welcome" *ngIf="!authService.isAuthenticated">
+    <h3>Welcome to Brew Keeper</h3>
+    <p>Please log in.</p>
+    <button mat-raised-button color="primary" (click)="authService.login()">Log In</button>
+  </div>
+</div>

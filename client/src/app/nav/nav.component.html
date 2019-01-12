@@ -2,4 +2,6 @@
   <a mat-list-item routerLink="">Home</a>
   <a mat-list-item routerLink="brews" >Brews</a>
   <a mat-list-item routerLink="form" >Form Test</a>
+  <mat-divider *ngIf="authService.isAuthenticated"></mat-divider>
+  <a mat-list-item (click)="authService.logout()" *ngIf="authService.isAuthenticated">Log Out</a>
 </mat-nav-list>

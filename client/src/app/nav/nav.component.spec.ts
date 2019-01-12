@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatNavList } from '@angular/material';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MatDivider, MatNavList } from '@angular/material';
 
 import { NavComponent } from './nav.component';
 
@@ -9,8 +10,11 @@ describe('NavComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [  ],
-      declarations: [ 
+      imports: [ 
+        RouterTestingModule 
+      ],
+      declarations: [
+        MatDivider, 
         MatNavList,
         NavComponent,
       ]

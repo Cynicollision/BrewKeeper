@@ -12,6 +12,7 @@ const routes: Routes = [
   { path: 'brews/new', component: BrewComponent },
   { path: 'brews/edit/:id', component: BrewComponent },
   { path: 'brews/view/:id', component: BrewComponent },
+  { path: 'callback', component: HomeComponent },
   { path: 'form', component: FormTestComponent },
 ];
 
