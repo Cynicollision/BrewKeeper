@@ -1,0 +1,11 @@
+<div id="brew-dialog">
+  <mat-form-field>
+    <input matInput placeholder="Brew Name" [(ngModel)]="brewName">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Recipe">
+  </mat-form-field>
+  <div>
+    <button mat-raised-button color="primary" (click)="close()">Save</button>
+  </div>
+</div>

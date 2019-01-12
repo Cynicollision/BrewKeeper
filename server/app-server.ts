@@ -56,14 +56,18 @@ export class BrewKeeperAppServer {
 
     private configureRoutes(app: express.Application): void {
         // API routes
-        app.post('/api/brew', (req: express.Request, res: express.Response) => {
-            let brewName = req.body.brewName;
-            this.brewLogic.create(brewName).then(response => res.send(response));
-        });
-
         app.get('/api/brew', (req: express.Request, res: express.Response) => {
             let brewID = req.query.id;
             this.brewLogic.get(brewID).then(response => res.send(response));
+        });
+
+        app.post('/api/brew', (req: express.Request, res: express.Response) => {
+            this.brewLogic.create(req.body).then(response => res.send(response));
+        });
+
+        app.post('/api/brew/:id', (req: express.Request, res: express.Response) => {
+            let brewID = req.params.id;
+            this.brewLogic.update(req.body).then(response => res.send(response));
         });
 
         // View route

@@ -4,8 +4,8 @@ import { Brew } from './../../../../shared/models/Brew';
 export interface ListItem {
   id: string;
   name: string;
+  data?: any;
 }
-
 
 @Component({
   selector: 'app-list',

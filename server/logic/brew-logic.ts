@@ -5,8 +5,9 @@ import { IBrewData } from '../data/brew-data';
 import { ID } from './../util/object-id';
 
 export interface IBrewLogic {
-    create(brewName: string): Promise<OperationResponse<Brew>>;
+    create(brew: Brew): Promise<OperationResponse<Brew>>;
     get(brewID: string): Promise<OperationResponse<Brew>>;
+    update(brew: Brew): Promise<OperationResponse<Brew>>;
 }
 
 export class BrewLogic implements IBrewLogic {
@@ -14,33 +15,6 @@ export class BrewLogic implements IBrewLogic {
 
     constructor(brewData: IBrewData) {
         this.brewData = brewData;
-    }
-
-    create(brewName: string): Promise<OperationResponse<Brew>> {
-        return new Promise<OperationResponse<Brew>>((resolve, reject) => {
-
-            // validate the request
-            if (!brewName) {
-                resolve({ success: false, message: 'Couldn\'t create brew: Name is required.' });
-                return;
-                
-            }
-
-            let brewID = ID.new(ObjectIDType.Brew);
-
-            let newBrew = new Brew();
-            newBrew.id = brewID;
-            newBrew.name = brewName;
-
-            return this.brewData.create(newBrew)
-                .then(response => 
-                    resolve({ 
-                        success: response.success, 
-                        message: response.message,
-                        data: response.data,
-                    })
-                );
-        });
     }
 
     get(brewID: string): Promise<OperationResponse<Brew>> {
@@ -61,5 +35,48 @@ export class BrewLogic implements IBrewLogic {
                     });
                 });
             });
+    }
+
+    create(newBrew: Brew): Promise<OperationResponse<Brew>> {
+        return new Promise<OperationResponse<Brew>>((resolve, reject) => {
+
+            // validate the request
+            if (!newBrew || !newBrew.name) {
+                resolve({ success: false, message: 'Couldn\'t create brew: Name is required.' });
+                return;
+                
+            }
+
+            newBrew.id = ID.new(ObjectIDType.Brew);
+
+            return this.brewData.create(newBrew)
+                .then(response => 
+                    resolve({ 
+                        success: response.success, 
+                        message: response.message,
+                        data: response.data,
+                    })
+                );
+        });
+    }
+
+    update(newBrew: Brew): Promise<OperationResponse<Brew>> {
+        return new Promise<OperationResponse<Brew>>((resolve, reject) => {
+
+            // validate the request
+            if (!newBrew || !newBrew.name) {
+                resolve({ success: false, message: 'Couldn\'t update brew: Name is required.' });
+                return;
+            }
+
+            return this.brewData.update(newBrew)
+                .then(response => 
+                    resolve({ 
+                        success: response.success, 
+                        message: response.message,
+                        data: response.data,
+                    })
+                );
+        });
     }
 }
