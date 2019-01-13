@@ -1,6 +1,4 @@
-import * as mongoose from 'mongoose';
-import { Brew } from '../../shared/models/Brew';
-import { OperationResponse } from '../../shared/contracts/OperationResponse';
+import { IOperationResponse, OperationResponse } from '../../shared/contracts/OperationResponse';
 
 export class ResponseUtil {
     static succeed<T>(data: T): OperationResponse<T> {
@@ -10,11 +8,12 @@ export class ResponseUtil {
             data: data,
         };
     }
-    static fail<T>(message: string): OperationResponse<T> {
+    static fail<T>(message: string, inner?: IOperationResponse): OperationResponse<T> {
         return {
             success: false,
             message: message,
-            data: null,
+            innerOperation: inner,
+            data: <T>null,
         };
     }
 }

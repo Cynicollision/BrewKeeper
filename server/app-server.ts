@@ -5,12 +5,15 @@ import * as mongoose from 'mongoose';
 import * as session from 'express-session';
 import { Config } from './config';
 import { IBrewLogic } from './logic/brew-logic';
+import { IProfileLogic } from './logic/profile-logic';
 
 export class BrewKeeperAppServer {
     private brewLogic: IBrewLogic;
+    private profileLogic: IProfileLogic;
 
-    constructor(brewLogic: IBrewLogic) {
+    constructor(brewLogic: IBrewLogic, profileLogic: IProfileLogic) {
         this.brewLogic = brewLogic;
+        this.profileLogic = profileLogic;
     }
 
     start(app: express.Application) {
@@ -59,10 +62,28 @@ export class BrewKeeperAppServer {
     }
 
     private configureRoutes(app: express.Application): void {
+        // Auth routes
+        app.post('/login', (req: express.Request, res: express.Response) => {
+            this.profileLogic.login(req.body.token, req.body.externalID).then(response => {
+                if (response.success) {
+                    req.session.profileSession = response.data;
+                }
+                res.send(response);
+            });
+        });
+
+        app.post('/register', (req: express.Request, res: express.Response) => {
+            this.profileLogic.register(req.body.token, req.body.profile).then(response => {
+                if (response.success) {
+                    req.session.profileSession = response.data;
+                }
+                res.send(response);
+            });
+        });
+
         // API routes
         app.get('/api/brew', (req: express.Request, res: express.Response) => {
-            let brewID = req.query.id;
-            this.brewLogic.get(brewID).then(response => res.send(response));
+            this.brewLogic.get(req.query.id).then(response => res.send(response));
         });
 
         app.post('/api/brew', (req: express.Request, res: express.Response) => {
@@ -70,8 +91,7 @@ export class BrewKeeperAppServer {
         });
 
         app.post('/api/brew/:id', (req: express.Request, res: express.Response) => {
-            let brewID = req.params.id;
-            this.brewLogic.update(req.body).then(response => res.send(response));
+            this.brewLogic.update(req.params.id, req.body).then(response => res.send(response));
         });
     }
 }
