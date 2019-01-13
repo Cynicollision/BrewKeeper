@@ -1,6 +1,7 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as logger from 'morgan';
+import * as mongoose from 'mongoose';
 import * as session from 'express-session';
 import { Config } from './config';
 import { IBrewLogic } from './logic/brew-logic';
@@ -15,9 +16,10 @@ export class BrewKeeperAppServer {
     start(app: express.Application) {
         this.configureMiddleware(app);
         this.configureRoutes(app);
+        this.connectDatabase();
 
-        app.listen(Config.serverPort, () => {
-            console.log(`Brew Keeper server listening on port ${Config.serverPort} (${Config.isDev ? 'DEVELOPMENT' : 'PRODUCTION'} mode).`);
+        app.listen(Config.port, () => {
+            console.log(`Brew Keeper server listening on port ${Config.port} (${Config.dev ? 'DEVELOPMENT' : 'PRODUCTION'} mode).`);
         });
     }
 
@@ -34,15 +36,11 @@ export class BrewKeeperAppServer {
             saveUninitialized: true,
         }));
 
-        // view engine
-        app.set('views', __dirname + '/views');
-        app.set('view engine', 'pug');
-
         // configure static path
         app.use(express.static(__dirname + '/../public'));
 
         // development-only middleware
-        if (Config.isDev) {
+        if (Config.dev) {
             app.use(logger('dev'));
 
             // CORS for Angular development server 
@@ -52,6 +50,12 @@ export class BrewKeeperAppServer {
                 next();
             });
         }
+    }
+
+    private connectDatabase(): void {
+        mongoose.connect(Config.mongo, { useNewUrlParser: true });
+        mongoose.connection.on('error', () => console.log('Connection to Brew Keeper DB failed.'));
+        mongoose.connection.once('open', () => console.log('Connected to Brew Keeper DB.'));
     }
 
     private configureRoutes(app: express.Application): void {
@@ -68,11 +72,6 @@ export class BrewKeeperAppServer {
         app.post('/api/brew/:id', (req: express.Request, res: express.Response) => {
             let brewID = req.params.id;
             this.brewLogic.update(req.body).then(response => res.send(response));
-        });
-
-        // View route
-        app.get('*', (req: express.Request, res: express.Response) => {
-            res.render('index');
         });
     }
 }

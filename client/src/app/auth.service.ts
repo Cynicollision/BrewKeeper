@@ -21,7 +21,7 @@ export class AuthService {
     clientID: '2EHHIox2_2t01td8HfxYNpSuEZAVwLpH',
     domain: 'brewkeeper.auth0.com',
     responseType: 'token id_token',
-    redirectUri: 'http://localhost:3000/callback',
+    redirectUri: 'http://localhost:4200/callback',
     scope: 'openid profile'
   });
 

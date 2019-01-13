@@ -14,10 +14,19 @@ export class MockBrewData implements IBrewData {
         });
     }
 
+    getMany(brewIDs: string[]): Promise<OperationResponse<Brew[]>> {
+        return new Promise((resolve, reject) => {
+            let testBrews = brewIDs.map(id => { 
+                return { id: id, name: 'Brew ' + id };
+            });
+            return resolve({ success: true, data: testBrews });
+        });
+    }
+
     create(newBrew: Brew): Promise<OperationResponse<Brew>> {
         return new Promise((resolve, reject) => {
             // TODO
-            return resolve({ success: true });
+            return resolve({ success: true, data: newBrew });
         });
     }
 
