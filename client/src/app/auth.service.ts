@@ -16,11 +16,12 @@ export class AuthService {
   private _expiresAt = 0;
   private _userInfo = null;
 
+  // TODO: not hardcoded
   auth0 = new auth0.WebAuth({
     clientID: '2EHHIox2_2t01td8HfxYNpSuEZAVwLpH',
     domain: 'brewkeeper.auth0.com',
     responseType: 'token id_token',
-    redirectUri: 'http://localhost:4200/callback',
+    redirectUri: 'http://localhost:3000/callback',
     scope: 'openid profile'
   });
 
