@@ -1,6 +1,7 @@
 .vscode
 **/node_modules
 client/dist
+public
 server/**/*.js
 server/**/*.js.map
 shared/**/*.js
