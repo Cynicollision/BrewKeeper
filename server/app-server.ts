@@ -3,6 +3,7 @@ import * as express from 'express';
 import * as logger from 'morgan';
 import * as mongoose from 'mongoose';
 import * as session from 'express-session';
+import { ProfileSession } from '../shared/models/ProfileSession';
 import { Config } from './config';
 import { IBrewLogic } from './logic/brew-logic';
 import { IProfileLogic } from './logic/profile-logic';
@@ -81,17 +82,22 @@ export class BrewKeeperAppServer {
             });
         });
 
+        app.post('/logout', (req: express.Request, res: express.Response) => {
+            req.session.profileSession = null;
+            res.send(200);
+        });
+
         // API routes
         app.get('/api/brew', (req: express.Request, res: express.Response) => {
             this.brewLogic.get(req.query.id).then(response => res.send(response));
         });
 
         app.post('/api/brew', (req: express.Request, res: express.Response) => {
-            this.brewLogic.create(req.body).then(response => res.send(response));
+            this.brewLogic.create(req.session.profileSession, req.body).then(response => res.send(response));
         });
 
         app.post('/api/brew/:id', (req: express.Request, res: express.Response) => {
-            this.brewLogic.update(req.params.id, req.body).then(response => res.send(response));
+            this.brewLogic.update(req.session.profileSession, req.params.id, req.body).then(response => res.send(response));
         });
     }
 }

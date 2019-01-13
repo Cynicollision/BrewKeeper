@@ -21,7 +21,10 @@ export class ProfileData implements IProfileData {
     get(id: string): Promise<OperationResponse<Profile>> {
         return new Promise((resolve, reject) => {
             this.model.findOne({ id: id }, (err: any, doc: mongoose.Document) => {
-                return resolve(err ? ResponseUtil.fail(err) : ResponseUtil.succeed(this.mapFromDocument(doc)));
+                if (err || !doc) {
+                    return resolve(ResponseUtil.fail(err || 'Invalid Profile ID'));
+                }
+                return resolve(ResponseUtil.succeed(this.mapFromDocument(doc)));
             });
         });
     }
@@ -29,7 +32,10 @@ export class ProfileData implements IProfileData {
     getByExternalID(externalID: string): Promise<OperationResponse<Profile>> {
         return new Promise((resolve, reject) => {
             this.model.findOne({ externalID: externalID }, (err: any, doc: mongoose.Document) => {
-                return resolve(err ? ResponseUtil.fail(err) : ResponseUtil.succeed(this.mapFromDocument(doc)));
+                if (err || !doc) {
+                    return resolve(ResponseUtil.fail(err || 'Invalid External ID'));
+                }
+                return resolve(ResponseUtil.succeed(this.mapFromDocument(doc)));
             });
         });
     }

@@ -21,7 +21,10 @@ export class BrewData implements IBrewData {
     get(id: string): Promise<OperationResponse<Brew>> {
         return new Promise((resolve, reject) => {
             this.model.findOne({ id: id }, (err: any, doc: mongoose.Document) => {
-                return resolve(err ? ResponseUtil.fail(err) : ResponseUtil.succeed(this.mapFromDocument(doc)));
+                if (err || !doc) {
+                    return resolve(ResponseUtil.fail(err || 'Invalid Brew ID'));
+                }
+                return resolve(ResponseUtil.succeed(this.mapFromDocument(doc)));
             });
         });
     }
