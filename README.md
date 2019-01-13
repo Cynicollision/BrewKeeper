@@ -7,7 +7,7 @@ Journal for home brewers that helps track bottling and refrigeration dates.
 **Work in progress!**
 
 ## Build/Develop
-#### Prerequisites
+### Prerequisites
 ```
 npm install -g @angular/cli
 npm install -g gulp
@@ -41,11 +41,28 @@ Note: Use `tsc -w` while actively developing.
 ### Packaging
 Copy Angular build output to folder served by the Express app:
 ```
-cd server
 gulp publish
 ```
-## Deploy to Heroku
-Full build and deploy process:
+### MongoDB setup
+Install MongoDB, then run the following to create the development database and user (credentials must match server/Config.ts):
+```
+mongod brewkeeper
+db.createUser({  
+ user:<username>,
+ pwd:<password>,
+ roles:[  
+  {  
+     role:"readWrite",
+     db:"brewkeeper"
+  }
+ ],
+ mechanisms:[  
+  "SCRAM-SHA-1"
+ ]
+})
+```
+### Deploy to Heroku
+Full build and deploy process. Release branch must have built .js output included.
 ```
 git checkout release
 git merge master
