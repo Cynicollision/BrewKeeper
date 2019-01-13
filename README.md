@@ -52,6 +52,7 @@ git merge master
 cd server
 tsc
 gulp publish
+cd ..
 git commit -m <version>
 git push heroku release:master
 ```
