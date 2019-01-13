@@ -5,9 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/jasmine-node spec",
-    "start": "node app",
-    "postinstall": "npm run tsc",
-    "tsc": "tsc"
+    "start": "node app"
   },
   "repository": {
     "type": "git",
