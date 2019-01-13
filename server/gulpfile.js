@@ -3,7 +3,7 @@ const run = require('gulp-run-command').default;
 const clean = require('gulp-clean');
 
 async function build(cb) {
-    await run(['ng build'], { cwd: '../client' })();
+    await run(['ng build --prod=true'], { cwd: '../client' })();
     cb();
 }
 

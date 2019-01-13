@@ -1,0 +1,9 @@
+{
+  "name": "brewkeeper-shared",
+  "version": "1.0.0",
+  "scripts": {},
+  "dependencies": {
+    "tslib": "^1.9.3",
+    "typescript": "^3.2.2"
+  }
+}

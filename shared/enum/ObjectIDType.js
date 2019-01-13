@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var ObjectIDType;
+export var ObjectIDType;
 (function (ObjectIDType) {
     ObjectIDType["Brew"] = "01";
     ObjectIDType["Recipe"] = "02";
-})(ObjectIDType = exports.ObjectIDType || (exports.ObjectIDType = {}));
+})(ObjectIDType || (ObjectIDType = {}));
 //# sourceMappingURL=ObjectIDType.js.map

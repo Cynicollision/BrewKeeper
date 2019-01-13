@@ -1,6 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class Brew {
-}
-exports.Brew = Brew;
+var Brew = /** @class */ (function () {
+    function Brew() {
+    }
+    return Brew;
+}());
+export { Brew };
 //# sourceMappingURL=Brew.js.map
