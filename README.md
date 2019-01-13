@@ -50,8 +50,8 @@ Full build and deploy process:
 git checkout release
 git merge master
 cd server
-tsc
 gulp publish
+tsc
 cd ..
 git commit -m <version>
 git push heroku release:master
