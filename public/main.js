@@ -251,6 +251,7 @@ var AuthService = /** @class */ (function () {
         this._accessToken = '';
         this._expiresAt = 0;
         this._userInfo = null;
+        // TODO: not hardcoded
         this.auth0 = new auth0_js__WEBPACK_IMPORTED_MODULE_3__["WebAuth"]({
             clientID: '2EHHIox2_2t01td8HfxYNpSuEZAVwLpH',
             domain: 'brewkeeper.auth0.com',
