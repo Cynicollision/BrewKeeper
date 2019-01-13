@@ -2,7 +2,9 @@
 
 [![Build Status](https://travis-ci.org/Cynicollision/BrewKeeper.svg?branch=master)](https://travis-ci.org/Cynicollision/BrewKeeper)
 
-Work in progress home brew journal for tracking bottling and refrigeration dates.
+Journal for home brewers that helps track bottling and refrigeration dates.
+
+**Work in progress!**
 
 ## Build/Develop
 #### Prerequisites
@@ -36,13 +38,23 @@ Then start the server:
 node app
 ```
 Note: Use `tsc -w` while actively developing.
-## Packaging
+### Packaging
 Copy Angular build output to folder served by the Express app:
 ```
 cd server
 gulp publish
 ```
-
+## Deploy to Heroku
+Full build and deploy process:
+```
+git checkout release
+git merge master
+cd server
+tsc
+gulp publish
+git commit -m <version>
+git push heroku release:master
+```
 ## Dependency Status
 Client 
 
