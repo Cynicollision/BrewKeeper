@@ -49,8 +49,8 @@ Full build and deploy process:
 ```
 git checkout release
 git merge master
-cd server
 gulp publish
+cd server
 tsc
 cd ..
 git commit -m <version>
