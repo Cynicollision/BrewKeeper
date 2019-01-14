@@ -1,9 +1,9 @@
 import * as uniqid from 'uniqid';
-import { ObjectIDType } from '../enum/ObjectIDType';
+import { ObjectType } from '../enum/object-type';
 
 export class ID {
 
-    static new(type: ObjectIDType): string {
+    static new(type: ObjectType): string {
         return (type || 'XX') + uniqid();
     }
 }
