@@ -3,7 +3,6 @@ import * as express from 'express';
 import * as logger from 'morgan';
 import * as mongoose from 'mongoose';
 import * as session from 'express-session';
-import { ProfileSession } from '../shared/models/ProfileSession';
 import { Config } from './config';
 import { IBrewLogic } from './logic/brew-logic';
 import { IProfileLogic } from './logic/profile-logic';
@@ -67,7 +66,7 @@ export class BrewKeeperAppServer {
         app.post('/login', (req: express.Request, res: express.Response) => {
             this.profileLogic.login(req.body.token, req.body.externalID).then(response => {
                 if (response.success) {
-                    req.session.profileSession = response.data;
+                    req.session.profileID = response.data.id;
                 }
                 res.send(response);
             });
@@ -76,14 +75,14 @@ export class BrewKeeperAppServer {
         app.post('/register', (req: express.Request, res: express.Response) => {
             this.profileLogic.register(req.body.token, req.body.profile).then(response => {
                 if (response.success) {
-                    req.session.profileSession = response.data;
+                    req.session.profileID = response.data.id;
                 }
                 res.send(response);
             });
         });
 
         app.post('/logout', (req: express.Request, res: express.Response) => {
-            req.session.profileSession = null;
+            req.session.profileID = null;
             res.send(200);
         });
 
@@ -93,11 +92,11 @@ export class BrewKeeperAppServer {
         });
 
         app.post('/api/brew', (req: express.Request, res: express.Response) => {
-            this.brewLogic.create(req.session.profileSession, req.body).then(response => res.send(response));
+            this.brewLogic.create(req.session.profileID, req.body).then(response => res.send(response));
         });
 
         app.post('/api/brew/:id', (req: express.Request, res: express.Response) => {
-            this.brewLogic.update(req.session.profileSession, req.params.id, req.body).then(response => res.send(response));
+            this.brewLogic.update(req.session.profileID, req.params.id, req.body).then(response => res.send(response));
         });
     }
 }

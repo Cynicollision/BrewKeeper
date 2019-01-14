@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService, UserInfo } from '../auth.service';
+import { AuthService } from '../auth.service';
+import { CreateProfileComponent } from '../create-profile/create-profile.component';
+import { DialogConfig, DialogMode, DialogResult, DialogService } from '../dialog.service';
+import { Profile } from '../../../../shared/models/Profile';
 
 @Component({
   selector: 'app-home',
@@ -8,9 +11,9 @@ import { AuthService, UserInfo } from '../auth.service';
 })
 export class HomeComponent implements OnInit {
   private _ready = false;
-  private _userInfo: UserInfo = null;  
+  private _userName: string = null;  
 
-  constructor(public authService: AuthService) {
+  constructor(public authService: AuthService, private dialogService: DialogService) {
   }
 
   get ready(): boolean {
@@ -18,12 +21,21 @@ export class HomeComponent implements OnInit {
   }
 
   get userName(): string {
-    return this._userInfo ? this._userInfo.name : '';
+    return this._userName;
   }
-
+  
   ngOnInit() {
-    this.authService.init().then((userInfo: UserInfo) => {
-      this._userInfo = userInfo;
+    this.authService.init().then((profile: Profile) => {
+      if (profile) {
+        this._userName = profile.name;
+      }
+      else if (this.authService.isAuthenticated) {
+        // TOOD: pass logged-in username, if possible
+        let config = { mode: DialogMode.edit, data: { name: this.authService.userName } };
+        this.dialogService.popDialog(CreateProfileComponent, config).then(result => {
+
+        });
+      }
       this._ready = true;
     });
   }

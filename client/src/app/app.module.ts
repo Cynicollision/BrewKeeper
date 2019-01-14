@@ -29,6 +29,7 @@ import { HomeComponent } from './home/home.component';
 import { ListComponent } from './list/list.component';
 import { BrewListComponent } from './brew-list/brew-list.component';
 import { BrewDialogComponent } from './brew-dialog/brew-dialog.component';
+import { CreateProfileComponent } from './create-profile/create-profile.component';
 
 @NgModule({
   declarations: [
@@ -38,9 +39,11 @@ import { BrewDialogComponent } from './brew-dialog/brew-dialog.component';
     ListComponent,
     BrewListComponent,
     BrewDialogComponent,
+    CreateProfileComponent,
   ],
   entryComponents: [
     BrewDialogComponent,
+    CreateProfileComponent,
   ],
   imports: [
     BrowserModule,

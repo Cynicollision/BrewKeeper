@@ -3,6 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MatDivider, MatNavList } from '@angular/material';
 
 import { NavComponent } from './nav.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('NavComponent', () => {
   let component: NavComponent;
@@ -11,7 +12,8 @@ describe('NavComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ 
-        RouterTestingModule 
+        RouterTestingModule,
+        HttpClientTestingModule,
       ],
       declarations: [
         MatDivider, 

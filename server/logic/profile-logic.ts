@@ -1,14 +1,13 @@
 import { IProfileData } from 'data/profile-data';
 import { Profile } from '../../shared/models/Profile';
-import { ProfileSession } from '../../shared/models/ProfileSession';
 import { OperationResponse } from '../../shared/contracts/OperationResponse';
 import { ObjectType } from '../enum/object-type';
 import { ID } from './../util/object-id';
 import { ResponseUtil } from './../util/response';
 
 export interface IProfileLogic {
-    login(token: string, externalID: string): Promise<OperationResponse<ProfileSession>>;
-    register(token: string, newProfile: Profile): Promise<OperationResponse<ProfileSession>>;
+    login(token: string, externalID: string): Promise<OperationResponse<Profile>>;
+    register(token: string, newProfile: Profile): Promise<OperationResponse<Profile>>;
 }
 
 export class ProfileLogic implements IProfileLogic {
@@ -18,23 +17,20 @@ export class ProfileLogic implements IProfileLogic {
         this.profileData = brewData;
     }
 
-    login(token: string, externalID: string): Promise<OperationResponse<ProfileSession>> {
+    login(token: string, externalID: string): Promise<OperationResponse<Profile>> {
         
         return this.profileData.getByExternalID(externalID).then(response => {
             let profile = response.data;
 
             if (!profile) {
-                return Promise.resolve(ResponseUtil.fail<ProfileSession>('Profile does not exist for that External ID'));
+                return Promise.resolve(ResponseUtil.fail<Profile>('Profile does not exist for that External ID'));
             }
 
-            return Promise.resolve(ResponseUtil.succeed({
-                token: token,
-                profile: profile,
-            }));
+            return Promise.resolve(ResponseUtil.succeed(profile));
         });
     }
 
-    register(token: string, newProfile: Profile): Promise<OperationResponse<ProfileSession>> {
+    register(token: string, newProfile: Profile): Promise<OperationResponse<Profile>> {
 
         if (!newProfile || !newProfile.name) {
             return Promise.resolve({ success: false, message: 'Couldn\'t register: Name is required.' });
@@ -55,7 +51,7 @@ export class ProfileLogic implements IProfileLogic {
                 let profile = createResponse.data;
 
                 if (!createResponse.success) {
-                    return Promise.resolve(ResponseUtil.fail<ProfileSession>('Failed creating profile', createResponse));
+                    return Promise.resolve(ResponseUtil.fail<Profile>('Failed creating profile', createResponse));
                 }
 
                 return this.login(token, profile.externalID);

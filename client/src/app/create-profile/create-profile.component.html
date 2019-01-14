@@ -1,0 +1,11 @@
+
+<div id="register-dialog">
+  <h3>Thanks for logging in!</h3>
+  <p>What's your name?</p>
+  <mat-form-field>
+    <input matInput placeholder="User Name" [(ngModel)]="userName">
+  </mat-form-field>
+  <div>
+    <button mat-raised-button color="primary" (click)="close()">Register</button>
+  </div>
+</div>

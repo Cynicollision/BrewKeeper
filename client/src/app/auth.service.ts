@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import * as auth0 from 'auth0-js';
-
-export class UserInfo {
-  name: string = "";
-  id: string = "";
-}
+import { OperationResponse, EmptyOperationResponse } from './../../../shared/contracts/OperationResponse';
+import { Profile } from '../../../shared/models/Profile';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +12,8 @@ export class AuthService {
   private _idToken = '';
   private _accessToken = '';
   private _expiresAt = 0;
-  private _userInfo = null;
+  private _profileID = '';
+  private _userName = '';
 
   // TODO: not hardcoded
   auth0 = new auth0.WebAuth({
@@ -25,7 +24,7 @@ export class AuthService {
     scope: 'openid profile'
   });
 
-  constructor(public router: Router) {
+  constructor(public router: Router, private http: HttpClient) {
   }
 
   get accessToken(): string {
@@ -40,44 +39,46 @@ export class AuthService {
     return new Date().getTime() < this._expiresAt;
   }
 
+  get userName(): string {
+    return this._userName;
+  }
+
   public login(): void {
     this.auth0.authorize();
   }
 
-  public init(): Promise<UserInfo> {
-    return new Promise<UserInfo>((resolve, reject) => {
+  public init(): Promise<Profile> {
+    return new Promise<Profile>((resolve, reject) => {
 
       return this.handleAuthentication().then(() => {
-        let next: Promise<UserInfo> = Promise.resolve(null);
+        let next: Promise<Profile> = Promise.resolve(null);
 
         if (localStorage.getItem('isLoggedIn') === 'true') {
           next = this.renewTokens();
         }
 
-        return next.then(userInfo => resolve(userInfo));
+        return next.then(profile => resolve(profile));
       });
     });
   }
 
-  private handleAuthentication(): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
+  private handleAuthentication(): Promise<Profile> {
+    return new Promise<Profile>((resolve, reject) => {
       this.auth0.parseHash((err, authResult) => {
 
         if (authResult && authResult.accessToken && authResult.idToken) {
           window.location.hash = '';
-          this.localLogin(authResult);
+          this.router.navigate(['/']);
+          return resolve(this.localLogin(authResult));
         } 
-        else if (err) {
-          console.log(err);
-        }
-        this.router.navigate(['/']);
-        return resolve();
+        
+        return resolve(null);
       });
     });
   }
 
-  private renewTokens(): Promise<UserInfo> {
-    return new Promise<UserInfo>((resolve, reject) => {
+  private renewTokens(): Promise<Profile> {
+    return new Promise<Profile>((resolve, reject) => {
       this.auth0.checkSession({}, (err, authResult) => {
 
         if (authResult && authResult.accessToken && authResult.idToken) {
@@ -93,17 +94,21 @@ export class AuthService {
     
   }
 
-  private localLogin(authResult): UserInfo {
+  private localLogin(authResult): Promise<Profile> {
     this._accessToken = authResult.accessToken;
     this._idToken = authResult.idToken;
     this._expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
+    this._userName = authResult.idTokenPayload.name;
 
     localStorage.setItem('isLoggedIn', 'true');
 
-    return {
-      name: authResult.idTokenPayload.name,
-      id: this._idToken,
-    };
+    return this.loginProfile(authResult.idTokenPayload.sub)
+      .then((response: OperationResponse<Profile>) => {
+        if (response.success) {
+          this._profileID = response.data.id;
+        }
+        return response.data;
+      });
   }
 
   public logout(): void {
@@ -115,5 +120,23 @@ export class AuthService {
     this.router.navigate(['/']);
   }
 
-  
+  private loginProfile(externalID: string): Promise<OperationResponse<Profile>> {
+    return this.http.post(`http://localhost:3000/login`, { externalID: externalID }).toPromise()
+      .then((response: OperationResponse<Profile>) => response)
+      .catch(error => {
+        return Promise.resolve(this.buildFailedResponse(error.message));
+      });
+  }
+
+  registerProfile(): void {
+    // TODO
+  }
+
+  private buildFailedResponse(error: HttpErrorResponse): OperationResponse<Profile> {
+    let message = error.message ? error.message : error;
+    return {
+      success: false,
+      message: `Service error: ${message || ''}`,
+    };
+  }
 }

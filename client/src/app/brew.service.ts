@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { OperationResponse, EmptyOperationResponse } from './../../../shared/contracts/OperationResponse';
+import { OperationResponse } from './../../../shared/contracts/OperationResponse';
 import { Brew } from './../../../shared/models/Brew';
 
 @Injectable({
