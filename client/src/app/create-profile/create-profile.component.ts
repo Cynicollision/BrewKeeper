@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DialogConfig, DialogMode, DialogResult } from '../dialog.service';
 import { Profile } from '../../../../shared/models/Profile';
-import { AuthService } from '../auth.service';
+import { APIService } from '../api.service';
 
 @Component({
   selector: 'app-create-profile',
@@ -15,7 +15,7 @@ export class CreateProfileComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<CreateProfileComponent>,
     @Inject(MAT_DIALOG_DATA) public config: DialogConfig<Profile>,
-    private authService: AuthService) { 
+    private apiService: APIService) { 
   }
 
   ngOnInit() {
@@ -30,7 +30,7 @@ export class CreateProfileComponent implements OnInit {
       return;
     }
 
-    this.authService.registerProfile(this.userName).then(result => {
+    this.apiService.registerProfile(this.userName).then(result => {
       if (!result || !result.success) {
         // TODO: present error
         console.log('Registration failed: result.message');

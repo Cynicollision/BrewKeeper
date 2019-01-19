@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { CreateProfileComponent } from '../create-profile/create-profile.component';
-import { DialogConfig, DialogMode, DialogResult, DialogService } from '../dialog.service';
-import { Profile } from '../../../../shared/models/Profile';
+import { DialogMode, DialogService } from '../dialog.service';
+import { APIService } from '../api.service';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +13,9 @@ export class HomeComponent implements OnInit {
   private _ready = false;
   private _userName: string = null;  
 
-  constructor(public authService: AuthService, private dialogService: DialogService) {
+  constructor(public authService: AuthService, 
+    private dialogService: DialogService, 
+    private apiService: APIService) {
   }
 
   get ready(): boolean {
@@ -28,25 +30,33 @@ export class HomeComponent implements OnInit {
   }
   
   ngOnInit() {
-    this.authService.init().then((profile: Profile) => {
-      if (profile) {
-        this._userName = profile.name;
+    // TODO: probably move to app.component
+    this.authService.init().then(result => {
+      if (!result.success) {
+        console.log(`Auth error: ${result.message}`)
       }
-      else if (this.authService.isAuthenticated) {
-        let config = { mode: DialogMode.edit, data: { name: this.authService.userName } };
-        this.dialogService.popDialog(CreateProfileComponent, config).then(result => {
-          if (result.cancelled) {
-            console.log('Registration was cancelled.');
-            return;
-          }
 
-          if (result.success) {
-            // TODO: component?
-            alert('Thanks for registering!');
-          }
-        });
-      }
-      this._ready = true;
+      this.apiService.loginProfile().then(response => {
+        let profile = response.data;
+        if (profile) {
+          this._userName = profile.name;
+        }
+        else if (this.authService.isAuthenticated) {
+          let config = { mode: DialogMode.edit, data: { name: this.authService.userName } };
+          this.dialogService.popDialog(CreateProfileComponent, config).then(result => {
+            if (result.cancelled) {
+              console.log('Registration was cancelled.');
+              return;
+            }
+  
+            if (result.success) {
+              // TODO: component?
+              alert('Thanks for registering!');
+            }
+          });
+        }
+        this._ready = true;
+      });
     });
   }
 }

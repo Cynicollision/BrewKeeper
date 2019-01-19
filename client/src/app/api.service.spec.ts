@@ -1,15 +1,22 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { BrewService } from './brew.service';
+import { APIService } from './api.service';
+import { AuthService } from './auth.service';
+import { RouterTestingModule } from '@angular/router/testing';
 
-describe('BrewService', () => {
+describe('APIService', () => {
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ HttpClientTestingModule ],
-      providers: [ BrewService ]
+      imports: [ 
+        HttpClientTestingModule,
+        RouterTestingModule,
+      ],
+      providers: [ 
+        APIService,
+      ]
     });
     
     httpMock = TestBed.get(HttpTestingController);
@@ -20,7 +27,7 @@ describe('BrewService', () => {
   });
 
   it('should be created', () => {
-    const service: BrewService = TestBed.get(BrewService);
+    const service: APIService = TestBed.get(APIService);
     expect(service).toBeTruthy();
   });
 });

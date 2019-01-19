@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import * as auth0 from 'auth0-js';
-import { OperationResponse, EmptyOperationResponse } from './../../../shared/contracts/OperationResponse';
-import { Profile } from '../../../shared/models/Profile';
 
+export interface AuthResult {
+  success: boolean;
+  message?: string;
+}
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private _idToken = '';
-  private _accessToken = '';
+  // private _accessToken = '';
   private _expiresAt = 0;
   private _profileID = '';
   private _userName = '';
@@ -24,12 +25,12 @@ export class AuthService {
     scope: 'openid profile'
   });
 
-  constructor(public router: Router, private http: HttpClient) {
+  constructor(public router: Router) {
   }
 
-  get accessToken(): string {
-    return this._accessToken;
-  }
+  // get accessToken(): string {
+  //   return this._accessToken;
+  // }
 
   get idToken(): string {
     return this._idToken;
@@ -37,6 +38,10 @@ export class AuthService {
 
   get isAuthenticated(): boolean {
     return new Date().getTime() < this._expiresAt;
+  }
+
+  get profileID(): string {
+    return this._profileID;
   }
 
   get userName(): string {
@@ -47,23 +52,23 @@ export class AuthService {
     this.auth0.authorize();
   }
 
-  public init(): Promise<Profile> {
-    return new Promise<Profile>((resolve, reject) => {
+  public init(): Promise<AuthResult> {
+    return new Promise<AuthResult>((resolve, reject) => {
 
       return this.handleAuthentication().then(() => {
-        let next: Promise<Profile> = Promise.resolve(null);
+        let next: Promise<AuthResult> = Promise.resolve({ success: false, message: 'No client logged in.' });
 
         if (localStorage.getItem('isLoggedIn') === 'true') {
           next = this.renewTokens();
         }
 
-        return next.then(profile => resolve(profile));
+        return next.then(result => resolve(result));
       });
     });
   }
 
-  private handleAuthentication(): Promise<Profile> {
-    return new Promise<Profile>((resolve, reject) => {
+  private handleAuthentication(): Promise<AuthResult> {
+    return new Promise<AuthResult>((resolve, reject) => {
       this.auth0.parseHash((err, authResult) => {
 
         if (authResult && authResult.accessToken && authResult.idToken) {
@@ -72,83 +77,49 @@ export class AuthService {
           return resolve(this.localLogin(authResult));
         } 
         
-        return resolve(null);
+        return resolve({ success: false, message: `Unknown error.` });
       });
     });
   }
 
-  private renewTokens(): Promise<Profile> {
-    return new Promise<Profile>((resolve, reject) => {
+  private renewTokens(): Promise<AuthResult> {
+    return new Promise<AuthResult>((resolve, reject) => {
       this.auth0.checkSession({}, (err, authResult) => {
 
         if (authResult && authResult.accessToken && authResult.idToken) {
           return resolve(this.localLogin(authResult));
-        } 
-        else if (err) {
-          console.log(`Could not get a new token (${err.error}: ${err.error_description}).`);
-          this.logout();
         }
-        return resolve(null);
+        err = err || {};
+        this.logout();
+        return resolve({ success: false, message: `Could not get a new token (${err.error}: ${err.error_description}).` });
       });
     });
     
   }
 
-  private localLogin(authResult): Promise<Profile> {
-    this._accessToken = authResult.accessToken;
+  private localLogin(authResult): AuthResult {
     this._idToken = authResult.idToken;
     this._expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
-    this._userName = authResult.idTokenPayload.name;
 
     localStorage.setItem('isLoggedIn', 'true');
 
-    return this.loginProfile()
-      .then((response: OperationResponse<Profile>) => {
-        if (response.success) {
-          this._profileID = response.data.id;
-        }
-        return response.data;
-      });
+    return { success: true };
+
+    // return this.loginProfile()
+    //   .then((response: OperationResponse<Profile>) => {
+    //     if (response.success) {
+    //       this._profileID = response.data.id;
+    //       this._userName = response.data.name;
+    //     }
+    //     return response.data;
+    //   });
   }
 
   public logout(): void {
-    this._accessToken = '';
     this._idToken = '';
     this._expiresAt = 0;
     localStorage.removeItem('isLoggedIn');
 
     this.router.navigate(['/']);
-  }
-
-  private loginProfile(): Promise<OperationResponse<Profile>> {
-    return this.makePOST('http://localhost:3000/login');
-  }
-
-  registerProfile(userName: string): Promise<OperationResponse<Profile>> {
-    let registration = { 
-      userName: userName,
-    };
-    return this.makePOST('http://localhost:3000/register', registration);
-  }
-
-  // TODO: base class
-  private makePOST<T>(url: string, body?: any): Promise<OperationResponse<T>> {
-    let options = {
-      headers: {
-        'Authorization': `Bearer ${this.idToken}`,
-      },
-    };
-    return this.http.post(url, body, options).toPromise()
-      .then((response: OperationResponse<T>) => response)
-      .catch(error => Promise.resolve(this.buildFailedResponse(error.message)));
-  }
-
-  // TODO: base class
-  private buildFailedResponse<T>(error: HttpErrorResponse): OperationResponse<T> {
-    let message = error.message ? error.message : error;
-    return {
-      success: false,
-      message: `Service error: ${message || ''}`,
-    };
   }
 }

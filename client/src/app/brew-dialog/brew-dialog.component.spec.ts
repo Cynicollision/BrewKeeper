@@ -4,6 +4,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatFormField, MatInput, MatDialogModule, MAT_DIALOG_DATA, MatInputModule, MatFormFieldModule, MatDialogRef } from '@angular/material';
 import { BrewDialogComponent } from './brew-dialog.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('BrewDialogComponent', () => {
   let component: BrewDialogComponent;
@@ -15,6 +16,7 @@ describe('BrewDialogComponent', () => {
         BrowserAnimationsModule,
         FormsModule,
         HttpClientTestingModule,
+        RouterTestingModule,
         MatDialogModule,
         MatInputModule,
         MatFormFieldModule,
