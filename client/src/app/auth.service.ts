@@ -102,7 +102,7 @@ export class AuthService {
 
     localStorage.setItem('isLoggedIn', 'true');
 
-    return this.loginProfile(authResult.idTokenPayload.sub)
+    return this.loginProfile()
       .then((response: OperationResponse<Profile>) => {
         if (response.success) {
           this._profileID = response.data.id;
@@ -120,19 +120,31 @@ export class AuthService {
     this.router.navigate(['/']);
   }
 
-  private loginProfile(externalID: string): Promise<OperationResponse<Profile>> {
-    return this.http.post(`http://localhost:3000/login`, { externalID: externalID }).toPromise()
-      .then((response: OperationResponse<Profile>) => response)
-      .catch(error => {
-        return Promise.resolve(this.buildFailedResponse(error.message));
-      });
+  private loginProfile(): Promise<OperationResponse<Profile>> {
+    return this.makePOST('http://localhost:3000/login');
   }
 
-  registerProfile(): void {
-    // TODO
+  registerProfile(userName: string): Promise<OperationResponse<Profile>> {
+    let registration = { 
+      userName: userName,
+    };
+    return this.makePOST('http://localhost:3000/register', registration);
   }
 
-  private buildFailedResponse(error: HttpErrorResponse): OperationResponse<Profile> {
+  // TODO: base class
+  private makePOST<T>(url: string, body?: any): Promise<OperationResponse<T>> {
+    let options = {
+      headers: {
+        'Authorization': `Bearer ${this.idToken}`,
+      },
+    };
+    return this.http.post(url, body, options).toPromise()
+      .then((response: OperationResponse<T>) => response)
+      .catch(error => Promise.resolve(this.buildFailedResponse(error.message)));
+  }
+
+  // TODO: base class
+  private buildFailedResponse<T>(error: HttpErrorResponse): OperationResponse<T> {
     let message = error.message ? error.message : error;
     return {
       success: false,

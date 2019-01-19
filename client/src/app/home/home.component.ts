@@ -20,8 +20,11 @@ export class HomeComponent implements OnInit {
     return this._ready;
   }
 
-  get userName(): string {
-    return this._userName;
+  get welcomeMessage(): string {
+    if (this._userName) {
+      return `Welcome, ${this._userName}`;
+    }
+    return 'Welcome to Brew Keeper';
   }
   
   ngOnInit() {
@@ -30,10 +33,17 @@ export class HomeComponent implements OnInit {
         this._userName = profile.name;
       }
       else if (this.authService.isAuthenticated) {
-        // TOOD: pass logged-in username, if possible
         let config = { mode: DialogMode.edit, data: { name: this.authService.userName } };
         this.dialogService.popDialog(CreateProfileComponent, config).then(result => {
+          if (result.cancelled) {
+            console.log('Registration was cancelled.');
+            return;
+          }
 
+          if (result.success) {
+            // TODO: component?
+            alert('Thanks for registering!');
+          }
         });
       }
       this._ready = true;

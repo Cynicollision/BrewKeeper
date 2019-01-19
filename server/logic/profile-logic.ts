@@ -1,13 +1,14 @@
-import { IProfileData } from 'data/profile-data';
-import { Profile } from '../../shared/models/Profile';
-import { OperationResponse } from '../../shared/contracts/OperationResponse';
+import { Config } from '../config';
+import { IProfileData } from '../data/profile-data';
 import { ObjectType } from '../enum/object-type';
-import { ID } from './../util/object-id';
-import { ResponseUtil } from './../util/response';
+import { ID } from '../util/object-id';
+import { ResponseUtil } from '../util/response';
+import { OperationResponse } from '../../shared/contracts/OperationResponse';
+import { Profile } from '../../shared/models/Profile';
 
 export interface IProfileLogic {
-    login(token: string, externalID: string): Promise<OperationResponse<Profile>>;
-    register(token: string, newProfile: Profile): Promise<OperationResponse<Profile>>;
+    login(externalID: string): Promise<OperationResponse<Profile>>;
+    register(externalID: string, userName: string): Promise<OperationResponse<Profile>>;
 }
 
 export class ProfileLogic implements IProfileLogic {
@@ -17,8 +18,8 @@ export class ProfileLogic implements IProfileLogic {
         this.profileData = brewData;
     }
 
-    login(token: string, externalID: string): Promise<OperationResponse<Profile>> {
-        
+    login(externalID: string): Promise<OperationResponse<Profile>> {
+
         return this.profileData.getByExternalID(externalID).then(response => {
             let profile = response.data;
 
@@ -30,22 +31,22 @@ export class ProfileLogic implements IProfileLogic {
         });
     }
 
-    register(token: string, newProfile: Profile): Promise<OperationResponse<Profile>> {
+    register(externalID: string, userName: string): Promise<OperationResponse<Profile>> {
 
-        if (!newProfile || !newProfile.name) {
-            return Promise.resolve({ success: false, message: 'Couldn\'t register: Name is required.' });
+        if (!externalID || !userName) {
+            return Promise.resolve({ success: false, message: 'Couldn\'t register: External ID and User Name are required.' });
         }
 
-        if (!newProfile.externalID) {
-            return Promise.resolve({ success: false, message: 'Couldn\'t register: External ID is required.' });
-        }
-
-        return this.profileData.getByExternalID(newProfile.externalID).then(response => {
+        return this.profileData.getByExternalID(externalID).then(response => {
             if (response.success) {
                 return Promise.resolve({ success: false, message: 'Profile already exists with that External ID.' });
             }
 
-            newProfile.id = ID.new(ObjectType.Profile);
+            let newProfile = {
+                id: ID.new(ObjectType.Profile),
+                externalID: externalID,
+                name: userName,
+            };
 
             return this.profileData.create(newProfile).then(createResponse => {
                 let profile = createResponse.data;
@@ -54,7 +55,7 @@ export class ProfileLogic implements IProfileLogic {
                     return Promise.resolve(ResponseUtil.fail<Profile>('Failed creating profile', createResponse));
                 }
 
-                return this.login(token, profile.externalID);
+                return this.login(profile.externalID);
             });
         });
     }

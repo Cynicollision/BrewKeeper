@@ -25,10 +25,19 @@ export class CreateProfileComponent implements OnInit {
   }
 
   close() {
-    if (this.userName || this.userName.length) {
-      // TODO: this.authService.registerProfile...
-      this.dialogRef.close();
+    if (!this.userName || !this.userName.length) {
+      // TODO: required fields error
+      return;
     }
+
+    this.authService.registerProfile(this.userName).then(result => {
+      if (!result || !result.success) {
+        // TODO: present error
+        console.log('Registration failed: result.message');
+      }
+
+      this.dialogRef.close(result);
+    });
   }
 
 }
