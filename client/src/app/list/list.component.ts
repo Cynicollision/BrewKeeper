@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Brew } from './../../../../shared/models/Brew';
 
 export interface ListItem {
   id: string;

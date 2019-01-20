@@ -3,12 +3,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatFormField, MatInput, MatDialogModule, MAT_DIALOG_DATA, MatInputModule, MatFormFieldModule, MatDialogRef } from '@angular/material';
-import { BrewDialogComponent } from './brew-dialog.component';
+import { CreateProfileComponent } from './create-profile.component';
 import { RouterTestingModule } from '@angular/router/testing';
 
-describe('BrewDialogComponent', () => {
-  let component: BrewDialogComponent;
-  let fixture: ComponentFixture<BrewDialogComponent>;
+describe('CreateProfileComponent', () => {
+  let component: CreateProfileComponent;
+  let fixture: ComponentFixture<CreateProfileComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -16,13 +16,13 @@ describe('BrewDialogComponent', () => {
         BrowserAnimationsModule,
         FormsModule,
         HttpClientTestingModule,
-        RouterTestingModule,
         MatDialogModule,
         MatInputModule,
         MatFormFieldModule,
+        RouterTestingModule,
       ],
       declarations: [ 
-        BrewDialogComponent,
+        CreateProfileComponent,
       ],
       providers: [
         { provide: MatDialogRef, useValue: {} },
@@ -33,7 +33,7 @@ describe('BrewDialogComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BrewDialogComponent);
+    fixture = TestBed.createComponent(CreateProfileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

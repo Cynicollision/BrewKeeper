@@ -1,35 +1,71 @@
-import { EmptyOperationResponse, OperationResponse } from '../../shared/contracts/OperationResponse';
-import { Brew } from './../../shared/models/Brew';
+import * as mongoose from 'mongoose';
+import { OperationResponse } from '../../shared/contracts/OperationResponse';
+import { Brew } from '../../shared/models/Brew';
+import { ResponseUtil } from '../util/response';
 
 export interface IBrewData {
-    get(brewID: string): Promise<OperationResponse<Brew>>;
-    create(newBrew: Brew): Promise<OperationResponse<Brew>>;
-    update(updatedBrew: Brew): Promise<OperationResponse<Brew>>;
+    get(id: string): Promise<OperationResponse<Brew>>;
+    getByOwnerID(ownerProfileID: string): Promise<OperationResponse<Brew[]>>;
+    create(data: Brew): Promise<OperationResponse<Brew>>;
+    update(id: string, data: Brew): Promise<OperationResponse<Brew>>;
 }
 
 export class BrewData implements IBrewData {
+    
+    private model: mongoose.Model<mongoose.Document> = mongoose.model('Brew', new mongoose.Schema({
+        id: { type: 'string', index: true },
+        ownerProfileID: { type: 'string', index: true},
+        name: { type: 'string' },
+    }));
 
-    get(brewID: string): Promise<OperationResponse<Brew>> {
+    get(id: string): Promise<OperationResponse<Brew>> {
         return new Promise((resolve, reject) => {
-            // TODO
-            let testBrew = new Brew();
-            testBrew.name = 'Test Brew';
-            testBrew.id = brewID;
-            return resolve({ success: true, data: testBrew });
+            this.model.findOne({ id: id }, (err: any, doc: mongoose.Document) => {
+                if (err || !doc) {
+                    return resolve(ResponseUtil.fail(err || 'Invalid Brew ID'));
+                }
+                return resolve(ResponseUtil.succeed(this.mapFromDocument(doc)));
+            });
         });
     }
 
-    create(newBrew: Brew): Promise<OperationResponse<Brew>> {
+    getByOwnerID(ownerProfileID: string): Promise<OperationResponse<Brew[]>> {
         return new Promise((resolve, reject) => {
-            // TODO
-            return resolve({ success: true, data: newBrew });
+            this.model.find({ ownerProfileID: ownerProfileID }, (err: any, docs: mongoose.Document[]) => {
+                return resolve(err ? ResponseUtil.fail(err) : ResponseUtil.succeed(this.mapFromDocuments(docs)));
+            });
         });
     }
 
-    update(updatedBrew: Brew): Promise<OperationResponse<Brew>> {
+    create(data: Brew): Promise<OperationResponse<Brew>> {
         return new Promise((resolve, reject) => {
-            // TODO
-            return resolve({ success: true, data: updatedBrew });
+            this.mapToDocument(data).save((err: any) => {
+                return resolve(err ? ResponseUtil.fail(err) : ResponseUtil.succeed(data));
+            });
         });
+    }
+
+    update(id: string, data: Brew): Promise<OperationResponse<Brew>> {
+        return new Promise((resolve, reject) => {
+            this.model.findOneAndUpdate({ id: id }, data, { new: true }, (err: any, doc: mongoose.Document) => {
+                return resolve(err ? ResponseUtil.fail(err) : ResponseUtil.succeed(this.mapFromDocument(doc)));
+            });
+        });
+    }
+
+    private mapFromDocument(document: mongoose.Document): Brew {
+        return {
+            id: document.get('id'),
+            ownerProfileID: document.get('ownerProfileID'),
+            name: document.get('name'),
+        };
+    }
+
+    private mapFromDocuments(documents: mongoose.Document[]): Brew[] {
+        return documents.map(doc => this.mapToDocument(doc));
+    }
+
+    private mapToDocument(brew: Brew): mongoose.Document {
+        return new this.model(brew);
     }
 }

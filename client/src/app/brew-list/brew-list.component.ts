@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { BrewDialogComponent } from '../brew-dialog/brew-dialog.component';
 import { ListItem } from './../list/list.component';
-import { BrewService } from './../brew.service';
+import { APIService } from '../api.service';
 import { DialogConfig, DialogMode, DialogResult, DialogService } from './../dialog.service';
 import { Brew } from './../../../../shared/models/Brew';
 
@@ -17,7 +17,7 @@ export class BrewListComponent implements OnInit {
   constructor(
     private snackBar: MatSnackBar,
     private dialogService: DialogService,
-    private brewService: BrewService) { 
+    private apiService: APIService) { 
   }
 
   ngOnInit() {
@@ -27,15 +27,16 @@ export class BrewListComponent implements OnInit {
     this.brews.push({ id: '123', name: 'IPA' });
     this.brews.push({ id: '456', name: 'Porter' });
 
-    this.brewService.get('24680').then(response => {
-      if (response.success) {
-        let brew = response.data;
-        this.brews.push({ id: '24680', name: brew.name || 'No Name' });
-      }
-      else {
-        this.handleServiceError(response.message);
-      }
-    });
+    // TODO:
+    // this.apiService.getBrewsForLoggedInUser().then(response => {
+    //   if (response.success) {
+    //     let brew = response.data;
+    //     this.brews = response.data;
+    //   }
+    //   else {
+    //     this.handleServiceError(response.message);
+    //   }
+    // });
   }
 
   addBrew(event: Event): void {

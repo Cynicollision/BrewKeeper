@@ -1,12 +1,11 @@
 <mat-spinner *ngIf="!ready"></mat-spinner>
 <div id="home" *ngIf="ready">
   <div class="welcome" *ngIf="authService.isAuthenticated">
-    <h3>Welcome, {{userName}}</h3>
-    <p>Message text/active brew summary here</p>
+    <h3>{{welcomeMessage}}</h3>
   </div>
 
   <div class="welcome" *ngIf="!authService.isAuthenticated">
-    <h3>Welcome to Brew Keeper</h3>
+    <h3>{{welcomeMessage}}</h3>
     <p>Please log in.</p>
     <button mat-raised-button color="primary" (click)="authService.login()">Log In</button>
   </div>

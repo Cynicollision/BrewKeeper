@@ -2,10 +2,12 @@
 
 [![Build Status](https://travis-ci.org/Cynicollision/BrewKeeper.svg?branch=master)](https://travis-ci.org/Cynicollision/BrewKeeper)
 
-Work in progress home brew journal for tracking bottling and refrigeration dates.
+Journal for home brewers that helps track bottling and refrigeration dates.
+
+**Work in progress!**
 
 ## Build/Develop
-#### Prerequisites
+### Prerequisites
 ```
 npm install -g @angular/cli
 npm install -g gulp
@@ -36,13 +38,41 @@ Then start the server:
 node app
 ```
 Note: Use `tsc -w` while actively developing.
-## Packaging
+### Packaging
 Copy Angular build output to folder served by the Express app:
 ```
-cd server
 gulp publish
 ```
-
+### MongoDB setup
+Install MongoDB, then run the following to create the development database and user (credentials must match server/Config.ts):
+```
+mongod brewkeeper
+db.createUser({  
+ user:<username>,
+ pwd:<password>,
+ roles:[  
+  {  
+     role:"readWrite",
+     db:"brewkeeper"
+  }
+ ],
+ mechanisms:[  
+  "SCRAM-SHA-1"
+ ]
+})
+```
+### Deploy to Heroku
+Full build and deploy process. Release branch must have built .js output included.
+```
+git checkout release
+git merge master
+gulp publish
+cd server
+tsc
+cd ..
+git commit -m <version>
+git push heroku release:master
+```
 ## Dependency Status
 Client 
 

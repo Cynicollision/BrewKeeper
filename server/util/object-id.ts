@@ -1,10 +1,9 @@
-//import * as shortid from 'shortid';
-import { ObjectIDType } from './../../shared/enum/ObjectIDType';
+import * as uniqid from 'uniqid';
+import { ObjectType } from '../enum/object-type';
 
 export class ID {
 
-    static new(type: ObjectIDType): string {
-        //return (type || 'XX') + shortid.generate();
-        return 'TODO';
+    static new(type: ObjectType): string {
+        return (type || 'XX') + uniqid();
     }
 }

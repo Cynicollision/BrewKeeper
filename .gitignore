@@ -1,6 +1,10 @@
 .vscode
 **/node_modules
 client/dist
+public
+client/**/*.js
+client/**/*.js.map
+server/**/*.js
 server/**/*.js.map
+shared/**/*.js
 shared/**/*.js.map
-!gulpfile.js

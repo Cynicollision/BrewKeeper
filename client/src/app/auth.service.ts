@@ -2,19 +2,19 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as auth0 from 'auth0-js';
 
-export class UserInfo {
-  name: string = "";
-  id: string = "";
+export interface AuthResult {
+  success: boolean;
+  message?: string;
 }
-
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private _idToken = '';
-  private _accessToken = '';
+  // private _accessToken = '';
   private _expiresAt = 0;
-  private _userInfo = null;
+  private _profileID = '';
+  private _userName = '';
 
   // TODO: not hardcoded
   auth0 = new auth0.WebAuth({
@@ -28,9 +28,9 @@ export class AuthService {
   constructor(public router: Router) {
   }
 
-  get accessToken(): string {
-    return this._accessToken;
-  }
+  // get accessToken(): string {
+  //   return this._accessToken;
+  // }
 
   get idToken(): string {
     return this._idToken;
@@ -40,80 +40,86 @@ export class AuthService {
     return new Date().getTime() < this._expiresAt;
   }
 
+  get profileID(): string {
+    return this._profileID;
+  }
+
+  get userName(): string {
+    return this._userName;
+  }
+
   public login(): void {
     this.auth0.authorize();
   }
 
-  public init(): Promise<UserInfo> {
-    return new Promise<UserInfo>((resolve, reject) => {
+  public init(): Promise<AuthResult> {
+    return new Promise<AuthResult>((resolve, reject) => {
 
       return this.handleAuthentication().then(() => {
-        let next: Promise<UserInfo> = Promise.resolve(null);
+        let next: Promise<AuthResult> = Promise.resolve({ success: false, message: 'No client logged in.' });
 
         if (localStorage.getItem('isLoggedIn') === 'true') {
           next = this.renewTokens();
         }
 
-        return next.then(userInfo => resolve(userInfo));
+        return next.then(result => resolve(result));
       });
     });
   }
 
-  private handleAuthentication(): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
+  private handleAuthentication(): Promise<AuthResult> {
+    return new Promise<AuthResult>((resolve, reject) => {
       this.auth0.parseHash((err, authResult) => {
 
         if (authResult && authResult.accessToken && authResult.idToken) {
           window.location.hash = '';
-          this.localLogin(authResult);
+          this.router.navigate(['/']);
+          return resolve(this.localLogin(authResult));
         } 
-        else if (err) {
-          console.log(err);
-        }
-        this.router.navigate(['/']);
-        return resolve();
+        
+        return resolve({ success: false, message: `Unknown error.` });
       });
     });
   }
 
-  private renewTokens(): Promise<UserInfo> {
-    return new Promise<UserInfo>((resolve, reject) => {
+  private renewTokens(): Promise<AuthResult> {
+    return new Promise<AuthResult>((resolve, reject) => {
       this.auth0.checkSession({}, (err, authResult) => {
 
         if (authResult && authResult.accessToken && authResult.idToken) {
           return resolve(this.localLogin(authResult));
-        } 
-        else if (err) {
-          console.log(`Could not get a new token (${err.error}: ${err.error_description}).`);
-          this.logout();
         }
-        return resolve(null);
+        err = err || {};
+        this.logout();
+        return resolve({ success: false, message: `Could not get a new token (${err.error}: ${err.error_description}).` });
       });
     });
     
   }
 
-  private localLogin(authResult): UserInfo {
-    this._accessToken = authResult.accessToken;
+  private localLogin(authResult): AuthResult {
     this._idToken = authResult.idToken;
     this._expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
 
     localStorage.setItem('isLoggedIn', 'true');
 
-    return {
-      name: authResult.idTokenPayload.name,
-      id: this._idToken,
-    };
+    return { success: true };
+
+    // return this.loginProfile()
+    //   .then((response: OperationResponse<Profile>) => {
+    //     if (response.success) {
+    //       this._profileID = response.data.id;
+    //       this._userName = response.data.name;
+    //     }
+    //     return response.data;
+    //   });
   }
 
   public logout(): void {
-    this._accessToken = '';
     this._idToken = '';
     this._expiresAt = 0;
     localStorage.removeItem('isLoggedIn');
 
     this.router.navigate(['/']);
   }
-
-  
 }

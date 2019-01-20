@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { BrewService } from '../brew.service';
+import { APIService } from '../api.service';
 import { DialogConfig, DialogMode, DialogResult } from '../dialog.service';
 import { Brew } from './../../../../shared/models/Brew';
 import { OperationResponse } from '../../../../shared/contracts/OperationResponse';
@@ -18,7 +18,7 @@ export class BrewDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<BrewDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public config: DialogConfig<Brew>,
-    private brewService: BrewService) { 
+    private apiService: APIService) { 
   }
 
   ngOnInit() {
@@ -50,7 +50,7 @@ export class BrewDialogComponent implements OnInit {
   }
 
   private saveNewBrew(newBrew: Brew): Promise<DialogResult<Brew>> {
-    return this.brewService.create(newBrew).then((response: OperationResponse<Brew>) => {
+    return this.apiService.create(newBrew).then((response: OperationResponse<Brew>) => {
       return {
         success: response.success,
         message: response.success ? 'Brew saved' : response.message,
@@ -60,7 +60,7 @@ export class BrewDialogComponent implements OnInit {
   }
 
   private updateBrew(updatedBrew: Brew): Promise<DialogResult<Brew>> {
-    return this.brewService.update(updatedBrew).then((response: OperationResponse<Brew>) => {
+    return this.apiService.update(updatedBrew).then((response: OperationResponse<Brew>) => {
       return {
         success: response.success,
         message: response.success ? 'Brew saved' : response.message,
