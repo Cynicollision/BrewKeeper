@@ -2,10 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const bodyParser = require("body-parser");
 const express = require("express");
-const jwksRsa = require("jwks-rsa");
 const jwt = require("express-jwt");
+const jwksRsa = require("jwks-rsa");
 const logger = require("morgan");
-const mongoose = require("mongoose");
 const session = require("express-session");
 const config_1 = require("./config");
 class BrewKeeperAppServer {
@@ -64,15 +63,16 @@ class BrewKeeperAppServer {
     }
     connectDatabase() {
         return new Promise((resolve, reject) => {
-            mongoose.connect(config_1.Config.mongo, { useNewUrlParser: true });
-            mongoose.connection.on('error', () => {
-                console.log('Fatal: Brew Keeper DB connection failed.');
-                resolve(false);
-            });
-            mongoose.connection.once('open', () => {
-                console.log('Connected to Brew Keeper DB.');
-                resolve(true);
-            });
+            // mongoose.connect(Config.mongo, { useNewUrlParser: true });
+            // mongoose.connection.on('error', () => { 
+            //     console.log('Fatal: Brew Keeper DB connection failed.');
+            //     resolve(false);
+            // });
+            // mongoose.connection.once('open', () => {
+            //     console.log('Connected to Brew Keeper DB.');
+            //     resolve(true);
+            // });
+            resolve(true);
         });
     }
     configureRoutes(app) {
