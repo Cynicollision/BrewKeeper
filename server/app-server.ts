@@ -1,7 +1,7 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
-import * as jwksRsa from 'jwks-rsa';
 import * as jwt from'express-jwt';
+import * as jwksRsa from 'jwks-rsa';
 import * as logger from 'morgan';
 import * as mongoose from 'mongoose';
 import * as session from 'express-session';
