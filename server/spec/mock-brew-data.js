@@ -1,23 +1,27 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Brew_1 = require("./../../shared/models/Brew");
 class MockBrewData {
     get(brewID) {
         return new Promise((resolve, reject) => {
-            // TODO
-            let testBRew = new Brew_1.Brew();
-            testBRew.name = 'Test Brew';
-            testBRew.id = brewID;
-            return resolve({ success: true, data: testBRew });
+            let testBrew = { id: brewID, name: 'Test Brew' };
+            return resolve({ success: true, data: testBrew });
+        });
+    }
+    getByOwnerID(ownerProfileID) {
+        return new Promise((resolve, reject) => {
+            let testBrews = ['123', 'abc', '4f0'].map(id => {
+                return { id: id, ownerProfileID: ownerProfileID, name: 'Brew ' + id };
+            });
+            return resolve({ success: true, data: testBrews });
         });
     }
     create(newBrew) {
         return new Promise((resolve, reject) => {
             // TODO
-            return resolve({ success: true });
+            return resolve({ success: true, data: newBrew });
         });
     }
-    update(updatedBrew) {
+    update(brewID, updatedBrew) {
         return new Promise((resolve, reject) => {
             // TODO
             return resolve({ success: true });

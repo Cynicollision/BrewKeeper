@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const uniqid = require("uniqid");
 class ID {
     static new(type) {
-        //return (type || 'XX') + shortid.generate();
-        return 'TODO';
+        return (type || 'XX') + uniqid();
     }
 }
 exports.ID = ID;

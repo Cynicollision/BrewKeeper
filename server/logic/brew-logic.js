@@ -1,58 +1,48 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ObjectIDType_1 = require("./../../shared/enum/ObjectIDType");
-const object_id_1 = require("./../util/object-id");
+const object_type_1 = require("../enum/object-type");
+const object_id_1 = require("../util/object-id");
+const response_1 = require("../util/response");
 class BrewLogic {
     constructor(brewData) {
         this.brewData = brewData;
     }
     get(brewID) {
-        return new Promise((resolve, reject) => {
-            // validate the request
-            if (!brewID) {
-                resolve({ success: false, message: 'Couldn\'t fetch brew: ID is required.' });
-                return;
+        if (!brewID) {
+            return Promise.resolve(response_1.ResponseUtil.fail('Couldn\'t fetch Brew: ID is required.'));
+        }
+        return this.brewData.get(brewID);
+    }
+    getByOwnerID(ownerProfileID) {
+        if (!ownerProfileID) {
+            return Promise.resolve(response_1.ResponseUtil.fail('Couldn\'t fetch brews: Owner Profile ID required.'));
+        }
+        return this.brewData.getByOwnerID(ownerProfileID);
+    }
+    create(sessionProfileID, newBrew) {
+        if (!newBrew || !newBrew.name) {
+            return Promise.resolve({ success: false, message: 'Couldn\'t create brew: Name is required.' });
+        }
+        if (!sessionProfileID) {
+            return Promise.resolve({ success: false, message: 'Must be logged in to create a Brew.' });
+        }
+        newBrew.id = object_id_1.ID.new(object_type_1.ObjectType.Brew);
+        newBrew.ownerProfileID = sessionProfileID;
+        return this.brewData.create(newBrew);
+    }
+    update(sessionProfileID, brewID, updatedBrew) {
+        if (!updatedBrew || !brewID || !updatedBrew.name) {
+            return Promise.resolve({ success: false, message: 'Couldn\'t update Brew: ID and Name are required.' });
+        }
+        return this.get(brewID).then(response => {
+            if (!this.sessionOwnsBrew(sessionProfileID, response.data || {})) {
+                return Promise.resolve({ success: false, message: 'Must be logged in as Brew Owner in order to update.' });
             }
-            return this.brewData.get(brewID)
-                .then(response => {
-                resolve({
-                    success: response.success,
-                    message: response.message,
-                    data: response.data,
-                });
-            });
+            return this.brewData.update(brewID, updatedBrew);
         });
     }
-    create(newBrew) {
-        return new Promise((resolve, reject) => {
-            // validate the request
-            if (!newBrew || !newBrew.name) {
-                resolve({ success: false, message: 'Couldn\'t create brew: Name is required.' });
-                return;
-            }
-            newBrew.id = object_id_1.ID.new(ObjectIDType_1.ObjectIDType.Brew);
-            return this.brewData.create(newBrew)
-                .then(response => resolve({
-                success: response.success,
-                message: response.message,
-                data: response.data,
-            }));
-        });
-    }
-    update(newBrew) {
-        return new Promise((resolve, reject) => {
-            // validate the request
-            if (!newBrew || !newBrew.name) {
-                resolve({ success: false, message: 'Couldn\'t update brew: Name is required.' });
-                return;
-            }
-            return this.brewData.update(newBrew)
-                .then(response => resolve({
-                success: response.success,
-                message: response.message,
-                data: response.data,
-            }));
-        });
+    sessionOwnsBrew(sessionProfileID, brew) {
+        return sessionProfileID === brew.ownerProfileID;
     }
 }
 exports.BrewLogic = BrewLogic;

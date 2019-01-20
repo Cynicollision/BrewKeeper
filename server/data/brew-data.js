@@ -1,27 +1,58 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Brew_1 = require("./../../shared/models/Brew");
+const mongoose = require("mongoose");
+const response_1 = require("../util/response");
 class BrewData {
-    get(brewID) {
+    constructor() {
+        this.model = mongoose.model('Brew', new mongoose.Schema({
+            id: { type: 'string', index: true },
+            ownerProfileID: { type: 'string', index: true },
+            name: { type: 'string' },
+        }));
+    }
+    get(id) {
         return new Promise((resolve, reject) => {
-            // TODO
-            let testBrew = new Brew_1.Brew();
-            testBrew.name = 'Test Brew';
-            testBrew.id = brewID;
-            return resolve({ success: true, data: testBrew });
+            this.model.findOne({ id: id }, (err, doc) => {
+                if (err || !doc) {
+                    return resolve(response_1.ResponseUtil.fail(err || 'Invalid Brew ID'));
+                }
+                return resolve(response_1.ResponseUtil.succeed(this.mapFromDocument(doc)));
+            });
         });
     }
-    create(newBrew) {
+    getByOwnerID(ownerProfileID) {
         return new Promise((resolve, reject) => {
-            // TODO
-            return resolve({ success: true, data: newBrew });
+            this.model.find({ ownerProfileID: ownerProfileID }, (err, docs) => {
+                return resolve(err ? response_1.ResponseUtil.fail(err) : response_1.ResponseUtil.succeed(this.mapFromDocuments(docs)));
+            });
         });
     }
-    update(updatedBrew) {
+    create(data) {
         return new Promise((resolve, reject) => {
-            // TODO
-            return resolve({ success: true, data: updatedBrew });
+            this.mapToDocument(data).save((err) => {
+                return resolve(err ? response_1.ResponseUtil.fail(err) : response_1.ResponseUtil.succeed(data));
+            });
         });
+    }
+    update(id, data) {
+        return new Promise((resolve, reject) => {
+            this.model.findOneAndUpdate({ id: id }, data, { new: true }, (err, doc) => {
+                return resolve(err ? response_1.ResponseUtil.fail(err) : response_1.ResponseUtil.succeed(this.mapFromDocument(doc)));
+            });
+        });
+    }
+    mapFromDocument(document) {
+        return {
+            id: document.get('id'),
+            ownerProfileID: document.get('ownerProfileID'),
+            name: document.get('name'),
+        };
+    }
+    mapFromDocuments(documents) {
+        return documents.map(doc => this.mapToDocument(doc));
+    }
+    mapToDocument(brew) {
+        return new this.model(brew);
     }
 }
 exports.BrewData = BrewData;
