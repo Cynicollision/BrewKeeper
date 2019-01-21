@@ -30,6 +30,7 @@ import { ListComponent } from './list/list.component';
 import { BrewListComponent } from './brew-list/brew-list.component';
 import { BrewDialogComponent } from './brew-dialog/brew-dialog.component';
 import { CreateProfileComponent } from './create-profile/create-profile.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { CreateProfileComponent } from './create-profile/create-profile.componen
     BrewListComponent,
     BrewDialogComponent,
     CreateProfileComponent,
+    LoginComponent,
   ],
   entryComponents: [
     BrewDialogComponent,

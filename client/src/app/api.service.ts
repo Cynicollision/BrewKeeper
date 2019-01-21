@@ -14,7 +14,7 @@ export class APIService {
   }
 
   create(brew: Brew): Promise<OperationResponse<Brew>> {
-    return this.http.post(`http://localhost:3000/api/brew`, brew).toPromise()
+    return this.http.post(`https://brewkeeper.herokuapp.com/api/brew`, brew).toPromise()
       .then((response: OperationResponse<Brew>) => response)
       .catch(error => {
         return Promise.resolve(this.buildFailedResponse(error));
@@ -22,7 +22,7 @@ export class APIService {
   }
 
   update(brew: Brew): Promise<OperationResponse<Brew>> {
-    return this.http.post(`http://localhost:3000/api/brew/${brew.id}`, brew).toPromise()
+    return this.http.post(`https://brewkeeper.herokuapp.com/api/brew/${brew.id}`, brew).toPromise()
       .then((response: OperationResponse<Brew>) => response)
       .catch(error => {
         return Promise.resolve(this.buildFailedResponse(error));
@@ -30,7 +30,7 @@ export class APIService {
   }
 
   get(brewID: string): Promise<OperationResponse<Brew>> {
-    return this.http.get(`http://localhost:3000/api/brew?id=${brewID}`).toPromise()
+    return this.http.get(`https://brewkeeper.herokuapp.com/api/brew?id=${brewID}`).toPromise()
       .then((response: OperationResponse<Brew>) => response)
       .catch(error => {
         return Promise.resolve(this.buildFailedResponse(error.message));
@@ -38,18 +38,18 @@ export class APIService {
   }
 
   getBrewsForLoggedInUser(profileID: string): Promise<OperationResponse<Brew[]>> {
-    return this.makePOST('http://localhost:3000/api/<todo>', { profileID: profileID });
+    return this.makePOST('https://brewkeeper.herokuapp.com/api/<todo>', { profileID: profileID });
   }
 
   loginProfile(): Promise<OperationResponse<Profile>> {
-    return this.makePOST('http://localhost:3000/login');
+    return this.makePOST<Profile>('https://brewkeeper.herokuapp.com/api/login');
   }
 
   registerProfile(userName: string): Promise<OperationResponse<Profile>> {
     let registration = { 
       userName: userName,
     };
-    return this.makePOST('http://localhost:3000/register', registration);
+    return this.makePOST('https://brewkeeper.herokuapp.com/api/register', registration);
   }
 
   private makePOST<T>(url: string, body?: any): Promise<OperationResponse<T>> {

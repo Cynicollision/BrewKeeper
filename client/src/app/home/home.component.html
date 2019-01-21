@@ -3,10 +3,4 @@
   <div class="welcome" *ngIf="authService.isAuthenticated">
     <h3>{{welcomeMessage}}</h3>
   </div>
-
-  <div class="welcome" *ngIf="!authService.isAuthenticated">
-    <h3>{{welcomeMessage}}</h3>
-    <p>Please log in.</p>
-    <button mat-raised-button color="primary" (click)="authService.login()">Log In</button>
-  </div>
 </div>
