@@ -49,6 +49,7 @@ class BrewKeeperAppServer {
         }).unless({
             path: [
                 '/',
+                '/callback'
             ]
         }));
         // development-only middleware
