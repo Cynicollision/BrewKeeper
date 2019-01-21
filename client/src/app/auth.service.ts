@@ -49,6 +49,10 @@ export class AuthService {
     return this._userName;
   }
 
+  get hasProfile(): boolean {
+    return !!this._profileID;
+  }
+
   setProfile(profile: Profile): void {
     this._profileID = profile.id;
     this._userName = profile.name;

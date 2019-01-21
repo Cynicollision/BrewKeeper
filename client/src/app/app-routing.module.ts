@@ -12,7 +12,7 @@ const routes: Routes = [
   },
   { 
     path: 'login', 
-    component: LoginComponent, 
+    component: LoginComponent,
   },
   { 
     path: 'callback', 

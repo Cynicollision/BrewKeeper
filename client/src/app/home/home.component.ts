@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
-import { CreateProfileComponent } from '../create-profile/create-profile.component';
-import { DialogMode, DialogService } from '../dialog.service';
-import { APIService } from '../api.service';
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',

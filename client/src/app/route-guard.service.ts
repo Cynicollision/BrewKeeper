@@ -10,7 +10,7 @@ import { APIService } from './api.service';
 export class RouteGuardService implements CanActivate {
 
   constructor(private router: Router, 
-    private authService: AuthService, 
+    public authService: AuthService, 
     private apiService: APIService) {
   }
 
@@ -22,11 +22,14 @@ export class RouteGuardService implements CanActivate {
           return Promise.resolve(false);
         }
 
+        // TODO: check to see if we need to login
         return this.apiService.loginProfile().then(response => {
           if (response.success && response.data) {
             this.authService.setProfile(response.data);
             return Promise.resolve(true);
           }
+          this.router.navigate(['login']);
+          return Promise.resolve(false);
         });
       })
       .then(success => {

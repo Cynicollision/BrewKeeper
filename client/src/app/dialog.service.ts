@@ -35,16 +35,18 @@ export class DialogService {
     }
     return new Promise((resolve, reject) => {
       this.active = true;
-      this.dialog.open(componentType, {
-        width: '350px',
-        data: config || {
-          mode: DialogMode.view,
-        },
-      })
-      .afterClosed()
-      .subscribe(result => {
-        this.active = false;
-        resolve(result || { cancelled: true });
+      return Promise.resolve().then(() => {
+        this.dialog.open(componentType, {
+          width: '350px',
+          data: config || {
+            mode: DialogMode.view,
+          },
+        })
+        .afterClosed()
+        .subscribe(result => {
+          this.active = false;
+          resolve(result || { cancelled: true });
+        });
       });
     });
   }

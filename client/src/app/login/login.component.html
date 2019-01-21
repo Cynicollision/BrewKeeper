@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="!authService.isAuthenticated">
   <p>Please log in.</p>
   <button mat-raised-button color="primary" (click)="authService.login()">Log In</button>
 </div>
