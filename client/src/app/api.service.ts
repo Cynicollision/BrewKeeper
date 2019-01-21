@@ -42,14 +42,14 @@ export class APIService {
   }
 
   loginProfile(): Promise<OperationResponse<Profile>> {
-    return this.makePOST('http://localhost:3000/login');
+    return this.makePOST<Profile>('http://localhost:3000/api/login');
   }
 
   registerProfile(userName: string): Promise<OperationResponse<Profile>> {
     let registration = { 
       userName: userName,
     };
-    return this.makePOST('http://localhost:3000/register', registration);
+    return this.makePOST('http://localhost:3000/api/register', registration);
   }
 
   private makePOST<T>(url: string, body?: any): Promise<OperationResponse<T>> {

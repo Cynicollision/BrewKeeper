@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as auth0 from 'auth0-js';
+import { Profile } from '../../../shared/models/Profile';
 
 export interface AuthResult {
   success: boolean;
@@ -11,7 +12,7 @@ export interface AuthResult {
 })
 export class AuthService {
   private _idToken = '';
-  // private _accessToken = '';
+  private _accessToken = '';
   private _expiresAt = 0;
   private _profileID = '';
   private _userName = '';
@@ -28,9 +29,9 @@ export class AuthService {
   constructor(public router: Router) {
   }
 
-  // get accessToken(): string {
-  //   return this._accessToken;
-  // }
+  get accessToken(): string {
+    return this._accessToken;
+  }
 
   get idToken(): string {
     return this._idToken;
@@ -48,6 +49,11 @@ export class AuthService {
     return this._userName;
   }
 
+  setProfile(profile: Profile): void {
+    this._profileID = profile.id;
+    this._userName = profile.name;
+  }
+
   public login(): void {
     this.auth0.authorize();
   }
@@ -56,9 +62,9 @@ export class AuthService {
     return new Promise<AuthResult>((resolve, reject) => {
 
       return this.handleAuthentication().then(() => {
-        let next: Promise<AuthResult> = Promise.resolve({ success: false, message: 'No client logged in.' });
+        let next: Promise<AuthResult> = Promise.resolve({ success: true, message: 'Client must authenticate.' });
 
-        if (localStorage.getItem('isLoggedIn') === 'true') {
+        if ((localStorage.getItem('access_token') || '').length) {
           next = this.renewTokens();
         }
 
@@ -94,32 +100,23 @@ export class AuthService {
         return resolve({ success: false, message: `Could not get a new token (${err.error}: ${err.error_description}).` });
       });
     });
-    
   }
 
   private localLogin(authResult): AuthResult {
     this._idToken = authResult.idToken;
+    this._accessToken = authResult.accessToken;
     this._expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
 
-    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('access_token', this._accessToken);
 
-    return { success: true };
-
-    // return this.loginProfile()
-    //   .then((response: OperationResponse<Profile>) => {
-    //     if (response.success) {
-    //       this._profileID = response.data.id;
-    //       this._userName = response.data.name;
-    //     }
-    //     return response.data;
-    //   });
+    return { success: true, message: 'Authenticated successfully.' };
   }
 
   public logout(): void {
     this._idToken = '';
     this._expiresAt = 0;
-    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('access_token');
 
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
 }

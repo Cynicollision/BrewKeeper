@@ -33,7 +33,7 @@ export class CreateProfileComponent implements OnInit {
     this.apiService.registerProfile(this.userName).then(result => {
       if (!result || !result.success) {
         // TODO: present error
-        console.log('Registration failed: result.message');
+        console.log(`Registration failed: ${result.message}`);
       }
 
       this.dialogRef.close(result);
