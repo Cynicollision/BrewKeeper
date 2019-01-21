@@ -21,7 +21,7 @@ export class AuthService {
     clientID: '2EHHIox2_2t01td8HfxYNpSuEZAVwLpH',
     domain: 'brewkeeper.auth0.com',
     responseType: 'token id_token',
-    redirectUri: 'http://brewkeeper.herokuapp.com/callback',
+    redirectUri: 'https://brewkeeper.herokuapp.com/callback',
     scope: 'openid profile'
   });
 

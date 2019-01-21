@@ -1,7 +1,7 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
-import * as jwksRsa from 'jwks-rsa';
 import * as jwt from'express-jwt';
+import * as jwksRsa from 'jwks-rsa';
 import * as logger from 'morgan';
 import * as mongoose from 'mongoose';
 import * as session from 'express-session';
@@ -78,15 +78,16 @@ export class BrewKeeperAppServer {
 
     private connectDatabase(): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
-            mongoose.connect(Config.mongo, { useNewUrlParser: true });
-            mongoose.connection.on('error', () => { 
-                console.log('Fatal: Brew Keeper DB connection failed.');
-                resolve(false);
-            });
-            mongoose.connection.once('open', () => {
-                console.log('Connected to Brew Keeper DB.');
-                resolve(true);
-            });
+            // mongoose.connect(Config.mongo, { useNewUrlParser: true });
+            // mongoose.connection.on('error', () => { 
+            //     console.log('Fatal: Brew Keeper DB connection failed.');
+            //     resolve(false);
+            // });
+            // mongoose.connection.once('open', () => {
+            //     console.log('Connected to Brew Keeper DB.');
+            //     resolve(true);
+            // });
+            resolve(true);
         });
     }
 
