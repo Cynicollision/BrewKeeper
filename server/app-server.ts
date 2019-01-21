@@ -47,22 +47,21 @@ export class BrewKeeperAppServer {
         // configure static path
         app.use(express.static(__dirname + '/../public'));
 
-        // app.use(jwt({
-        //     secret: jwksRsa.expressJwtSecret({
-        //         cache: true,
-        //         rateLimit: true,
-        //         jwksRequestsPerMinute: 5,
-        //         jwksUri: 'https://brewkeeper.auth0.com/.well-known/jwks.json',
-        //     }),
-        //     audience: '2EHHIox2_2t01td8HfxYNpSuEZAVwLpH',
-        //     issuer: 'https://brewkeeper.auth0.com/',
-        //     algorithms: [ 'RS256' ]
-        // }).unless({
-        //     path:[
-        //       '/',
-        //       /\.js/
-        //     ]}
-        // ));
+        app.use(jwt({
+            secret: jwksRsa.expressJwtSecret({
+                cache: true,
+                rateLimit: true,
+                jwksRequestsPerMinute: 5,
+                jwksUri: 'https://brewkeeper.auth0.com/.well-known/jwks.json',
+            }),
+            audience: '2EHHIox2_2t01td8HfxYNpSuEZAVwLpH',
+            issuer: 'https://brewkeeper.auth0.com/',
+            algorithms: [ 'RS256' ]
+        }).unless({
+            path:[
+              '/',
+            ]}
+        ));
 
         // development-only middleware
         if (Config.dev) {
