@@ -4,7 +4,6 @@ import * as jwksRsa from 'jwks-rsa';
 import * as jwt from'express-jwt';
 import * as logger from 'morgan';
 import * as mongoose from 'mongoose';
-import * as session from 'express-session';
 import { Config } from './config';
 import { IBrewLogic } from './logic/brew-logic';
 import { IProfileLogic } from './logic/profile-logic';
@@ -37,31 +36,35 @@ export class BrewKeeperAppServer {
         app.use(bodyParser.urlencoded({ extended: true }));
         app.use(bodyParser.json());
 
-        // session middleware
-        app.use(session({
-            secret: 'wmdtug',
-            resave: false,
-            saveUninitialized: true,
-        }));
-
         // configure static path
         app.use(express.static(__dirname + '/../public'));
 
+        // configure jwt handling
         app.use(jwt({
             secret: jwksRsa.expressJwtSecret({
                 cache: true,
                 rateLimit: true,
                 jwksRequestsPerMinute: 5,
-                jwksUri: 'https://brewkeeper.auth0.com/.well-known/jwks.json',
+                jwksUri: Config.authJwksUri,
             }),
-            audience: '2EHHIox2_2t01td8HfxYNpSuEZAVwLpH',
-            issuer: 'https://brewkeeper.auth0.com/',
+            audience: Config.authClientID,
+            issuer: Config.authUri,
             algorithms: [ 'RS256' ]
         }).unless({
             path:[
               '/',
             ]}
         ));
+
+        // custom error-handling middleware
+        app.use((err, req, res, next) => {
+            if (err.name === 'UnauthorizedError') {
+                return res.status(403).send({
+                    success: false,
+                    message: 'No token provided.'
+                });
+            }
+        });
 
         // development-only middleware
         if (Config.dev) {
@@ -92,31 +95,24 @@ export class BrewKeeperAppServer {
 
     private configureRoutes(app: express.Application): void {
         // Auth routes
-        app.post('/login', (req: express.Request, res: express.Response) => {
+        app.post('/api/login', (req: express.Request, res: express.Response) => {
             if (!req.user) {
                 res.send(403);
                 return;
             }
             this.profileLogic.login(req.user.sub).then(response => {
-                //req.session.profileID = response.success ? response.data.id : null;
                 res.send(response);
             });
         });
 
-        app.post('/register', (req: express.Request, res: express.Response) => {
+        app.post('/api/register', (req: express.Request, res: express.Response) => {
             if (!req.user) {
                 res.send(403);
                 return;
             }
             this.profileLogic.register(req.user.sub, req.body.userName).then(response => {
-                //req.session.profileID = response.success ? response.data.id : null;
                 res.send(response);
             });
-        });
-
-        app.post('/logout', (req: express.Request, res: express.Response) => {
-            //req.session.profileID = null;
-            res.send(200);
         });
 
         // API routes
