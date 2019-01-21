@@ -60,6 +60,7 @@ export class BrewKeeperAppServer {
         }).unless({
             path:[
               '/',
+              '/**/*.js'
             ]}
         ));
 

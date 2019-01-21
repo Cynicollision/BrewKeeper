@@ -49,6 +49,7 @@ class BrewKeeperAppServer {
         }).unless({
             path: [
                 '/',
+                '/**/*.js'
             ]
         }));
         // development-only middleware
