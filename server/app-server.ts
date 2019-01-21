@@ -36,6 +36,18 @@ export class BrewKeeperAppServer {
         app.use(bodyParser.urlencoded({ extended: true }));
         app.use(bodyParser.json());
 
+        // development-only middleware
+        if (Config.dev) {
+            app.use(logger('dev'));
+
+            // CORS for Angular development server 
+            app.use((req, res, next) => {
+                res.header('Access-Control-Allow-Origin', '*');
+                res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+                next();
+            });
+        }
+
         // configure static path
         app.use(express.static(__dirname + '/../public'));
 
@@ -65,18 +77,6 @@ export class BrewKeeperAppServer {
                 });
             }
         });
-
-        // development-only middleware
-        if (Config.dev) {
-            app.use(logger('dev'));
-
-            // CORS for Angular development server 
-            app.use((req, res, next) => {
-                res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
-                res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-                next();
-            });
-        }
     }
 
     private connectDatabase(): Promise<boolean> {
@@ -96,20 +96,20 @@ export class BrewKeeperAppServer {
     private configureRoutes(app: express.Application): void {
         // Auth routes
         app.post('/api/login', (req: express.Request, res: express.Response) => {
-            if (!req.user) {
-                res.send(403);
-                return;
-            }
+            // if (!req.user) {
+            //     res.send(403);
+            //     return;
+            // }
             this.profileLogic.login(req.user.sub).then(response => {
                 res.send(response);
             });
         });
 
         app.post('/api/register', (req: express.Request, res: express.Response) => {
-            if (!req.user) {
-                res.send(403);
-                return;
-            }
+            // if (!req.user) {
+            //     res.send(403);
+            //     return;
+            // }
             this.profileLogic.register(req.user.sub, req.body.userName).then(response => {
                 res.send(response);
             });
