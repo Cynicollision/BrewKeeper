@@ -325,11 +325,6 @@ MIT
 @angular/platform-browser
 MIT
 
-@angular/material/progress-spinner
-
-@angular/animations
-MIT
-
 auth0-js
 MIT
 The MIT License (MIT)
@@ -357,6 +352,9 @@ SOFTWARE.
 
 @angular/material/button
 
+@angular/animations
+MIT
+
 @angular/forms
 MIT
 
@@ -371,6 +369,8 @@ MIT
 @angular/material/snack-bar
 
 @angular/material/form-field
+
+@angular/material/progress-spinner
 
 @angular/material/icon
 

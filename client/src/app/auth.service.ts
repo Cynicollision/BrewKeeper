@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as auth0 from 'auth0-js';
+import { environment } from '../environments/environment';
 import { Profile } from '../../../shared/models/Profile';
 
 export interface AuthResult {
@@ -17,15 +18,7 @@ export class AuthService {
   private _profileID = '';
   private _userName = '';
 
-  // TODO: not hardcoded
-  auth0 = new auth0.WebAuth({
-    clientID: '2EHHIox2_2t01td8HfxYNpSuEZAVwLpH',
-    domain: 'brewkeeper.auth0.com',
-    responseType: 'token id_token',
-    redirectUri: 'https://brewkeeper.herokuapp.com/callback',
-    //redirectUri: 'http://localhost:3000/callback',
-    scope: 'openid profile'
-  });
+  private auth0 = new auth0.WebAuth(environment.authConfig);
 
   constructor(public router: Router) {
   }
@@ -66,6 +59,10 @@ export class AuthService {
   public init(): Promise<AuthResult> {
     return new Promise<AuthResult>((resolve, reject) => {
 
+      if (this.isAuthenticated) {
+        return resolve({ success: true });
+      }
+
       return this.handleAuthentication().then(() => {
         let next: Promise<AuthResult> = Promise.resolve({ success: true, message: 'Client must authenticate.' });
 
@@ -88,7 +85,7 @@ export class AuthService {
           return resolve(this.localLogin(authResult));
         } 
         
-        return resolve({ success: false, message: `Unknown error.` });
+        return resolve({ success: true, message: `Authentication claim not present.` });
       });
     });
   }

@@ -19,7 +19,7 @@ import {
   MatSidenavModule,
   MatSnackBarModule,
   MatProgressSpinnerModule,
-  MatToolbarModule, 
+  MatToolbarModule,
 } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -31,6 +31,7 @@ import { BrewListComponent } from './brew-list/brew-list.component';
 import { BrewDialogComponent } from './brew-dialog/brew-dialog.component';
 import { CreateProfileComponent } from './create-profile/create-profile.component';
 import { LoginComponent } from './login/login.component';
+import { WaitComponent } from './core/wait/wait.component';
 
 @NgModule({
   declarations: [
@@ -42,10 +43,12 @@ import { LoginComponent } from './login/login.component';
     BrewDialogComponent,
     CreateProfileComponent,
     LoginComponent,
+    WaitComponent,
   ],
   entryComponents: [
     BrewDialogComponent,
     CreateProfileComponent,
+    WaitComponent,
   ],
   imports: [
     BrowserModule,

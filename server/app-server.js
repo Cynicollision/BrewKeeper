@@ -5,8 +5,8 @@ const express = require("express");
 const jwt = require("express-jwt");
 const jwksRsa = require("jwks-rsa");
 const logger = require("morgan");
-const path = require("path");
 const mongoose = require("mongoose");
+const path = require("path");
 const config_1 = require("./config");
 class BrewKeeperAppServer {
     constructor(brewLogic, profileLogic) {
@@ -40,7 +40,7 @@ class BrewKeeperAppServer {
         }
         // configure static path
         app.use(express.static(__dirname + '/../public'));
-        // configure jwt handling
+        // configure jwt handling on non-API routes
         app.use(jwt({
             secret: jwksRsa.expressJwtSecret({
                 cache: true,
@@ -52,17 +52,14 @@ class BrewKeeperAppServer {
             issuer: config_1.Config.authUri,
             algorithms: ['RS256']
         }).unless({
-            path: [
-                '/',
-                '/callback'
-            ]
+            path: /^(?!\/api.*$).*/
         }));
-        // custom error-handling middleware
+        // custom error-handling middleware for unauthorized API requests
         app.use((err, req, res, next) => {
             if (err.name === 'UnauthorizedError') {
                 return res.status(403).send({
                     success: false,
-                    message: 'No token provided.'
+                    message: 'Not authorized to call API.',
                 });
                 //return res.sendFile(__dirname + './../public/index.html');
             }
@@ -83,38 +80,47 @@ class BrewKeeperAppServer {
         });
     }
     configureRoutes(app) {
-        // Auth routes
+        // profile routes
         app.post('/api/login', (req, res) => {
-            // if (!req.user) {
-            //     res.send(403);
-            //     return;
-            // }
-            this.profileLogic.login(req.user.sub).then(response => {
-                res.send(response);
-            });
+            let externalID = req.user.sub || '';
+            this.profileLogic.login(externalID).then(response => res.send(response));
         });
         app.post('/api/register', (req, res) => {
-            // if (!req.user) {
-            //     res.send(403);
-            //     return;
-            // }
-            this.profileLogic.register(req.user.sub, req.body.userName).then(response => {
-                res.send(response);
-            });
+            let externalID = this.getReqExternalID(req);
+            let profile = this.getReqBody(req);
+            this.profileLogic.register(externalID, profile.name).then(response => res.send(response));
         });
-        // API routes
+        app.get('/api/profile-data', (req, res) => {
+            let externalID = this.getReqExternalID(req);
+            let profileID = req.query.id;
+            this.profileLogic.getProfileData(externalID, profileID).then(response => res.send(response));
+        });
+        // brew routes
         app.get('/api/brew', (req, res) => {
             this.brewLogic.get(req.query.id).then(response => res.send(response));
         });
         app.post('/api/brew', (req, res) => {
-            this.brewLogic.create(req.session.profileID, req.body).then(response => res.send(response));
+            let externalID = this.getReqExternalID(req);
+            let brew = this.getReqBody(req);
+            this.brewLogic.create(externalID, brew).then(response => res.send(response));
         });
         app.post('/api/brew/:id', (req, res) => {
-            this.brewLogic.update(req.session.profileID, req.params.id, req.body).then(response => res.send(response));
+            let externalID = this.getReqExternalID(req);
+            let brew = this.getReqBody(req);
+            this.brewLogic.update(externalID, brew).then(response => res.send(response));
         });
         app.get('*', (req, res) => {
             return res.sendFile(path.resolve(__dirname + './../public/index.html'));
         });
+        app.get('*', (req, res) => {
+            return res.sendFile(path.resolve(__dirname + './../public/index.html'));
+        });
+    }
+    getReqExternalID(req) {
+        return (req.user || {}).sub;
+    }
+    getReqBody(req) {
+        return (req.body || {});
     }
 }
 exports.BrewKeeperAppServer = BrewKeeperAppServer;
