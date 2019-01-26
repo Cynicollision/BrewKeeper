@@ -30,7 +30,7 @@ export class MockBrewData implements IBrewData {
     update(brewID: string, updatedBrew: Brew): Promise<OperationResponse<Brew>> {
         return new Promise((resolve, reject) => {
             // TODO
-            return resolve({ success: true });
+            return resolve({ success: true, data: updatedBrew });
         });
     }
 }

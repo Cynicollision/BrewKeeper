@@ -4,6 +4,9 @@ import * as jwksRsa from 'jwks-rsa';
 import * as jwt from'express-jwt';
 import * as logger from 'morgan';
 import * as mongoose from 'mongoose';
+import * as path from 'path';
+import { Brew } from '../shared/models/Brew';
+import { Profile } from '../shared/models/Profile';
 import { Config } from './config';
 import { IBrewLogic } from './logic/brew-logic';
 import { IProfileLogic } from './logic/profile-logic';
@@ -51,7 +54,7 @@ export class BrewKeeperAppServer {
         // configure static path
         app.use(express.static(__dirname + '/../public'));
 
-        // configure jwt handling
+        // configure jwt handling on non-API routes
         app.use(jwt({
             secret: jwksRsa.expressJwtSecret({
                 cache: true,
@@ -63,17 +66,15 @@ export class BrewKeeperAppServer {
             issuer: Config.authUri,
             algorithms: [ 'RS256' ]
         }).unless({
-            path:[
-              '/',
-            ]}
-        ));
+            path: /^(?!\/api.*$).*/
+        }));
 
-        // custom error-handling middleware
+        // custom error-handling middleware for unauthorized API requests
         app.use((err, req, res, next) => {
             if (err.name === 'UnauthorizedError') {
                 return res.status(403).send({
                     success: false,
-                    message: 'No token provided.'
+                    message: 'Not authorized to call API.',
                 });
             }
         });
@@ -94,38 +95,48 @@ export class BrewKeeperAppServer {
     }
 
     private configureRoutes(app: express.Application): void {
-        // Auth routes
+        // profile routes
         app.post('/api/login', (req: express.Request, res: express.Response) => {
-            // if (!req.user) {
-            //     res.send(403);
-            //     return;
-            // }
             this.profileLogic.login(req.user.sub).then(response => {
                 res.send(response);
             });
         });
 
         app.post('/api/register', (req: express.Request, res: express.Response) => {
-            // if (!req.user) {
-            //     res.send(403);
-            //     return;
-            // }
-            this.profileLogic.register(req.user.sub, req.body.userName).then(response => {
+            let externalID = this.getReqExternalID(req);
+            let profile = this.getReqBody<Profile>(req);
+            this.profileLogic.register(externalID, profile.name).then(response => {
                 res.send(response);
             });
         });
 
-        // API routes
+        // brew routes
         app.get('/api/brew', (req: express.Request, res: express.Response) => {
             this.brewLogic.get(req.query.id).then(response => res.send(response));
         });
 
         app.post('/api/brew', (req: express.Request, res: express.Response) => {
-            this.brewLogic.create(req.session.profileID, req.body).then(response => res.send(response));
+            let externalID = this.getReqExternalID(req);
+            let brew = this.getReqBody<Brew>(req);
+            this.brewLogic.create(externalID, brew).then(response => res.send(response));
         });
 
         app.post('/api/brew/:id', (req: express.Request, res: express.Response) => {
-            this.brewLogic.update(req.session.profileID, req.params.id, req.body).then(response => res.send(response));
+            let externalID = this.getReqExternalID(req);
+            let brew = this.getReqBody<Brew>(req);
+            this.brewLogic.update(externalID, brew).then(response => res.send(response));
         });
+
+        app.get('*', (req: express.Request, res: express.Response) => {
+            return res.sendFile(path.resolve(__dirname + './../public/index.html'));
+        });
+    }
+
+    private getReqExternalID(req: express.Request): string {
+        return (req.user || {}).sub;
+    }
+
+    private getReqBody<T>(req: express.Request): T {
+        return <T>(req.body || {});
     }
 }

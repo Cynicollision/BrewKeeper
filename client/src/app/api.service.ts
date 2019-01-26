@@ -14,14 +14,12 @@ export class APIService {
   }
 
   create(brew: Brew): Promise<OperationResponse<Brew>> {
-    return this.http.post(`http://localhost:3000/api/brew`, brew).toPromise()
-      .then((response: OperationResponse<Brew>) => response)
-      .catch(error => {
-        return Promise.resolve(this.buildFailedResponse(error));
-      });
+    brew.ownerProfileID = this.authService.profileID;
+    return this.makePOST(`http://localhost:3000/api/brew`, brew);
   }
 
   update(brew: Brew): Promise<OperationResponse<Brew>> {
+    // TODO: this.makePOST
     return this.http.post(`http://localhost:3000/api/brew/${brew.id}`, brew).toPromise()
       .then((response: OperationResponse<Brew>) => response)
       .catch(error => {
@@ -30,6 +28,7 @@ export class APIService {
   }
 
   get(brewID: string): Promise<OperationResponse<Brew>> {
+    // TODO: this.makeGET
     return this.http.get(`http://localhost:3000/api/brew?id=${brewID}`).toPromise()
       .then((response: OperationResponse<Brew>) => response)
       .catch(error => {
