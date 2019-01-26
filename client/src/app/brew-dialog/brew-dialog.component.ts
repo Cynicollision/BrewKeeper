@@ -50,7 +50,7 @@ export class BrewDialogComponent implements OnInit {
   }
 
   private saveNewBrew(newBrew: Brew): Promise<DialogResult<Brew>> {
-    return this.apiService.create(newBrew).then((response: OperationResponse<Brew>) => {
+    return this.apiService.createBrew(newBrew).then((response: OperationResponse<Brew>) => {
       return {
         success: response.success,
         message: response.success ? 'Brew saved' : response.message,
@@ -60,7 +60,7 @@ export class BrewDialogComponent implements OnInit {
   }
 
   private updateBrew(updatedBrew: Brew): Promise<DialogResult<Brew>> {
-    return this.apiService.update(updatedBrew).then((response: OperationResponse<Brew>) => {
+    return this.apiService.updateBrew(updatedBrew).then((response: OperationResponse<Brew>) => {
       return {
         success: response.success,
         message: response.success ? 'Brew saved' : response.message,

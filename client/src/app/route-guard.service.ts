@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate } from '@angular/router';
-import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
 import { APIService } from './api.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,32 +10,41 @@ import { APIService } from './api.service';
 export class RouteGuardService implements CanActivate {
 
   constructor(private router: Router, 
-    public authService: AuthService, 
+    private authService: AuthService, 
     private apiService: APIService) {
   }
 
   canActivate(): Observable<boolean> {
     return new Observable<boolean>((observer) => {
-      this.authService.init().then(result => {
-        if (!this.authService.isAuthenticated) {
+      this.ensureLoggedIn().then(canActivate => {
+        if (!canActivate) {
           this.router.navigate(['login']);
-          return Promise.resolve(false);
         }
+        observer.next(canActivate);
+        observer.complete();
+      });
+    });
+  }
 
-        // TODO: check to see if we need to login
-        return this.apiService.loginProfile().then(response => {
+  private ensureLoggedIn(): Promise<boolean> {
+    return this.authService.init().then(result => {
+      if (!result.success || !this.authService.isAuthenticated) {
+        return Promise.resolve(false);
+      }
+
+      let needsLogin = !this.authService.profileID;
+      let loginPromise = Promise.resolve(true);
+
+      if (needsLogin) {
+        loginPromise = this.apiService.loginProfile().then(response => {
           if (response.success && response.data) {
             this.authService.setProfile(response.data);
             return Promise.resolve(true);
           }
-          this.router.navigate(['login']);
           return Promise.resolve(false);
         });
-      })
-      .then(success => {
-        observer.next(success);
-        observer.complete();
-      });
+      }
+      return loginPromise;
     });
   }
 }

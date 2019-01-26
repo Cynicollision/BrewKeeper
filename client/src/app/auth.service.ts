@@ -65,6 +65,10 @@ export class AuthService {
   public init(): Promise<AuthResult> {
     return new Promise<AuthResult>((resolve, reject) => {
 
+      if (this.isAuthenticated) {
+        return resolve({ success: true });
+      }
+
       return this.handleAuthentication().then(() => {
         let next: Promise<AuthResult> = Promise.resolve({ success: true, message: 'Client must authenticate.' });
 
@@ -87,7 +91,7 @@ export class AuthService {
           return resolve(this.localLogin(authResult));
         } 
         
-        return resolve({ success: false, message: `Unknown error.` });
+        return resolve({ success: true, message: `Authentication claim not present.` });
       });
     });
   }

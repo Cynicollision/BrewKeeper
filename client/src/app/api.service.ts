@@ -13,42 +13,40 @@ export class APIService {
   constructor(private http: HttpClient, private authService: AuthService) { 
   }
 
-  create(brew: Brew): Promise<OperationResponse<Brew>> {
+  createBrew(brew: Brew): Promise<OperationResponse<Brew>> {
     brew.ownerProfileID = this.authService.profileID;
     return this.makePOST(`http://localhost:3000/api/brew`, brew);
   }
 
-  update(brew: Brew): Promise<OperationResponse<Brew>> {
-    // TODO: this.makePOST
-    return this.http.post(`http://localhost:3000/api/brew/${brew.id}`, brew).toPromise()
-      .then((response: OperationResponse<Brew>) => response)
-      .catch(error => {
-        return Promise.resolve(this.buildFailedResponse(error));
-      });
+  updateBrew(brew: Brew): Promise<OperationResponse<Brew>> {
+    return this.makePOST(`http://localhost:3000/api/brew/${brew.id}`, brew);
   }
 
-  get(brewID: string): Promise<OperationResponse<Brew>> {
-    // TODO: this.makeGET
-    return this.http.get(`http://localhost:3000/api/brew?id=${brewID}`).toPromise()
-      .then((response: OperationResponse<Brew>) => response)
-      .catch(error => {
-        return Promise.resolve(this.buildFailedResponse(error.message));
-      });
-  }
+  // getBrew(brewID: string): Promise<OperationResponse<Brew>> {
+  //   return this.makeGET(`http://localhost:3000/api/brew?id=${brewID}`);
+  // }
 
-  getBrewsForLoggedInUser(profileID: string): Promise<OperationResponse<Brew[]>> {
-    return this.makePOST('http://localhost:3000/api/<todo>', { profileID: profileID });
-  }
+  // getBrewsForLoggedInUser(profileID: string): Promise<OperationResponse<Brew[]>> {
+  //   return this.makePOST('http://localhost:3000/api/<todo>', { profileID: profileID });
+  // }
 
   loginProfile(): Promise<OperationResponse<Profile>> {
     return this.makePOST<Profile>('http://localhost:3000/api/login');
   }
 
-  registerProfile(userName: string): Promise<OperationResponse<Profile>> {
+  registerProfile(name: string): Promise<OperationResponse<Profile>> {
     let registration = { 
-      userName: userName,
+      name: name,
     };
     return this.makePOST('http://localhost:3000/api/register', registration);
+  }
+
+  private makeGET<T>(url: string): Promise<OperationResponse<T>> {
+    return this.http.get(url).toPromise()
+      .then((response: OperationResponse<T>) => response)
+      .catch(error => {
+        return Promise.resolve(this.buildFailedResponse(error.message));
+      });
   }
 
   private makePOST<T>(url: string, body?: any): Promise<OperationResponse<T>> {
