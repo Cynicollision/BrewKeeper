@@ -97,7 +97,7 @@ export class RouteGuardService implements CanActivate {
         if (!waitingOnComplete) {
           wrappingPromise = this.dialogService.popDialog(WaitComponent, { mode: DialogMode.view, preventClose: true });
         }
-      }, 10);
+      }, this.WaitThreshold);
     });
   }
 }
