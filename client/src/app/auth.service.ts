@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as auth0 from 'auth0-js';
+import { environment } from '../environments/environment';
 import { Profile } from '../../../shared/models/Profile';
 
 export interface AuthResult {
@@ -17,14 +18,7 @@ export class AuthService {
   private _profileID = '';
   private _userName = '';
 
-  // TODO: not hardcoded
-  auth0 = new auth0.WebAuth({
-    clientID: '2EHHIox2_2t01td8HfxYNpSuEZAVwLpH',
-    domain: 'brewkeeper.auth0.com',
-    responseType: 'token id_token',
-    redirectUri: 'http://localhost:4200/callback',
-    scope: 'openid profile'
-  });
+  private auth0 = new auth0.WebAuth(environment.authConfig);
 
   constructor(public router: Router) {
   }
