@@ -3,6 +3,7 @@ import * as express from 'express';
 import * as jwt from'express-jwt';
 import * as jwksRsa from 'jwks-rsa';
 import * as logger from 'morgan';
+import * as path from 'path';
 import * as mongoose from 'mongoose';
 import { Config } from './config';
 import { IBrewLogic } from './logic/brew-logic';
@@ -76,6 +77,7 @@ export class BrewKeeperAppServer {
                     success: false,
                     message: 'No token provided.'
                 });
+                //return res.sendFile(__dirname + './../public/index.html');
             }
         });
     }
@@ -128,6 +130,10 @@ export class BrewKeeperAppServer {
 
         app.post('/api/brew/:id', (req: express.Request, res: express.Response) => {
             this.brewLogic.update(req.session.profileID, req.params.id, req.body).then(response => res.send(response));
+        });
+
+        app.get('*', (req: express.Request, res: express.Response) => {
+            return res.sendFile(path.resolve(__dirname + './../public/index.html'));
         });
     }
 }

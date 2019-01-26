@@ -23,6 +23,7 @@ export class AuthService {
     domain: 'brewkeeper.auth0.com',
     responseType: 'token id_token',
     redirectUri: 'https://brewkeeper.herokuapp.com/callback',
+    //redirectUri: 'http://localhost:3000/callback',
     scope: 'openid profile'
   });
 

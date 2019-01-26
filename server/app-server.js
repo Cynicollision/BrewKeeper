@@ -5,6 +5,7 @@ const express = require("express");
 const jwt = require("express-jwt");
 const jwksRsa = require("jwks-rsa");
 const logger = require("morgan");
+const path = require("path");
 const mongoose = require("mongoose");
 const config_1 = require("./config");
 class BrewKeeperAppServer {
@@ -63,6 +64,7 @@ class BrewKeeperAppServer {
                     success: false,
                     message: 'No token provided.'
                 });
+                //return res.sendFile(__dirname + './../public/index.html');
             }
         });
     }
@@ -109,6 +111,9 @@ class BrewKeeperAppServer {
         });
         app.post('/api/brew/:id', (req, res) => {
             this.brewLogic.update(req.session.profileID, req.params.id, req.body).then(response => res.send(response));
+        });
+        app.get('*', (req, res) => {
+            return res.sendFile(path.resolve(__dirname + './../public/index.html'));
         });
     }
 }
