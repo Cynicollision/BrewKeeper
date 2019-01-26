@@ -10,6 +10,6 @@ const profileData = new ProfileData();
 
 const appServer = new BrewKeeperAppServer(
     new BrewLogic(brewData, profileData),
-    new ProfileLogic(profileData));
+    new ProfileLogic(brewData, profileData));
 
 appServer.start(express());

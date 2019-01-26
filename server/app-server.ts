@@ -97,17 +97,20 @@ export class BrewKeeperAppServer {
     private configureRoutes(app: express.Application): void {
         // profile routes
         app.post('/api/login', (req: express.Request, res: express.Response) => {
-            this.profileLogic.login(req.user.sub).then(response => {
-                res.send(response);
-            });
+            let externalID = req.user.sub || '';
+            this.profileLogic.login(externalID).then(response => res.send(response));
         });
 
         app.post('/api/register', (req: express.Request, res: express.Response) => {
             let externalID = this.getReqExternalID(req);
             let profile = this.getReqBody<Profile>(req);
-            this.profileLogic.register(externalID, profile.name).then(response => {
-                res.send(response);
-            });
+            this.profileLogic.register(externalID, profile.name).then(response => res.send(response));
+        });
+
+        app.get('/api/profile-data', (req: express.Request, res: express.Response) => {
+            let externalID = this.getReqExternalID(req);
+            let profileID = req.query.id;
+            this.profileLogic.getProfileData(externalID, profileID).then(response => res.send(response));
         });
 
         // brew routes
