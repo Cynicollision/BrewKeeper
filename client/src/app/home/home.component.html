@@ -1,6 +1,3 @@
-<mat-spinner *ngIf="!ready"></mat-spinner>
-<div id="home" *ngIf="ready">
-  <div class="welcome" *ngIf="authService.isAuthenticated">
-    <h3>{{welcomeMessage}}</h3>
-  </div>
+<div class="welcome" *ngIf="authService.isAuthenticated">
+  <h3>{{welcomeMessage}}</h3>
 </div>

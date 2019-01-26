@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ComponentType } from '@angular/cdk/portal';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 
 export interface DialogConfig<T> {
   mode: DialogMode;
   data?: T;
+  preventClose?: boolean;
 }
 
 export enum DialogMode {
@@ -25,6 +26,7 @@ export interface DialogResult<T> {
 })
 export class DialogService {
   private active = false;
+  private currentDialog: MatDialogRef<any, any>;
 
   constructor(public dialog: MatDialog) {
   }
@@ -35,19 +37,29 @@ export class DialogService {
     }
     return new Promise((resolve, reject) => {
       this.active = true;
+      
       return Promise.resolve().then(() => {
-        this.dialog.open(componentType, {
+        let dialogConfig = {
+          data: config || { mode: DialogMode.view },
+          disableClose: config.preventClose || false,
           width: '350px',
-          data: config || {
-            mode: DialogMode.view,
-          },
-        })
-        .afterClosed()
-        .subscribe(result => {
-          this.active = false;
-          resolve(result || { cancelled: true });
-        });
+        }
+
+        this.currentDialog = this.dialog.open(componentType, dialogConfig);
+        this.currentDialog.afterClosed()
+          .subscribe(result => {
+            this.active = false;
+            this.currentDialog = null;
+
+            resolve(result || { cancelled: true });
+          });
       });
     });
+  }
+
+  public closeCurrentDialog(): void {
+    if (this.currentDialog) {
+      this.currentDialog.close();
+    }
   }
 }

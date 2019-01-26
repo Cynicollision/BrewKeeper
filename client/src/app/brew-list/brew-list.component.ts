@@ -76,7 +76,7 @@ export class BrewListComponent implements OnInit {
 
     return this.dialogService.popDialog(BrewDialogComponent, config)
       .then((result: DialogResult<Brew>) => {
-        if (!result.success) {
+        if (!result.success && !result.cancelled) {
           this.handleServiceError(result.message);
         }
         return Promise.resolve(result);
