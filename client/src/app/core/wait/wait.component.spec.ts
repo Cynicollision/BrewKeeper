@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WaitComponent } from './wait.component';
+import { MatSpinner } from '@angular/material';
 
 describe('WaitComponent', () => {
   let component: WaitComponent;
@@ -8,7 +9,10 @@ describe('WaitComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WaitComponent ]
+      declarations: [
+        MatSpinner,
+        WaitComponent,
+       ]
     })
     .compileComponents();
   }));
