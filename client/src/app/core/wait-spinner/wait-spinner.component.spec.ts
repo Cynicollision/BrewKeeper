@@ -1,24 +1,24 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WaitComponent } from './wait.component';
+import { WaitSpinnerComponent } from './wait-spinner.component';
 import { MatSpinner } from '@angular/material';
 
-describe('WaitComponent', () => {
-  let component: WaitComponent;
-  let fixture: ComponentFixture<WaitComponent>;
+describe('WaitSpinnerComponent', () => {
+  let component: WaitSpinnerComponent;
+  let fixture: ComponentFixture<WaitSpinnerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         MatSpinner,
-        WaitComponent,
+        WaitSpinnerComponent,
        ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WaitComponent);
+    fixture = TestBed.createComponent(WaitSpinnerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

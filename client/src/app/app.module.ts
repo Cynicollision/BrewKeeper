@@ -30,7 +30,7 @@ import { BrewListComponent } from './brew-list/brew-list.component';
 import { BrewDialogComponent } from './brew-dialog/brew-dialog.component';
 import { CreateProfileComponent } from './create-profile/create-profile.component';
 import { LoginComponent } from './login/login.component';
-import { WaitComponent } from './core/wait/wait.component';
+import { WaitSpinnerComponent } from './core/wait-spinner/wait-spinner.component';
 
 @NgModule({
   declarations: [
@@ -41,12 +41,12 @@ import { WaitComponent } from './core/wait/wait.component';
     BrewDialogComponent,
     CreateProfileComponent,
     LoginComponent,
-    WaitComponent,
+    WaitSpinnerComponent,
   ],
   entryComponents: [
     BrewDialogComponent,
     CreateProfileComponent,
-    WaitComponent,
+    WaitSpinnerComponent,
   ],
   imports: [
     BrowserModule,

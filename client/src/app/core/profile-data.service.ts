@@ -3,6 +3,8 @@ import { BehaviorSubject } from 'rxjs';
 import { Brew } from '../../../../shared/models/Brew';
 import { Recipe } from '../../../../shared/models/Recipe';
 import { ProfileData } from '../../../../shared/models/ProfileData';
+import { APIService } from './api.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +22,10 @@ export class ProfileDataService {
     return this._initialized;
   }
 
-  init(data: ProfileData){
+  constructor(private apiService: APIService, private authService: AuthService) {
+  }
+
+  private init(data: ProfileData){
     this._initialized = true;
     this._brewDataSource.next(data.brews);
     this._recipeDataSource.next(data.recipes);
@@ -32,5 +37,21 @@ export class ProfileDataService {
 
   updateRecipes(newCollection: Recipe[]): void {
     this._recipeDataSource.next(newCollection);
+  }
+
+  loadProfileData(): Promise<boolean> {
+    let needsProfileData = !this.isInitialized;
+    let loadPromise = Promise.resolve(true);
+
+    if (needsProfileData) {
+      loadPromise = this.apiService.getProfileData(this.authService.profileID).then(response => {
+        if (!response.success || !response.data) {
+          return Promise.resolve(false);
+        }
+        this.init(response.data);
+        return Promise.resolve(true);
+      });
+    }
+    return loadPromise;
   }
 }
