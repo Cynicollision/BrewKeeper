@@ -14,12 +14,14 @@ import {
   MatInputModule,
   MatListModule,
   MatGridListModule,
+  MatNativeDateModule,
   MatRadioModule,
   MatSelectModule, 
   MatSidenavModule,
   MatSnackBarModule,
   MatProgressSpinnerModule,
   MatToolbarModule,
+  MatDatepickerModule,
 } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -58,11 +60,13 @@ import { WaitSpinnerComponent } from './core/wait-spinner/wait-spinner.component
     ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,
+    MatDatepickerModule,
     MatDialogModule,
     MatGridListModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
+    MatNativeDateModule,
     MatRadioModule,
     MatSelectModule,
     MatSidenavModule,

@@ -5,6 +5,21 @@
   <mat-form-field>
     <input matInput placeholder="Recipe">
   </mat-form-field>
+  <mat-form-field>
+    <input matInput [matDatepicker]="brewDate" placeholder="Brew date">
+    <mat-datepicker-toggle matSuffix [for]="brewDate"></mat-datepicker-toggle>
+    <mat-datepicker #brewDate></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [matDatepicker]="botteDate" placeholder="Bottle date">
+    <mat-datepicker-toggle matSuffix [for]="botteDate"></mat-datepicker-toggle>
+    <mat-datepicker #botteDate></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [matDatepicker]="chillDate" placeholder="Chill date">
+    <mat-datepicker-toggle matSuffix [for]="chillDate"></mat-datepicker-toggle>
+    <mat-datepicker #chillDate></mat-datepicker>
+  </mat-form-field>
   <div>
     <button mat-raised-button color="primary" (click)="close()">Save</button>
   </div>
