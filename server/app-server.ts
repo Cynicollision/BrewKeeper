@@ -1,7 +1,7 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
-import * as jwksRsa from 'jwks-rsa';
 import * as jwt from'express-jwt';
+import * as jwksRsa from 'jwks-rsa';
 import * as logger from 'morgan';
 import * as mongoose from 'mongoose';
 import * as path from 'path';
@@ -76,6 +76,7 @@ export class BrewKeeperAppServer {
                     success: false,
                     message: 'Not authorized to call API.',
                 });
+                //return res.sendFile(__dirname + './../public/index.html');
             }
         });
     }
@@ -91,6 +92,7 @@ export class BrewKeeperAppServer {
                 console.log('Connected to Brew Keeper DB.');
                 resolve(true);
             });
+            resolve(true);
         });
     }
 
@@ -128,6 +130,10 @@ export class BrewKeeperAppServer {
             let externalID = this.getReqExternalID(req);
             let brew = this.getReqBody<Brew>(req);
             this.brewLogic.update(externalID, brew).then(response => res.send(response));
+        });
+
+        app.get('*', (req: express.Request, res: express.Response) => {
+            return res.sendFile(path.resolve(__dirname + './../public/index.html'));
         });
 
         app.get('*', (req: express.Request, res: express.Response) => {
