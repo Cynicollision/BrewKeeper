@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { DialogConfig, DialogMode, DialogResult } from '../dialog.service';
+import { DialogConfig, DialogMode, DialogResult } from '../core/dialog.service';
 import { Profile } from '../../../../shared/models/Profile';
-import { APIService } from '../api.service';
+import { APIService } from '../core/api.service';
 
 @Component({
   selector: 'app-create-profile',

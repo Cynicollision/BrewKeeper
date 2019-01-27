@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material';
 import { DialogService } from './dialog.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('DialogService', () => {
   beforeEach(() => TestBed.configureTestingModule({

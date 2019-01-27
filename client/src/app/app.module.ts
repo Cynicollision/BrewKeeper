@@ -24,9 +24,8 @@ import {
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavComponent } from './nav/nav.component';
+import { ListComponent } from './core/list/list.component';
 import { HomeComponent } from './home/home.component';
-import { ListComponent } from './list/list.component';
 import { BrewListComponent } from './brew-list/brew-list.component';
 import { BrewDialogComponent } from './brew-dialog/brew-dialog.component';
 import { CreateProfileComponent } from './create-profile/create-profile.component';
@@ -36,7 +35,6 @@ import { WaitComponent } from './core/wait/wait.component';
 @NgModule({
   declarations: [
     AppComponent,
-    NavComponent,
     HomeComponent,
     ListComponent,
     BrewListComponent,

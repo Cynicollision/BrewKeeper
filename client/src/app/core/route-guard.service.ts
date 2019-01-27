@@ -5,7 +5,7 @@ import { APIService } from './api.service';
 import { AuthService } from './auth.service';
 import { DialogService, DialogMode } from './dialog.service';
 import { ProfileDataService } from './profile-data.service';
-import { WaitComponent } from './core/wait/wait.component';
+import { WaitComponent } from './wait/wait.component';
 
 @Injectable({
   providedIn: 'root'
@@ -43,26 +43,23 @@ export class RouteGuardService implements CanActivate {
     });
   }
 
-  private ensureLoggedIn(): Promise<boolean> {
-    return this.authService.init().then(result => {
-      if (!result.success || !this.authService.isAuthenticated) {
-        return Promise.resolve(false);
-      }
-
-      let needsLogin = !this.authService.profileID;
-      let loginPromise = Promise.resolve(true);
-
-      if (needsLogin) {
-        loginPromise = this.apiService.loginProfile().then(response => {
-          if (!response.success || !response.data) {
-            return Promise.resolve(false);
-          }
-          this.authService.setProfile(response.data);
-          return Promise.resolve(true);
-        });
-      }
-      return loginPromise;
-    });
+  private async ensureLoggedIn(): Promise<boolean> {
+    const result = await this.authService.init();
+    if (!result.success || !this.authService.isAuthenticated) {
+      return Promise.resolve(false);
+    }
+    let needsLogin = !this.authService.profileID;
+    let loginPromise = Promise.resolve(true);
+    if (needsLogin) {
+      loginPromise = this.apiService.loginProfile().then(response => {
+        if (!response.success || !response.data) {
+          return Promise.resolve(false);
+        }
+        this.authService.setProfile(response.data);
+        return Promise.resolve(true);
+      });
+    }
+    return loginPromise;
   }
 
   private loadProfileData(): Promise<boolean> {

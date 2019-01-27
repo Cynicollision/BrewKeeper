@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../auth.service';
-import { APIService } from '../api.service';
-import { DialogMode, DialogService } from '../dialog.service';
+import { AuthService } from '../core/auth.service';
+import { APIService } from '../core/api.service';
+import { DialogMode, DialogService } from '../core/dialog.service';
 import { CreateProfileComponent } from './../create-profile/create-profile.component';
 
 @Component({

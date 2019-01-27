@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { Brew } from './../../../../shared/models/Brew';
 import { BrewDialogComponent } from '../brew-dialog/brew-dialog.component';
-import { ListItem } from './../list/list.component';
-import { DialogConfig, DialogMode, DialogResult, DialogService } from './../dialog.service';
-import { ProfileDataService } from '../profile-data.service';
+import { ListItem } from './../core/list/list.component';
+import { DialogConfig, DialogMode, DialogResult, DialogService } from '../core/dialog.service';
+import { ProfileDataService } from '../core/profile-data.service';
 
 @Component({
   selector: 'app-brew-list',

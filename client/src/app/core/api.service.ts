@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 import { AuthService } from './auth.service';
-import { OperationResponse } from '../../../shared/contracts/OperationResponse';
-import { Brew } from '../../../shared/models/Brew';
-import { Profile } from '../../../shared/models/Profile';
-import { ProfileData } from '../../../shared/models/ProfileData';
+import { OperationResponse } from '../../../../shared/contracts/OperationResponse';
+import { Brew } from '../../../../shared/models/Brew';
+import { Profile } from '../../../../shared/models/Profile';
+import { ProfileData } from '../../../../shared/models/ProfileData';
 
 @Injectable({
   providedIn: 'root'

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Brew } from '../../../shared/models/Brew';
-import { Recipe } from '../../../shared/models/Recipe';
-import { ProfileData } from '../../../shared/models/ProfileData';
+import { Brew } from '../../../../shared/models/Brew';
+import { Recipe } from '../../../../shared/models/Recipe';
+import { ProfileData } from '../../../../shared/models/ProfileData';
 
 @Injectable({
   providedIn: 'root'

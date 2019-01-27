@@ -13,7 +13,6 @@ import {
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
-import { NavComponent } from './nav/nav.component';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -34,7 +33,6 @@ describe('AppComponent', () => {
       ],
       declarations: [
         AppComponent,
-        NavComponent,
       ],
     }).compileComponents();
   }));

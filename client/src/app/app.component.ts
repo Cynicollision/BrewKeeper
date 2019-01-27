@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AuthService } from './core/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,8 @@ export class AppComponent {
       map(result => result.matches)
     );
 
-  constructor(private breakpointObserver: BreakpointObserver) {
+  constructor(private breakpointObserver: BreakpointObserver,
+    public authService: AuthService) {
     this.title = 'BrewKeeperClient'
   }
 }

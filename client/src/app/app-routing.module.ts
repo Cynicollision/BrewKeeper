@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { RouteGuardService } from './route-guard.service';
+import { RouteGuardService } from './core/route-guard.service';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { BrewListComponent } from './brew-list/brew-list.component';
