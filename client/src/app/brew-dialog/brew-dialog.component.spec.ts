@@ -1,8 +1,8 @@
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MatFormField, MatInput, MatDialogModule, MAT_DIALOG_DATA, MatInputModule, MatFormFieldModule, MatDialogRef, MatDatepicker } from '@angular/material';
+import { MatFormField, MatInput, MatDialogModule, MAT_DIALOG_DATA, MatInputModule, MatFormFieldModule, MatDialogRef, MatDatepicker, MatDatepickerModule, MAT_NATIVE_DATE_FORMATS, MatNativeDateModule, MatDatepickerToggle } from '@angular/material';
 import { BrewDialogComponent } from './brew-dialog.component';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -17,13 +17,13 @@ describe('BrewDialogComponent', () => {
         FormsModule,
         HttpClientTestingModule,
         RouterTestingModule,
-        MatDialogModule,
+        MatDatepickerModule,
         MatInputModule,
         MatFormFieldModule,
+        MatNativeDateModule,
       ],
       declarations: [ 
         BrewDialogComponent,
-        MatDatepicker,
       ],
       providers: [
         { provide: MatDialogRef, useValue: {} },
