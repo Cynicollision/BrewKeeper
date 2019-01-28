@@ -23,7 +23,7 @@ ng e2e
 ```
 Then start the development server:
 ```
-ng server
+ng serve
 ```
 ### Server (Node/Express)
 Install dependencies, compile TypeScript, run tests:
