@@ -14,12 +14,14 @@ import {
   MatInputModule,
   MatListModule,
   MatGridListModule,
+  MatNativeDateModule,
   MatRadioModule,
   MatSelectModule, 
   MatSidenavModule,
   MatSnackBarModule,
   MatProgressSpinnerModule,
   MatToolbarModule,
+  MatDatepickerModule,
 } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -27,10 +29,10 @@ import { AppComponent } from './app.component';
 import { ListComponent } from './core/list/list.component';
 import { HomeComponent } from './home/home.component';
 import { BrewListComponent } from './brew-list/brew-list.component';
-import { BrewDialogComponent } from './brew-dialog/brew-dialog.component';
 import { CreateProfileComponent } from './create-profile/create-profile.component';
 import { LoginComponent } from './login/login.component';
 import { WaitSpinnerComponent } from './core/wait-spinner/wait-spinner.component';
+import { BrewDetailComponent } from './brew-detail/brew-detail.component';
 
 @NgModule({
   declarations: [
@@ -38,13 +40,12 @@ import { WaitSpinnerComponent } from './core/wait-spinner/wait-spinner.component
     HomeComponent,
     ListComponent,
     BrewListComponent,
-    BrewDialogComponent,
     CreateProfileComponent,
     LoginComponent,
     WaitSpinnerComponent,
+    BrewDetailComponent,
   ],
   entryComponents: [
-    BrewDialogComponent,
     CreateProfileComponent,
     WaitSpinnerComponent,
   ],
@@ -58,11 +59,13 @@ import { WaitSpinnerComponent } from './core/wait-spinner/wait-spinner.component
     ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,
+    MatDatepickerModule,
     MatDialogModule,
     MatGridListModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
+    MatNativeDateModule,
     MatRadioModule,
     MatSelectModule,
     MatSidenavModule,

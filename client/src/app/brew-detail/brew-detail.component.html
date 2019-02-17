@@ -1,0 +1,31 @@
+<h2>Brew Details</h2>
+<div id="brew-form">
+  <mat-form-field>
+    <input matInput placeholder="Brew Name" [(ngModel)]="data.name">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Recipe" [(ngModel)]="data.recipeID">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [matDatepicker]="brewDate" [(ngModel)]="data.brewDate" placeholder="Brew date">
+    <mat-datepicker-toggle matSuffix [for]="brewDate"></mat-datepicker-toggle>
+    <mat-datepicker #brewDate></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [matDatepicker]="botteDate" [(ngModel)]="data.botteDate" placeholder="Bottle date">
+    <mat-datepicker-toggle matSuffix [for]="botteDate"></mat-datepicker-toggle>
+    <mat-datepicker #botteDate></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [matDatepicker]="chillDate" [(ngModel)]="data.chillDate" placeholder="Chill date">
+    <mat-datepicker-toggle matSuffix [for]="chillDate"></mat-datepicker-toggle>
+    <mat-datepicker #chillDate></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field>
+    <textarea matInput [(ngModel)]="data.notes" placeholder="Brew notes"></textarea>
+  </mat-form-field>
+  <div>
+    <button mat-raised-button color="primary" (click)="save()">Save</button>
+    <button mat-button (click)="cancel()">Cancel</button>
+  </div>
+</div>
