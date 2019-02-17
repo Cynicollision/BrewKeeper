@@ -40,7 +40,7 @@ export class BrewDetailComponent implements OnInit, OnDestroy {
         return;
       }
 
-      this.subscriptions.push(this.profileDataService.recipeData.subscribe(brews => {
+      this.subscriptions.push(this.profileDataService.brewData.subscribe(brews => {
         let brew = brews.find(b => b.id === brewID);
         this.data = {...brew } || {};
 
