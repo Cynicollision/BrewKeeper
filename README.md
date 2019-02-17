@@ -39,7 +39,7 @@ node app
 ```
 Note: Use `tsc -w` while actively developing.
 ### Packaging
-Copy Angular build output to folder served by the Express app:
+Copy production Angular build output to folder served by the Express app:
 ```
 gulp publish
 ```
