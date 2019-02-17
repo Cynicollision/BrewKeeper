@@ -23,7 +23,7 @@ ng e2e
 ```
 Then start the development server:
 ```
-ng server
+ng serve
 ```
 ### Server (Node/Express)
 Install dependencies, compile TypeScript, run tests:
@@ -81,5 +81,5 @@ Client
 
 Server
 
-[![Dependency Status (server)](https://david-dm.org/Cynicollision/BrewKeeper/status.svg)](https://david-dm.org/Cynicollision/BrewKeeper?path=server)
+[![Dependency Status (server)](https://david-dm.org/Cynicollision/BrewKeeper/status.svg)](https://david-dm.org/Cynicollision/BrewKeeper)
 [![Dependency Status (server)](https://david-dm.org/Cynicollision/BrewKeeper/dev-status.svg?type=dev)](https://david-dm.org/Cynicollision/BrewKeeper?type=dev)
