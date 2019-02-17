@@ -1,0 +1,12 @@
+<div id="recipe-form">
+  <mat-form-field>
+    <input matInput placeholder="Recipe Name" [(ngModel)]="data.name">
+  </mat-form-field>
+  <mat-form-field>
+    <textarea matInput [(ngModel)]="data.description" placeholder="Recipe description"></textarea>
+  </mat-form-field>
+  <div>
+    <button mat-raised-button color="primary" (click)="save()">Save</button>
+    <button mat-button (click)="cancel()">Cancel</button>
+  </div>
+</div>

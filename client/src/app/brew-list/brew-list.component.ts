@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
 import { Brew } from './../../../../shared/models/Brew';
 import { ListItem } from './../core/list/list.component';
 import { ProfileDataService } from '../core/profile-data.service';
@@ -15,7 +14,6 @@ export class BrewListComponent implements OnInit, OnDestroy {
   public brews: ListItem[];
 
   constructor(
-    private snackBar: MatSnackBar,
     private router: Router,
     private profileDataService: ProfileDataService) { 
   }
@@ -39,6 +37,6 @@ export class BrewListComponent implements OnInit, OnDestroy {
   }
 
   viewBrew(brewID: string): void {
-    this.router.navigate([`/brew`, brewID]);
+    this.router.navigate(['/brew', brewID]);
   }
 }

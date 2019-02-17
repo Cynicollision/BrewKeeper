@@ -5,6 +5,8 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { BrewDetailComponent } from './brew-detail/brew-detail.component';
 import { BrewListComponent } from './brew-list/brew-list.component';
+import { RecipeDetailComponent } from './recipe-detail/recipe-detail.component';
+import { RecipeListComponent } from './recipe-list/recipe-list.component';
 
 const routes: Routes = [
   { path: '', 
@@ -28,6 +30,16 @@ const routes: Routes = [
   { 
     path: 'brew/:id', 
     component: BrewDetailComponent, 
+    canActivate: [ RouteGuardService ],
+  },
+  { 
+    path: 'recipes', 
+    component: RecipeListComponent, 
+    canActivate: [ RouteGuardService ],
+  },
+  { 
+    path: 'recipe/:id', 
+    component: RecipeDetailComponent, 
     canActivate: [ RouteGuardService ],
   },
 ];

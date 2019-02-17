@@ -1,0 +1,4 @@
+<button mat-fab class="create" routerLink="/recipe/0">
+  <mat-icon>add</mat-icon>
+</button>
+<app-list [collection]="recipes" (itemSelected)="viewRecipe($event)"></app-list>

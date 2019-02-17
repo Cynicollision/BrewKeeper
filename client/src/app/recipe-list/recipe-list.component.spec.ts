@@ -3,11 +3,11 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from "@angular/router/testing";
 import { MatCardModule, MatIconModule } from '@angular/material';
 import { ListComponent } from './../core/list/list.component';
-import { BrewListComponent } from './brew-list.component';
+import { RecipeListComponent } from './recipe-list.component';
 
-describe('BrewListComponent', () => {
-  let component: BrewListComponent;
-  let fixture: ComponentFixture<BrewListComponent>;
+describe('RecipeListComponent', () => {
+  let component: RecipeListComponent;
+  let fixture: ComponentFixture<RecipeListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -18,7 +18,7 @@ describe('BrewListComponent', () => {
         RouterTestingModule,
        ],
       declarations: [ 
-        BrewListComponent, 
+        RecipeListComponent, 
         ListComponent,
       ]
     })
@@ -26,7 +26,7 @@ describe('BrewListComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BrewListComponent);
+    fixture = TestBed.createComponent(RecipeListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
