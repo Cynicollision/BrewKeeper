@@ -1,6 +1,7 @@
-<div id="brew-dialog">
+<h2>Brew Details</h2>
+<div id="brew-form">
   <mat-form-field>
-    <input matInput placeholder="Brew Name" [(ngModel)]="brewName">
+    <input matInput placeholder="Brew Name" [(ngModel)]="data.name">
   </mat-form-field>
   <mat-form-field>
     <input matInput placeholder="Recipe">
@@ -21,6 +22,7 @@
     <mat-datepicker #chillDate></mat-datepicker>
   </mat-form-field>
   <div>
-    <button mat-raised-button color="primary" (click)="close()">Save</button>
+    <button mat-raised-button color="primary" (click)="save()">Save</button>
+    <button mat-button (click)="cancel()">Cancel</button>
   </div>
 </div>

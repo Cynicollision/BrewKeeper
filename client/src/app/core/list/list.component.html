@@ -1,7 +1,7 @@
-<mat-list>
-  <mat-list-item *ngFor="let item of collection" (click)="itemSelected(item.id);">
-      <h3 matLine>{{item.name}}</h3>
-      <p matLine>Brew date</p>
-      <mat-divider></mat-divider>
-  </mat-list-item>
-</mat-list>
+
+<div *ngFor="let item of collection" (click)="itemSelected(item.id);">
+  <mat-card class="list-item">
+    <h4>{{item.name}}</h4>
+    <p>2/17/2019</p> <!-- TODO: brew date-->
+  </mat-card>
+</div>
