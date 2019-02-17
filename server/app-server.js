@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const bodyParser = require("body-parser");
 const express = require("express");
-const jwksRsa = require("jwks-rsa");
 const jwt = require("express-jwt");
+const jwksRsa = require("jwks-rsa");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 const path = require("path");
@@ -61,6 +61,7 @@ class BrewKeeperAppServer {
                     success: false,
                     message: 'Not authorized to call API.',
                 });
+                //return res.sendFile(__dirname + './../public/index.html');
             }
         });
     }
@@ -75,6 +76,7 @@ class BrewKeeperAppServer {
                 console.log('Connected to Brew Keeper DB.');
                 resolve(true);
             });
+            resolve(true);
         });
     }
     configureRoutes(app) {
@@ -106,6 +108,9 @@ class BrewKeeperAppServer {
             let externalID = this.getReqExternalID(req);
             let brew = this.getReqBody(req);
             this.brewLogic.update(externalID, brew).then(response => res.send(response));
+        });
+        app.get('*', (req, res) => {
+            return res.sendFile(path.resolve(__dirname + './../public/index.html'));
         });
         app.get('*', (req, res) => {
             return res.sendFile(path.resolve(__dirname + './../public/index.html'));

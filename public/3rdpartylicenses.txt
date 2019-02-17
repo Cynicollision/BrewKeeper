@@ -358,21 +358,25 @@ MIT
 @angular/forms
 MIT
 
-@angular/material/list
+@angular/material/icon
 
-@angular/material/core
+@angular/material/card
 
-@angular/material/divider
+@angular/material/form-field
+
+@angular/material/datepicker
 
 @angular/material/dialog
 
 @angular/material/snack-bar
 
-@angular/material/form-field
-
 @angular/material/progress-spinner
 
-@angular/material/icon
+@angular/material/list
+
+@angular/material/core
+
+@angular/material/divider
 
 @angular/material/sidenav
 
