@@ -5,19 +5,23 @@ import * as jwt from'express-jwt';
 import * as logger from 'morgan';
 import * as mongoose from 'mongoose';
 import * as path from 'path';
-import { Brew } from '../shared/models/Brew';
-import { Profile } from '../shared/models/Profile';
 import { Config } from './config';
 import { IBrewLogic } from './logic/brew-logic';
 import { IProfileLogic } from './logic/profile-logic';
+import { IRecipeLogic } from './logic/recipe-logic';
+import { Brew } from '../shared/models/Brew';
+import { Profile } from '../shared/models/Profile';
+import { Recipe } from '../shared/models/Recipe';
 
 export class BrewKeeperAppServer {
     private brewLogic: IBrewLogic;
     private profileLogic: IProfileLogic;
+    private recipeLogic: IRecipeLogic;
 
-    constructor(brewLogic: IBrewLogic, profileLogic: IProfileLogic) {
+    constructor(brewLogic: IBrewLogic, profileLogic: IProfileLogic, recipeLogic: IRecipeLogic) {
         this.brewLogic = brewLogic;
         this.profileLogic = profileLogic;
+        this.recipeLogic = recipeLogic
     }
 
     start(app: express.Application) {
@@ -128,6 +132,23 @@ export class BrewKeeperAppServer {
             let externalID = this.getReqExternalID(req);
             let brew = this.getReqBody<Brew>(req);
             this.brewLogic.update(externalID, brew).then(response => res.send(response));
+        });
+
+        // recipe routes
+        app.get('/api/recipe', (req: express.Request, res: express.Response) => {
+            this.brewLogic.get(req.query.id).then(response => res.send(response));
+        });
+
+        app.post('/api/recipe', (req: express.Request, res: express.Response) => {
+            let externalID = this.getReqExternalID(req);
+            let recipe = this.getReqBody<Recipe>(req);
+            this.brewLogic.create(externalID, recipe).then(response => res.send(response));
+        });
+
+        app.post('/api/recipe/:id', (req: express.Request, res: express.Response) => {
+            let externalID = this.getReqExternalID(req);
+            let recipe = this.getReqBody<Recipe>(req);
+            this.brewLogic.update(externalID, recipe).then(response => res.send(response));
         });
 
         app.get('*', (req: express.Request, res: express.Response) => {
