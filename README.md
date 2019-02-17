@@ -1,10 +1,10 @@
 # Brew Keeper
 
+Journal for home brewers that helps track bottling and refrigeration dates. [View live on Heroku](http://brewkeeper.herokuapp.com/).
+
 [![Build Status](https://travis-ci.org/Cynicollision/BrewKeeper.svg?branch=master)](https://travis-ci.org/Cynicollision/BrewKeeper)
+![stability-wip](https://img.shields.io/badge/stability-work_in_progress-lightgrey.svg)
 
-Journal for home brewers that helps track bottling and refrigeration dates.
-
-**Work in progress!**
 
 ## Build/Develop
 ### Prerequisites
