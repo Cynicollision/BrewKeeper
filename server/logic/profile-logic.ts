@@ -6,6 +6,7 @@ import { OperationResponse } from '../../shared/contracts/OperationResponse';
 import { Profile } from '../../shared/models/Profile';
 import { ProfileData } from '../../shared/models/ProfileData';
 import { IBrewData } from 'data/brew-data';
+import { IRecipeData } from 'data/recipe-data';
 
 export interface IProfileLogic {
     login(externalID: string): Promise<OperationResponse<Profile>>;
@@ -16,10 +17,12 @@ export interface IProfileLogic {
 export class ProfileLogic implements IProfileLogic {
     private brewData: IBrewData;
     private profileData: IProfileData;
+    private recipeData: IRecipeData;
 
-    constructor(brewData: IBrewData, profileData: IProfileData) {
+    constructor(brewData: IBrewData, profileData: IProfileData, recipeData: IRecipeData) {
         this.brewData = brewData;
         this.profileData = profileData;
+        this.recipeData = recipeData;
     }
 
     login(externalID: string): Promise<OperationResponse<Profile>> {
@@ -73,15 +76,17 @@ export class ProfileLogic implements IProfileLogic {
             if (!isOwner) {
                 return Promise.resolve(ResponseUtil.fail<ProfileData>('Couldn\'t retrieve profile data: Not logged in as claimed profile owner.'));
             }
-            // TODO: also get recipe data
-            return this.brewData.getByOwnerID(profileID).then(response => {
-                return {
-                    success: true,
-                    data: {
-                        brews: response.data,
-                        recipes: [],
-                    },
-                };
+
+            return this.recipeData.getByOwnerID(profileID).then(recipeResponse => {
+                return this.brewData.getByOwnerID(profileID).then(brewResponse => {
+                    return {
+                        success: true,
+                        data: {
+                            brews: brewResponse.data,
+                            recipes: recipeResponse.data,
+                        },
+                    };
+               });
             });
         });
     }

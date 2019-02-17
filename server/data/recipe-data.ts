@@ -20,7 +20,7 @@ export class RecipeData extends DataController<Recipe> {
             id: document.get('id'),
             ownerProfileID: document.get('ownerProfileID'),
             name: document.get('name'),
-            description: document.get('notes'),
+            description: document.get('description'),
         };
     }
 }

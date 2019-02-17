@@ -13,7 +13,7 @@ const recipeData = new RecipeData();
 
 const appServer = new BrewKeeperAppServer(
     new BrewLogic(brewData, profileData),
-    new ProfileLogic(brewData, profileData),
+    new ProfileLogic(brewData, profileData, recipeData),
     new RecipeLogic(recipeData, profileData),
 );
 

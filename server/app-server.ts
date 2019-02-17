@@ -136,19 +136,19 @@ export class BrewKeeperAppServer {
 
         // recipe routes
         app.get('/api/recipe', (req: express.Request, res: express.Response) => {
-            this.brewLogic.get(req.query.id).then(response => res.send(response));
+            this.recipeLogic.get(req.query.id).then(response => res.send(response));
         });
 
         app.post('/api/recipe', (req: express.Request, res: express.Response) => {
             let externalID = this.getReqExternalID(req);
             let recipe = this.getReqBody<Recipe>(req);
-            this.brewLogic.create(externalID, recipe).then(response => res.send(response));
+            this.recipeLogic.create(externalID, recipe).then(response => res.send(response));
         });
 
         app.post('/api/recipe/:id', (req: express.Request, res: express.Response) => {
             let externalID = this.getReqExternalID(req);
             let recipe = this.getReqBody<Recipe>(req);
-            this.brewLogic.update(externalID, recipe).then(response => res.send(response));
+            this.recipeLogic.update(externalID, recipe).then(response => res.send(response));
         });
 
         app.get('*', (req: express.Request, res: express.Response) => {
