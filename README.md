@@ -1,10 +1,10 @@
 # Brew Keeper
 
+Journal for home brewers that helps track bottling and refrigeration dates. [View live on Heroku](http://brewkeeper.herokuapp.com/).
+
 [![Build Status](https://travis-ci.org/Cynicollision/BrewKeeper.svg?branch=master)](https://travis-ci.org/Cynicollision/BrewKeeper)
+![stability-wip](https://img.shields.io/badge/stability-work_in_progress-lightgrey.svg)
 
-Journal for home brewers that helps track bottling and refrigeration dates.
-
-**Work in progress!**
 
 ## Build/Develop
 ### Prerequisites
@@ -39,7 +39,7 @@ node app
 ```
 Note: Use `tsc -w` while actively developing.
 ### Packaging
-Copy Angular build output to folder served by the Express app:
+Copy production Angular build output to folder served by the Express app:
 ```
 gulp publish
 ```
