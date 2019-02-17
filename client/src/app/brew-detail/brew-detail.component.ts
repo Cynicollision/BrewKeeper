@@ -34,7 +34,7 @@ export class BrewDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscriptions.push(this.route.params.subscribe(params => {
       let brewID = params['id'];
-      this._isNewBrew = (brewID || '').length === 0;
+      this._isNewBrew = (brewID || '').length < 5;
 
       if (this._isNewBrew) {
         return;
@@ -42,7 +42,7 @@ export class BrewDetailComponent implements OnInit, OnDestroy {
 
       this.subscriptions.push(this.profileDataService.brewData.subscribe(brews => {
         let brew = brews.find(b => b.id === brewID);
-        this.data = brew || {};
+        this.data = {...brew } || {};
 
         if (!brew) {
           this.handleError(`Couldn't find data for brew ID: ${brewID}`);
@@ -66,6 +66,7 @@ export class BrewDetailComponent implements OnInit, OnDestroy {
         this.handleError(response.message);
         return;
       }
+      this.profileDataService.updateBrew(response.data);
       this.router.navigate(['/brews']);
     });
   }
