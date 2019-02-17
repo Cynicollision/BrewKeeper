@@ -9,9 +9,10 @@ const mongoose = require("mongoose");
 const path = require("path");
 const config_1 = require("./config");
 class BrewKeeperAppServer {
-    constructor(brewLogic, profileLogic) {
+    constructor(brewLogic, profileLogic, recipeLogic) {
         this.brewLogic = brewLogic;
         this.profileLogic = profileLogic;
+        this.recipeLogic = recipeLogic;
     }
     start(app) {
         this.configureMiddleware(app);
@@ -108,6 +109,20 @@ class BrewKeeperAppServer {
             let externalID = this.getReqExternalID(req);
             let brew = this.getReqBody(req);
             this.brewLogic.update(externalID, brew).then(response => res.send(response));
+        });
+        // recipe routes
+        app.get('/api/recipe', (req, res) => {
+            this.recipeLogic.get(req.query.id).then(response => res.send(response));
+        });
+        app.post('/api/recipe', (req, res) => {
+            let externalID = this.getReqExternalID(req);
+            let recipe = this.getReqBody(req);
+            this.recipeLogic.create(externalID, recipe).then(response => res.send(response));
+        });
+        app.post('/api/recipe/:id', (req, res) => {
+            let externalID = this.getReqExternalID(req);
+            let recipe = this.getReqBody(req);
+            this.recipeLogic.update(externalID, recipe).then(response => res.send(response));
         });
         app.get('*', (req, res) => {
             return res.sendFile(path.resolve(__dirname + './../public/index.html'));

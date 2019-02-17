@@ -4,9 +4,10 @@ const object_type_1 = require("../enum/object-type");
 const object_id_1 = require("../util/object-id");
 const response_1 = require("../util/response");
 class ProfileLogic {
-    constructor(brewData, profileData) {
+    constructor(brewData, profileData, recipeData) {
         this.brewData = brewData;
         this.profileData = profileData;
+        this.recipeData = recipeData;
     }
     login(externalID) {
         return this.profileData.getByExternalID(externalID).then(response => {
@@ -47,15 +48,16 @@ class ProfileLogic {
             if (!isOwner) {
                 return Promise.resolve(response_1.ResponseUtil.fail('Couldn\'t retrieve profile data: Not logged in as claimed profile owner.'));
             }
-            // TODO: also get recipe data
-            return this.brewData.getByOwnerID(profileID).then(response => {
-                return {
-                    success: true,
-                    data: {
-                        brews: response.data,
-                        recipes: [],
-                    },
-                };
+            return this.recipeData.getByOwnerID(profileID).then(recipeResponse => {
+                return this.brewData.getByOwnerID(profileID).then(brewResponse => {
+                    return {
+                        success: true,
+                        data: {
+                            brews: brewResponse.data,
+                            recipes: recipeResponse.data,
+                        },
+                    };
+                });
             });
         });
     }
