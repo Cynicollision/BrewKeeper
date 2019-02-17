@@ -1,4 +1,4 @@
-<button mat-fab class="add-brew" routerLink="/brew/0">
-    <mat-icon>create</mat-icon>
+<button mat-fab class="create" routerLink="/brew/0">
+    <mat-icon>add</mat-icon>
 </button>
 <app-list [collection]="brews" (itemSelected)="viewBrew($event)"></app-list>

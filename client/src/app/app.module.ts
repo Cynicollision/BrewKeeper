@@ -33,6 +33,8 @@ import { CreateProfileComponent } from './create-profile/create-profile.componen
 import { LoginComponent } from './login/login.component';
 import { WaitSpinnerComponent } from './core/wait-spinner/wait-spinner.component';
 import { BrewDetailComponent } from './brew-detail/brew-detail.component';
+import { RecipeListComponent } from './recipe-list/recipe-list.component';
+import { RecipeDetailComponent } from './recipe-detail/recipe-detail.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +46,8 @@ import { BrewDetailComponent } from './brew-detail/brew-detail.component';
     LoginComponent,
     WaitSpinnerComponent,
     BrewDetailComponent,
+    RecipeListComponent,
+    RecipeDetailComponent,
   ],
   entryComponents: [
     CreateProfileComponent,

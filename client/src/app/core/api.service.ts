@@ -6,6 +6,7 @@ import { OperationResponse } from '../../../../shared/contracts/OperationRespons
 import { Brew } from '../../../../shared/models/Brew';
 import { Profile } from '../../../../shared/models/Profile';
 import { ProfileData } from '../../../../shared/models/ProfileData';
+import { Recipe } from '../../../../shared/models/Recipe';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,16 @@ export class APIService {
   updateBrew(brew: Brew): Promise<OperationResponse<Brew>> {
     brew.ownerProfileID = this.authService.profileID;
     return this.makePOST(`${environment.apiBaseURI}/brew/${brew.id}`, brew);
+  }
+
+  createRecipe(recipe: Recipe): Promise<OperationResponse<Recipe>> {
+    recipe.ownerProfileID = this.authService.profileID;
+    return this.makePOST(`${environment.apiBaseURI}/recipe`, recipe);
+  }
+
+  updateRecipe(recipe: Recipe): Promise<OperationResponse<Recipe>> {
+    recipe.ownerProfileID = this.authService.profileID;
+    return this.makePOST(`${environment.apiBaseURI}/recipe/${recipe.id}`, recipe);
   }
 
   loginProfile(): Promise<OperationResponse<Profile>> {

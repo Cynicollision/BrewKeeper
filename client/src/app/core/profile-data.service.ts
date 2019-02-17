@@ -45,11 +45,28 @@ export class ProfileDataService {
       newCollection.push(updatedBrew);
     }
 
-    this._brewDataSource.next(newCollection);
+    this.updateBrews(newCollection);
   }
 
   updateBrews(newCollection: Brew[]): void {
     this._brewDataSource.next(newCollection);
+  }
+
+  updateRecipe(updatedRecipe: Recipe): void {
+    let updated = false;
+    let newCollection: Recipe[] = this._recipeDataSource.value.map(recipe => {
+      if (recipe.id === updatedRecipe.id) {
+        updated = true;
+        return updatedRecipe;
+      }
+      return recipe;
+    });
+    
+    if (!updated) {
+      newCollection.push(updatedRecipe);
+    }
+
+    this.updateRecipes(newCollection);
   }
 
   updateRecipes(newCollection: Recipe[]): void {
