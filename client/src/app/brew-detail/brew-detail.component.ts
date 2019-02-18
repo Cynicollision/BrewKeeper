@@ -61,7 +61,7 @@ export class BrewDetailComponent implements OnInit {
     }));
 
     subs.push(this.profileDataService.recipeData.subscribe(recipes => {
-      this.recipes = recipes;
+      this.recipes = recipes.sort((a, b) => b.name > a.name ? -1 : 1);
     }));
 
     subs.forEach(sub => sub.unsubscribe());
