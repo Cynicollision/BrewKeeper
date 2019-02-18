@@ -12,35 +12,42 @@ const routes: Routes = [
   { path: '', 
     component: HomeComponent, 
     canActivate: [ RouteGuardService ],
+    data: { title: 'Brew Keeper' },
   },
   { 
     path: 'login', 
     component: LoginComponent,
+    data: { title: 'Brew Keeper' },
   },
   { 
     path: 'callback', 
     component: LoginComponent,
     canActivate: [ RouteGuardService ],
+    data: { title: 'Brew Keeper' },
   },
   { 
     path: 'brews', 
     component: BrewListComponent, 
     canActivate: [ RouteGuardService ],
+    data: { title: 'My brews' },
   },
   { 
     path: 'brew/:id', 
     component: BrewDetailComponent, 
     canActivate: [ RouteGuardService ],
+    data: { title: 'Brew details' },
   },
   { 
     path: 'recipes', 
     component: RecipeListComponent, 
     canActivate: [ RouteGuardService ],
+    data: { title: 'My recipes' },
   },
   { 
     path: 'recipe/:id', 
     component: RecipeDetailComponent, 
     canActivate: [ RouteGuardService ],
+    data: { title: 'Recipe details' },
   },
 ];
 

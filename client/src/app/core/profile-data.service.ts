@@ -5,6 +5,7 @@ import { Recipe } from '../../../../shared/models/Recipe';
 import { ProfileData } from '../../../../shared/models/ProfileData';
 import { APIService } from './api.service';
 import { AuthService } from './auth.service';
+import { OperationResponse } from '../../../../shared/contracts/OperationResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -31,46 +32,84 @@ export class ProfileDataService {
     this._recipeDataSource.next(data.recipes);
   }
 
-  updateBrew(updatedBrew: Brew): void {
-    let updated = false;
-    let newCollection: Brew[] = this._brewDataSource.value.map(brew => {
-      if (brew.id === updatedBrew.id) {
-        updated = true;
-        return updatedBrew;
+  createBrew(newBrew: Brew): Promise<OperationResponse<Brew>> {
+    return this.apiService.createBrew(newBrew).then(response => {
+      if (response.success) {
+        let newCollection = this._brewDataSource.value.concat(newBrew);
+        this._brewDataSource.next(newCollection);
       }
-      return brew;
+      return response;
     });
-    
-    if (!updated) {
-      newCollection.push(updatedBrew);
-    }
-
-    this.updateBrews(newCollection);
   }
 
-  updateBrews(newCollection: Brew[]): void {
-    this._brewDataSource.next(newCollection);
-  }
+  updateBrew(updatedBrew: Brew): Promise<OperationResponse<Brew>> {
+    return this.apiService.updateBrew(updatedBrew).then(response => {
 
-  updateRecipe(updatedRecipe: Recipe): void {
-    let updated = false;
-    let newCollection: Recipe[] = this._recipeDataSource.value.map(recipe => {
-      if (recipe.id === updatedRecipe.id) {
-        updated = true;
-        return updatedRecipe;
+      if (response.success) {
+        let newCollection: Brew[] = this._brewDataSource.value
+          .map(brew => brew.id === updatedBrew.id ? updatedBrew : brew);
+          
+        this._brewDataSource.next(newCollection);
       }
-      return recipe;
-    });
-    
-    if (!updated) {
-      newCollection.push(updatedRecipe);
-    }
 
-    this.updateRecipes(newCollection);
+      return response;
+    });
   }
 
-  updateRecipes(newCollection: Recipe[]): void {
-    this._recipeDataSource.next(newCollection);
+  deleteBrew(brewID: string): Promise<OperationResponse<Brew>> {
+    return this.apiService.deleteBrew(brewID).then(response => {
+      if (response.success) {
+        let newCollection: Brew[] = [];
+        this._brewDataSource.value.forEach(brew => {
+          if (brew.id !== brewID) {
+            newCollection.push(brew);
+          }
+        });
+    
+        this._brewDataSource.next(newCollection);
+      }
+      return response;
+    });
+  }
+
+  createRecipe(newRecipe: Recipe): Promise<OperationResponse<Recipe>> {
+    return this.apiService.createRecipe(newRecipe).then(response => {
+      if (response.success) {
+        let newCollection = this._recipeDataSource.value.concat(newRecipe);
+        this._recipeDataSource.next(newCollection);
+      }
+      return response;
+    });
+  }
+
+  updateRecipe(updatedRecipe: Recipe): Promise<OperationResponse<Recipe>> {
+    return this.apiService.updateRecipe(updatedRecipe).then(response => {
+
+      if (response.success) {
+        let newCollection: Recipe[] = this._recipeDataSource.value
+          .map(recipe => recipe.id === updatedRecipe.id ? updatedRecipe : recipe);
+          
+        this._recipeDataSource.next(newCollection);
+      }
+
+      return response;
+    });
+  }
+
+  deleteRecipe(recipeID: string): Promise<OperationResponse<Recipe>> {
+    return this.apiService.deleteRecipe(recipeID).then(response => {
+      if (response.success) {
+        let newCollection: Recipe[] = [];
+        this._recipeDataSource.value.forEach(recipe => {
+          if (recipe.id !== recipeID) {
+            newCollection.push(recipe);
+          }
+        });
+    
+        this._recipeDataSource.next(newCollection);
+      }
+      return response;
+    });
   }
 
   loadProfileData(): Promise<boolean> {

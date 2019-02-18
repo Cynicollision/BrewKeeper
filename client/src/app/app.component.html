@@ -6,10 +6,10 @@
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
       <a mat-list-item routerLink="">Home</a>
-      <a mat-list-item routerLink="brews" *ngIf="authService.isAuthenticated" >Brews</a>
-      <a mat-list-item routerLink="recipes" *ngIf="authService.isAuthenticated" >Recipes</a>
-      <mat-divider *ngIf="authService.isAuthenticated"></mat-divider>
-      <a mat-list-item (click)="authService.logout()" *ngIf="authService.isAuthenticated">Log Out</a>
+      <a mat-list-item routerLink="brews" *ngIf="isAuthenticated" >Brews</a>
+      <a mat-list-item routerLink="recipes" *ngIf="isAuthenticated" >Recipes</a>
+      <mat-divider *ngIf="isAuthenticated"></mat-divider>
+      <a mat-list-item (click)="logout()" *ngIf="isAuthenticated">Log Out</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -22,7 +22,7 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span id="title">Brew Keeper</span>
+      <span id="title">{{currentTitle}}</span>
     </mat-toolbar>
     <div id="outlet-container">
       <router-outlet></router-outlet>
