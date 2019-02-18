@@ -44,8 +44,8 @@ class ProfileLogic {
         if (!externalID || !profileID) {
             return Promise.resolve(response_1.ResponseUtil.fail('Couldn\'t retrieve profile data: External ID and Profile ID are required.'));
         }
-        return this.checkUserOwnsProfile(externalID, profileID).then(isOwner => {
-            if (!isOwner) {
+        return this.profileData.getByExternalID(externalID).then(response => {
+            if (!response || !response.success || response.data.id !== profileID) {
                 return Promise.resolve(response_1.ResponseUtil.fail('Couldn\'t retrieve profile data: Not logged in as claimed profile owner.'));
             }
             return this.recipeData.getByOwnerID(profileID).then(recipeResponse => {
@@ -59,11 +59,6 @@ class ProfileLogic {
                     };
                 });
             });
-        });
-    }
-    checkUserOwnsProfile(externalID, profileID) {
-        return this.profileData.getByExternalID(externalID).then(response => {
-            return response && response.success && response.data.id === profileID;
         });
     }
 }

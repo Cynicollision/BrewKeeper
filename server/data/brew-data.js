@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose = require("mongoose");
 const controller_base_1 = require("./controller-base");
-class BrewData extends controller_base_1.DataController {
+class BrewData extends controller_base_1.ResourceController {
     constructor() {
         super(...arguments);
         this.modelName = 'Brew';

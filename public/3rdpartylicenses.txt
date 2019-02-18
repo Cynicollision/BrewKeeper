@@ -362,7 +362,11 @@ MIT
 
 @angular/material/card
 
+@angular/material/core
+
 @angular/material/form-field
+
+@angular/material/select
 
 @angular/material/datepicker
 
@@ -373,8 +377,6 @@ MIT
 @angular/material/progress-spinner
 
 @angular/material/list
-
-@angular/material/core
 
 @angular/material/divider
 

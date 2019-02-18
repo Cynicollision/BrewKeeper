@@ -36,6 +36,7 @@ class BrewKeeperAppServer {
             app.use((req, res, next) => {
                 res.header('Access-Control-Allow-Origin', '*');
                 res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+                res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
                 next();
             });
         }
@@ -110,6 +111,11 @@ class BrewKeeperAppServer {
             let brew = this.getReqBody(req);
             this.brewLogic.update(externalID, brew).then(response => res.send(response));
         });
+        app.delete('/api/brew/:id', (req, res) => {
+            let externalID = this.getReqExternalID(req);
+            let brewID = this.getReqParam(req, 'id');
+            this.brewLogic.delete(externalID, brewID).then(response => res.send(response));
+        });
         // recipe routes
         app.get('/api/recipe', (req, res) => {
             this.recipeLogic.get(req.query.id).then(response => res.send(response));
@@ -124,6 +130,11 @@ class BrewKeeperAppServer {
             let recipe = this.getReqBody(req);
             this.recipeLogic.update(externalID, recipe).then(response => res.send(response));
         });
+        app.delete('/api/recipe/:id', (req, res) => {
+            let externalID = this.getReqExternalID(req);
+            let recipe = this.getReqParam(req, 'id');
+            this.recipeLogic.delete(externalID, recipe).then(response => res.send(response));
+        });
         app.get('*', (req, res) => {
             return res.sendFile(path.resolve(__dirname + './../public/index.html'));
         });
@@ -133,6 +144,9 @@ class BrewKeeperAppServer {
     }
     getReqExternalID(req) {
         return (req.user || {}).sub;
+    }
+    getReqParam(req, name) {
+        return (req.params || {})[name];
     }
     getReqBody(req) {
         return (req.body || {});
