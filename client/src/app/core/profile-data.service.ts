@@ -35,7 +35,7 @@ export class ProfileDataService {
   createBrew(newBrew: Brew): Promise<OperationResponse<Brew>> {
     return this.apiService.createBrew(newBrew).then(response => {
       if (response.success) {
-        let newCollection = this._brewDataSource.value.concat(newBrew);
+        let newCollection = this._brewDataSource.value.concat(response.data);
         this._brewDataSource.next(newCollection);
       }
       return response;
@@ -75,7 +75,7 @@ export class ProfileDataService {
   createRecipe(newRecipe: Recipe): Promise<OperationResponse<Recipe>> {
     return this.apiService.createRecipe(newRecipe).then(response => {
       if (response.success) {
-        let newCollection = this._recipeDataSource.value.concat(newRecipe);
+        let newCollection = this._recipeDataSource.value.concat(response.data);
         this._recipeDataSource.next(newCollection);
       }
       return response;
