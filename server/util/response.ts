@@ -1,7 +1,7 @@
 import { IOperationResponse, OperationResponse } from '../../shared/contracts/OperationResponse';
 
 export class ResponseUtil {
-    static succeed<T>(data: T): OperationResponse<T> {
+    static succeed<T>(data?: T): OperationResponse<T> {
         return {
             success: true,
             message: null,

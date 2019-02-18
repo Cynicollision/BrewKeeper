@@ -1,11 +1,11 @@
 import * as mongoose from 'mongoose';
-import { DataController, IResource } from './controller-base';
+import { ResourceController, IResourceController } from './controller-base';
 import { Recipe } from '../../shared/models/Recipe';
 
-export interface IRecipeData extends IResource<Recipe> {
+export interface IRecipeData extends IResourceController<Recipe> {
 }
 
-export class RecipeData extends DataController<Recipe> {
+export class RecipeData extends ResourceController<Recipe> {
     modelName = 'Recipe';
     
     model: mongoose.Model<mongoose.Document> = mongoose.model('Recipe', new mongoose.Schema({

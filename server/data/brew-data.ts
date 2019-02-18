@@ -1,11 +1,11 @@
 import * as mongoose from 'mongoose';
-import { DataController, IResource } from './controller-base';
 import { Brew } from '../../shared/models/Brew';
+import { ResourceController, IResourceController } from './controller-base';
 
-export interface IBrewData extends IResource<Brew> {
+export interface IBrewData extends IResourceController<Brew> {
 }
 
-export class BrewData extends DataController<Brew> implements IBrewData {
+export class BrewData extends ResourceController<Brew> implements IBrewData {
     modelName = 'Brew';
     
     model: mongoose.Model<mongoose.Document> = mongoose.model('Brew', new mongoose.Schema({
