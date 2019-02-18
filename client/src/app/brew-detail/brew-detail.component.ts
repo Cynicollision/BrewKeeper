@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OperationResponse } from '../../../../shared/contracts/OperationResponse';
 import { Brew } from '../../../../shared/models/Brew';
+import { Recipe } from '../../../../shared/models/Recipe';
 import { ConfirmComponent } from '../core/confirm/confirm.component';
 import { DialogResult, DialogService } from '../core/dialog.service';
 import { ProfileDataService } from '../core/profile-data.service';
@@ -16,6 +17,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class BrewDetailComponent implements OnInit {
   data: Brew = {};
+  recipes: Recipe[] = [{id:'1', name:'foo'}];
 
   constructor(
     private route: ActivatedRoute,
@@ -56,6 +58,10 @@ export class BrewDetailComponent implements OnInit {
         this.data.bottleDate = this.parseDate(this.data.bottleDate);
         this.data.chillDate = this.parseDate(this.data.chillDate);
       }));
+    }));
+
+    subs.push(this.profileDataService.recipeData.subscribe(recipes => {
+      this.recipes = recipes;
     }));
 
     subs.forEach(sub => sub.unsubscribe());

@@ -3,7 +3,9 @@
     <input matInput placeholder="Brew Name" [(ngModel)]="data.name">
   </mat-form-field>
   <mat-form-field>
-    <input matInput placeholder="Recipe" [(ngModel)]="data.recipeID">
+    <mat-select placeholder="Recipe" [(ngModel)]="data.recipe">
+      <mat-option *ngFor="let r of recipes" [value]="r.id">{{r.name}}</mat-option>
+    </mat-select>
   </mat-form-field>
   <mat-form-field>
     <input matInput [matDatepicker]="brewDate" [(ngModel)]="data.brewDate" placeholder="Brew date">
