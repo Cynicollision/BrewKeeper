@@ -2,6 +2,6 @@
 <div *ngFor="let item of collection" (click)="itemSelected(item.id);">
   <mat-card class="list-item">
     <h4>{{item.name}}</h4>
-    <p>2/17/2019</p> <!-- TODO: brew date-->
+    <p *ngIf="item.description && item.description.length">{{item.description}}</p>
   </mat-card>
 </div>

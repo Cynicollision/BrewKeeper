@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { APIService } from '../core/api.service';
-import { DialogMode, DialogService } from '../core/dialog.service';
+import { DialogService } from '../core/dialog.service';
 import { CreateProfileComponent } from './../create-profile/create-profile.component';
 
 @Component({
@@ -25,12 +25,13 @@ export class LoginComponent implements OnInit {
         return;
       }
 
-      let config = { mode: DialogMode.edit, data: { name: this.authService.userName } };
+      let config = { data: { name: this.authService.userName } };
       return this.dialogService.popDialog(CreateProfileComponent, config).then(result => {
         if (result.success) {
           this.router.navigate['/'];
         }
         else if (result.cancelled) {
+          // TODO
           console.log('Registration was cancelled.');
         }
       });

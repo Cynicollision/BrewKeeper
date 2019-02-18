@@ -3,7 +3,9 @@
     <input matInput placeholder="Brew Name" [(ngModel)]="data.name">
   </mat-form-field>
   <mat-form-field>
-    <input matInput placeholder="Recipe" [(ngModel)]="data.recipeID">
+    <mat-select placeholder="Recipe" [(ngModel)]="data.recipe">
+      <mat-option *ngFor="let r of recipes" [value]="r.id">{{r.name}}</mat-option>
+    </mat-select>
   </mat-form-field>
   <mat-form-field>
     <input matInput [matDatepicker]="brewDate" [(ngModel)]="data.brewDate" placeholder="Brew date">
@@ -23,8 +25,13 @@
   <mat-form-field>
     <textarea matInput [(ngModel)]="data.notes" placeholder="Brew notes"></textarea>
   </mat-form-field>
-  <div>
-    <button mat-raised-button color="primary" (click)="save()">Save</button>
-    <button mat-button (click)="cancel()">Cancel</button>
+  <div class="controls">
+    <div class="control-row">
+      <button mat-flat-button color="primary" (click)="save()">Save</button>
+      <button mat-button (click)="cancel()">Cancel</button>
+    </div>
+    <div class="control-row" *ngIf="!isNew">
+      <button mat-button color="warn" (click)="delete()">Delete</button>
+    </div>
   </div>
 </div>

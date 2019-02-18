@@ -1,0 +1,43 @@
+import { OperationResponse } from './../../shared/contracts/OperationResponse';
+import { ResourceBase } from './../../shared/models/ResourceBase';
+import { IResourceController } from './../data/controller-base';
+
+export interface TestData extends ResourceBase {
+}
+
+export class MockDataController implements IResourceController<TestData> {
+    private collection = [];
+
+    setCollection(recipes: TestData[]): void {
+        this.collection = recipes;
+    }
+
+    get(id: string): Promise<OperationResponse<TestData>> {
+        return new Promise((resolve, reject) => {
+            let testRecipe = { id: id, name: 'Test Recipe' };
+            return resolve({ success: true, data: testRecipe });
+        });
+    }
+
+    getByOwnerID(ownerProfileID: string): Promise<OperationResponse<TestData[]>> {
+        return new Promise((resolve, reject) => {
+            return resolve({ success: true, data: this.collection });
+        });
+    }
+
+    create(data: TestData): Promise<OperationResponse<TestData>> {
+        return new Promise((resolve, reject) => {
+            return resolve({ success: true, data: data });
+        });
+    }
+
+    update(id: string, updatedBrew: TestData): Promise<OperationResponse<TestData>> {
+        return new Promise((resolve, reject) => {
+            return resolve({ success: true, data: updatedBrew });
+        });
+    }
+
+    delete(id: string): Promise<OperationResponse<TestData>> {
+        return Promise.resolve({ success: true });
+    }
+}

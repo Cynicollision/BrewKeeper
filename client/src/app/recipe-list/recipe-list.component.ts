@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
 import { Recipe } from './../../../../shared/models/Recipe';
 import { ListItem } from './../core/list/list.component';
+import { NavigationService, Navigable } from '../core/navigation.service';
 import { ProfileDataService } from '../core/profile-data.service';
 
 @Component({
@@ -15,7 +14,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
   public recipes: ListItem[];
 
   constructor(
-    private router: Router,
+    private navigationService: NavigationService,
     private profileDataService: ProfileDataService) { 
   }
 
@@ -38,6 +37,6 @@ export class RecipeListComponent implements OnInit, OnDestroy {
   }
 
   viewRecipe(recipeID: string): void {
-    this.router.navigate(['/recipe', recipeID]);
+    this.navigationService.goToResource(Navigable.RecipeDetail, recipeID);
   }
 }

@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export interface ListItem {
   id: string;
   name: string;
-  data?: any;
+  description?: string;
 }
 
 @Component({

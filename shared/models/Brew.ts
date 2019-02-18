@@ -1,7 +1,5 @@
-export interface Brew {
-    id?: string;
-    ownerProfileID?: string;
-    name?: string;
+import { ResourceBase } from './ResourceBase';
+export interface Brew extends ResourceBase {
     recipeID?:string;
     brewDate?: string;
     bottleDate?: string;

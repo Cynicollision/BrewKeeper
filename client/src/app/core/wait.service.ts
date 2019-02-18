@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DialogService, DialogMode } from './dialog.service';
+import { DialogService } from './dialog.service';
 import { WaitSpinnerComponent } from './wait-spinner/wait-spinner.component';
 
 @Injectable({
@@ -27,7 +27,7 @@ export class WaitService {
 
       setTimeout(() => {
         if (!waitingOnComplete) {
-          wrappingPromise = this.dialogService.popDialog(WaitSpinnerComponent, { mode: DialogMode.view, preventClose: true });
+          wrappingPromise = this.dialogService.popDialog(WaitSpinnerComponent, { preventClose: true });
         }
       }, this.WaitThreshold);
     });

@@ -3,6 +3,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from './core/auth.service';
+import { NavigationService } from './core/navigation.service';
 
 @Component({
   selector: 'app-root',
@@ -10,15 +11,26 @@ import { AuthService } from './core/auth.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'BrewKeeperClient';
+
+  constructor(private breakpointObserver: BreakpointObserver,
+    public authService: AuthService,
+    private navigationService: NavigationService) {
+  }
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches)
     );
 
-  constructor(private breakpointObserver: BreakpointObserver,
-    public authService: AuthService) {
-    this.title = 'BrewKeeperClient'
+  get isAuthenticated(): boolean {
+    return this.authService.isAuthenticated;
+  }
+
+  get currentTitle(): string {
+    return this.navigationService.currentTitle;
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 }

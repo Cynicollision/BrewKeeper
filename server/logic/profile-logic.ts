@@ -1,12 +1,12 @@
+import { OperationResponse } from '../../shared/contracts/OperationResponse';
+import { Profile } from '../../shared/models/Profile';
+import { ProfileData } from '../../shared/models/ProfileData';
+import { IBrewData } from '../data/brew-data';
+import { IRecipeData } from '../data/recipe-data';
 import { IProfileData } from '../data/profile-data';
 import { ObjectType } from '../enum/object-type';
 import { ID } from '../util/object-id';
 import { ResponseUtil } from '../util/response';
-import { OperationResponse } from '../../shared/contracts/OperationResponse';
-import { Profile } from '../../shared/models/Profile';
-import { ProfileData } from '../../shared/models/ProfileData';
-import { IBrewData } from 'data/brew-data';
-import { IRecipeData } from 'data/recipe-data';
 
 export interface IProfileLogic {
     login(externalID: string): Promise<OperationResponse<Profile>>;
@@ -15,14 +15,10 @@ export interface IProfileLogic {
 }
 
 export class ProfileLogic implements IProfileLogic {
-    private brewData: IBrewData;
-    private profileData: IProfileData;
-    private recipeData: IRecipeData;
 
-    constructor(brewData: IBrewData, profileData: IProfileData, recipeData: IRecipeData) {
-        this.brewData = brewData;
-        this.profileData = profileData;
-        this.recipeData = recipeData;
+    constructor(private brewData: IBrewData, 
+        private profileData: IProfileData, 
+        private recipeData: IRecipeData) {
     }
 
     login(externalID: string): Promise<OperationResponse<Profile>> {
@@ -72,8 +68,8 @@ export class ProfileLogic implements IProfileLogic {
             return Promise.resolve(ResponseUtil.fail<ProfileData>('Couldn\'t retrieve profile data: External ID and Profile ID are required.'));
         }
 
-        return this.checkUserOwnsProfile(externalID, profileID).then(isOwner => {
-            if (!isOwner) {
+        return this.profileData.getByExternalID(externalID).then(response => {
+            if (!response || !response.success || response.data.id !== profileID) {
                 return Promise.resolve(ResponseUtil.fail<ProfileData>('Couldn\'t retrieve profile data: Not logged in as claimed profile owner.'));
             }
 
@@ -90,10 +86,5 @@ export class ProfileLogic implements IProfileLogic {
             });
         });
     }
-
-    private checkUserOwnsProfile(externalID: string, profileID: string): Promise<boolean> {
-        return this.profileData.getByExternalID(externalID).then(response => {
-            return response && response.success && response.data.id === profileID;
-        });
-    }
+ 
 }

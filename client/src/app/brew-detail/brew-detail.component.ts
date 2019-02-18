@@ -1,27 +1,29 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
-import { APIService } from '../core/api.service';
-import { ProfileDataService } from '../core/profile-data.service';
+import { Component, OnInit } from '@angular/core';
 import { OperationResponse } from '../../../../shared/contracts/OperationResponse';
 import { Brew } from '../../../../shared/models/Brew';
+import { Recipe } from '../../../../shared/models/Recipe';
+import { ConfirmComponent } from '../core/confirm/confirm.component';
+import { DialogResult, DialogService } from '../core/dialog.service';
+import { ProfileDataService } from '../core/profile-data.service';
+import { NavigationService, Navigable } from '../core/navigation.service';
+import { NotifyService } from '../core/notify.service';
 import { WaitService } from '../core/wait.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-brew-detail',
   templateUrl: './brew-detail.component.html',
   styleUrls: ['./brew-detail.component.scss']
 })
-export class BrewDetailComponent implements OnInit, OnDestroy {
-  private subscriptions: any[] = [];
-
+export class BrewDetailComponent implements OnInit {
   data: Brew = {};
+  recipes: Recipe[] = [{id:'1', name:'foo'}];
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
-    private snackBar: MatSnackBar,
-    private apiService: APIService,
+    private dialogService: DialogService,
+    private navigationService: NavigationService,
+    private notifyService: NotifyService,
     private profileDataService: ProfileDataService,
     private waitService: WaitService) {
   }
@@ -32,7 +34,9 @@ export class BrewDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscriptions.push(this.route.params.subscribe(params => {
+    let subs = [];
+
+    subs.push(this.route.params.subscribe(params => {
       let brewID = params['id'];
       this._isNew = (brewID || '0') === '0';
 
@@ -40,44 +44,76 @@ export class BrewDetailComponent implements OnInit, OnDestroy {
         return;
       }
 
-      this.subscriptions.push(this.profileDataService.brewData.subscribe(brews => {
+      subs.push(this.profileDataService.brewData.subscribe(brews => {
         let brew = brews.find(b => b.id === brewID);
         this.data = {...brew } || {};
 
         if (!brew) {
-          this.handleError(`Couldn't find data for brew ID: ${brewID}`);
-          this.router.navigate(['/brews']);
+          this.notifyService.popError(`Couldn't find data for brew ID: ${brewID}`);
+          this.navigationService.goTo(Navigable.BrewList);
+          return;
         }
-      }));
-   }));
-  }
 
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+        this.data.brewDate = this.parseDate(this.data.brewDate);
+        this.data.bottleDate = this.parseDate(this.data.bottleDate);
+        this.data.chillDate = this.parseDate(this.data.chillDate);
+      }));
+    }));
+
+    subs.push(this.profileDataService.recipeData.subscribe(recipes => {
+      this.recipes = recipes;
+    }));
+
+    subs.forEach(sub => sub.unsubscribe());
   }
 
   save(): void {
+    this.data.brewDate = this.formatDate(this.data.brewDate);
+    this.data.bottleDate = this.formatDate(this.data.bottleDate);
+    this.data.chillDate = this.formatDate(this.data.chillDate);
+
     let savePromise = this.isNew
-      ? this.apiService.createBrew(this.data)
-      : this.apiService.updateBrew(this.data);
+      ? this.profileDataService.createBrew(this.data)
+      : this.profileDataService.updateBrew(this.data);
 
     this.waitService.wait(savePromise).then((response: OperationResponse<Brew>) => {
       if (!response.success) {
-        this.handleError(response.message);
+        this.notifyService.popError(response.message);
         return;
       }
-      this.profileDataService.updateBrew(response.data);
-      this.router.navigate(['/brews']);
+      this.notifyService.popSuccess('Brew saved.');
+      this.navigationService.goTo(Navigable.BrewList);
+    });
+  }
+
+  private parseDate(dateString: string): string {
+    return dateString ? <any>new Date(dateString) : null;
+  }
+
+  private formatDate(dateString: string): string {
+    return dateString ? new Date(dateString).toDateString() : null;
+  }
+
+  delete(): void {
+    this.dialogService.popDialog(ConfirmComponent, { 
+      data: { 
+        message: 'Permenantly delete this brew?',
+        confirm: 'Yes, delete',
+        cancel: 'Cancel',
+      },
+    })
+    .then((result: DialogResult<boolean>) => {
+      if (result.data === true) {
+        
+        return this.waitService.wait(this.profileDataService.deleteBrew(this.data.id))
+          .then(response => {
+            this.navigationService.goTo(Navigable.BrewList);
+          });
+      }
     });
   }
 
   cancel(): void {
-    this.router.navigate(['/brews']);
-  }
-
-  private handleError(message?: string): void {
-    this.snackBar.open(`Something went wrong... ${message || ''}`, 'Error', {
-      duration: 5000,
-    });
+    this.navigationService.goTo(Navigable.BrewList);
   }
 }

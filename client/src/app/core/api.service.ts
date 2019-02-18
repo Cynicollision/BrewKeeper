@@ -26,6 +26,10 @@ export class APIService {
     return this.makePOST(`${environment.apiBaseURI}/brew/${brew.id}`, brew);
   }
 
+  deleteBrew(brewID: string): Promise<OperationResponse<Brew>> {
+    return this.makeDELETE(`${environment.apiBaseURI}/brew/${brewID}`);
+  }
+
   createRecipe(recipe: Recipe): Promise<OperationResponse<Recipe>> {
     recipe.ownerProfileID = this.authService.profileID;
     return this.makePOST(`${environment.apiBaseURI}/recipe`, recipe);
@@ -34,6 +38,10 @@ export class APIService {
   updateRecipe(recipe: Recipe): Promise<OperationResponse<Recipe>> {
     recipe.ownerProfileID = this.authService.profileID;
     return this.makePOST(`${environment.apiBaseURI}/recipe/${recipe.id}`, recipe);
+  }
+
+  deleteRecipe(recipeID: string): Promise<OperationResponse<Brew>> {
+    return this.makeDELETE(`${environment.apiBaseURI}/recipe/${recipeID}`);
   }
 
   loginProfile(): Promise<OperationResponse<Profile>> {
@@ -61,6 +69,12 @@ export class APIService {
 
   private makePOST<T>(url: string, body?: any): Promise<OperationResponse<T>> {
     return this.http.post(url, body, this.getHttpOptions()).toPromise()
+      .then((response: OperationResponse<T>) => response)
+      .catch(error => Promise.resolve(this.buildFailedResponse(error.message)));
+  }
+
+  private makeDELETE<T>(url: string): Promise<OperationResponse<T>> {
+    return this.http.delete(url, this.getHttpOptions()).toPromise()
       .then((response: OperationResponse<T>) => response)
       .catch(error => Promise.resolve(this.buildFailedResponse(error.message)));
   }

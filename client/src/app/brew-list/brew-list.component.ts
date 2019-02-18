@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 import { Brew } from './../../../../shared/models/Brew';
 import { ListItem } from './../core/list/list.component';
+import { NavigationService, Navigable } from '../core/navigation.service';
 import { ProfileDataService } from '../core/profile-data.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class BrewListComponent implements OnInit, OnDestroy {
   public brews: ListItem[];
 
   constructor(
-    private router: Router,
+    private navigationService: NavigationService,
     private profileDataService: ProfileDataService) { 
   }
 
@@ -33,10 +33,10 @@ export class BrewListComponent implements OnInit, OnDestroy {
   }
 
   private mapBrewToListItem(brew: Brew): ListItem {
-    return { id: brew.id, name: brew.name };
+    return { id: brew.id, name: brew.name, description: brew.brewDate ? brew.brewDate.toString() : 'Not started yet' };
   }
 
   viewBrew(brewID: string): void {
-    this.router.navigate(['/brew', brewID]);
+    this.navigationService.goToResource(Navigable.BrewDetail, brewID);
   }
 }
