@@ -3,7 +3,7 @@
     <input matInput placeholder="Brew Name" [(ngModel)]="data.name">
   </mat-form-field>
   <mat-form-field>
-    <mat-select placeholder="Recipe" [(ngModel)]="data.recipe">
+    <mat-select placeholder="Recipe" [(ngModel)]="data.recipeID">
       <mat-option *ngFor="let r of recipes" [value]="r.id">{{r.name}}</mat-option>
     </mat-select>
   </mat-form-field>
