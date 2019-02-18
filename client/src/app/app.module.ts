@@ -5,6 +5,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { 
   MatButtonModule,
@@ -35,6 +36,7 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RecipeDetailComponent } from './recipe-detail/recipe-detail.component';
 import { RecipeListComponent } from './recipe-list/recipe-list.component';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -77,6 +79,7 @@ import { RecipeListComponent } from './recipe-list/recipe-list.component';
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatToolbarModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [],
   bootstrap: [AppComponent]
