@@ -22,7 +22,8 @@ export class BrewListComponent implements OnInit, OnDestroy {
     this.brews = [];
 
     let sub = this.profileDataService.brewData.subscribe(brews => {
-      this.brews = brews.map(brew => this.mapBrewToListItem(brew));
+      this.brews = brews.map(brew => this.mapBrewToListItem(brew))
+        .sort((a, b) => new Date(b.data.brewDate).getTime() - new Date(a.data.brewDate).getTime());
     });
 
     this.subscriptions.push(sub);
@@ -33,7 +34,7 @@ export class BrewListComponent implements OnInit, OnDestroy {
   }
 
   private mapBrewToListItem(brew: Brew): ListItem {
-    return { id: brew.id, name: brew.name, description: brew.brewDate ? brew.brewDate.toString() : 'Not started yet' };
+    return { id: brew.id, name: brew.name, data: brew, description: brew.brewDate ? brew.brewDate.toString() : 'Not started yet' };
   }
 
   viewBrew(brewID: string): void {

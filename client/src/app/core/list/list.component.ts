@@ -4,6 +4,7 @@ export interface ListItem {
   id: string;
   name: string;
   description?: string;
+  data?: any;
 }
 
 @Component({
