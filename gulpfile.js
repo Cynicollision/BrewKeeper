@@ -13,7 +13,7 @@ async function cleanPublic(cb) {
 }
 
 async function copyPublic(cb) {
-    await src('client/dist/BrewKeeperClient/*').pipe(dest('public'));
+    await src('client/dist/BrewKeeperClient/**/*').pipe(dest('public'));
     cb();
 }
 
