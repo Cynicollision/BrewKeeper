@@ -13,7 +13,6 @@ import {
   MatIconModule, 
   MatInputModule,
   MatListModule,
-  MatGridListModule,
   MatNativeDateModule,
   MatRadioModule,
   MatSelectModule, 
@@ -26,15 +25,16 @@ import {
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ConfirmComponent } from './core/confirm/confirm.component';
 import { ListComponent } from './core/list/list.component';
-import { HomeComponent } from './home/home.component';
-import { BrewListComponent } from './brew-list/brew-list.component';
-import { CreateProfileComponent } from './create-profile/create-profile.component';
-import { LoginComponent } from './login/login.component';
 import { WaitSpinnerComponent } from './core/wait-spinner/wait-spinner.component';
 import { BrewDetailComponent } from './brew-detail/brew-detail.component';
-import { RecipeListComponent } from './recipe-list/recipe-list.component';
+import { BrewListComponent } from './brew-list/brew-list.component';
+import { CreateProfileComponent } from './create-profile/create-profile.component';
+import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
 import { RecipeDetailComponent } from './recipe-detail/recipe-detail.component';
+import { RecipeListComponent } from './recipe-list/recipe-list.component';
 
 @NgModule({
   declarations: [
@@ -48,8 +48,10 @@ import { RecipeDetailComponent } from './recipe-detail/recipe-detail.component';
     BrewDetailComponent,
     RecipeListComponent,
     RecipeDetailComponent,
+    ConfirmComponent,
   ],
   entryComponents: [
+    ConfirmComponent,
     CreateProfileComponent,
     WaitSpinnerComponent,
   ],
@@ -65,7 +67,6 @@ import { RecipeDetailComponent } from './recipe-detail/recipe-detail.component';
     MatCardModule,
     MatDatepickerModule,
     MatDialogModule,
-    MatGridListModule,
     MatIconModule,
     MatInputModule,
     MatListModule,

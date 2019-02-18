@@ -1,10 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
-import { APIService } from '../core/api.service';
-import { ProfileDataService } from '../core/profile-data.service';
 import { OperationResponse } from '../../../../shared/contracts/OperationResponse';
 import { Recipe } from '../../../../shared/models/Recipe';
+import { APIService } from '../core/api.service';
+import { ConfirmComponent } from '../core/confirm/confirm.component';
+import { DialogResult, DialogService } from '../core/dialog.service';
+import { ProfileDataService } from '../core/profile-data.service';
 import { WaitService } from '../core/wait.service';
 
 @Component({
@@ -22,6 +24,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private snackBar: MatSnackBar,
     private apiService: APIService,
+    private dialogService: DialogService,
     private profileDataService: ProfileDataService,
     private waitService: WaitService) {
   }
@@ -73,6 +76,21 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
 
   cancel(): void {
     this.router.navigate(['/recipes']);
+  }
+
+  delete(): void {
+    this.dialogService.popDialog(ConfirmComponent, { 
+      data: { 
+        message: 'Permenantly delete this recipe?',
+        confirm: 'Yes, delete',
+        cancel: 'Cancel',
+      },
+    })
+    .then((result: DialogResult<boolean>) => {
+      if (result.data) {
+        // TODO
+      }
+    });
   }
 
   private handleError(message?: string): void {
