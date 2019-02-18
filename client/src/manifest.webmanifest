@@ -1,6 +1,6 @@
 {
   "name": "Brew Keeper",
-  "short_name": "BrewKeeperClient",
+  "short_name": "Brew Keeper",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
