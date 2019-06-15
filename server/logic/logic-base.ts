@@ -12,11 +12,11 @@ export interface ResourceMeta {
 }
 
 export interface IResourceLogic<T> {
-    create(profileExternalID: string, newBrew: T): Promise<OperationResponse<T>>;
-    delete(profileExternalID: string, brewID: string): Promise<OperationResponse<T>>;
-    get(brewID: string): Promise<OperationResponse<T>>;
+    create(profileExternalID: string, data: T): Promise<OperationResponse<T>>;
+    delete(profileExternalID: string, id: string): Promise<OperationResponse<T>>;
+    get(id: string): Promise<OperationResponse<T>>;
     getByOwnerID(ownerProfileID: string): Promise<OperationResponse<T[]>>;
-    update(profileExternalID: string, updatedBrew: T): Promise<OperationResponse<T>>;
+    update(profileExternalID: string, data: T): Promise<OperationResponse<T>>;
 }
 
 export class ResourceLogic<T extends ResourceBase> implements IResourceLogic<T> {

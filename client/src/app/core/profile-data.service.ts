@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Brew } from '../../../../shared/models/Brew';
 import { Recipe } from '../../../../shared/models/Recipe';
-import { ProfileData } from '../../../../shared/models/ProfileData';
+import { ProfileData, ProfileSummary } from '../../../../shared/models/Profile';
 import { APIService } from './api.service';
 import { AuthService } from './auth.service';
 import { OperationResponse } from '../../../../shared/contracts/OperationResponse';
@@ -12,6 +12,9 @@ import { OperationResponse } from '../../../../shared/contracts/OperationRespons
 })
 export class ProfileDataService {
   private _initialized = false;
+
+  private _profileSummaryDataSource = new BehaviorSubject<ProfileSummary>(<ProfileSummary>{});
+  profileSummaryData = this._profileSummaryDataSource.asObservable();
 
   private _brewDataSource = new BehaviorSubject<Brew[]>([]);
   brewData = this._brewDataSource.asObservable();
@@ -28,6 +31,7 @@ export class ProfileDataService {
 
   private init(data: ProfileData){
     this._initialized = true;
+    this._profileSummaryDataSource.next(data.summary);
     this._brewDataSource.next(data.brews);
     this._recipeDataSource.next(data.recipes);
   }

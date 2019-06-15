@@ -11,30 +11,34 @@ import { CreateProfileComponent } from './../create-profile/create-profile.compo
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  cancelledRegistration = false;
 
   constructor(private router: Router,
     public authService: AuthService, 
-    private apiService: APIService, 
     private dialogService: DialogService) { }
 
   ngOnInit() {
-    if (this.authService.isAuthenticated) {
-
-      if (this.authService.hasProfile) {
-        this.router.navigate(['/']);
-        return;
-      }
-
-      let config = { data: { name: this.authService.userName } };
-      return this.dialogService.popDialog(CreateProfileComponent, config).then(result => {
-        if (result.success) {
-          this.router.navigate['/'];
-        }
-        else if (result.cancelled) {
-          // TODO
-          console.log('Registration was cancelled.');
-        }
-      });
+    if (!this.authService.isAuthenticated) {
+      return;
     }
+
+    if (this.authService.hasProfile) {
+      this.router.navigate(['/']);
+      return;
+    }
+
+    return this.register();
+  }
+
+  register() {
+    let config = { data: { name: this.authService.userName } };
+    return this.dialogService.popDialog(CreateProfileComponent, config).then(result => {
+      if (result.success) {
+        this.router.navigate(['/']);
+      }
+      else if (result.cancelled) {
+        this.cancelledRegistration = true;
+      }
+    });
   }
 }

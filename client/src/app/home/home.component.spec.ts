@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MatSpinner, MatDialogModule } from '@angular/material';
+import { MatSpinner, MatDialogModule, MatTableModule } from '@angular/material';
 import { HomeComponent } from './home.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
@@ -13,6 +13,7 @@ describe('HomeComponent', () => {
       imports: [ 
         HttpClientTestingModule,
         MatDialogModule,
+        MatTableModule,
         RouterTestingModule,
       ],
       declarations: [

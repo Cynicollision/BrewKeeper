@@ -12,6 +12,7 @@ import { ProfileDataService } from '../core/profile-data.service';
 export class RecipeListComponent implements OnInit, OnDestroy {
   private subscriptions: any[] = [];
   public recipes: ListItem[];
+  public noRecipes = false;
 
   constructor(
     private navigationService: NavigationService,
@@ -24,6 +25,8 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     let sub = this.profileDataService.recipeData.subscribe(recipes => {
       this.recipes = recipes.map(recipe => this.mapRecipeToListItem(recipe))
         .sort((a, b) => b.name > a.name ? -1 : 1);
+
+      this.noRecipes = !this.recipes.length;
     });
 
     this.subscriptions.push(sub);

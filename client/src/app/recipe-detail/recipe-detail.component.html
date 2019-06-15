@@ -1,6 +1,7 @@
 <div id="recipe-form">
   <mat-form-field>
-    <input matInput placeholder="Recipe Name" [(ngModel)]="data.name">
+    <input matInput placeholder="Recipe Name" [(ngModel)]="data.name" required>
+    <mat-error *ngIf="!data.name">Recipe Name is required.</mat-error>
   </mat-form-field>
   <mat-form-field>
     <textarea matInput [(ngModel)]="data.description" placeholder="Recipe description"></textarea>

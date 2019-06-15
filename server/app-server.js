@@ -42,7 +42,7 @@ class BrewKeeperAppServer {
         }
         // configure static path
         app.use(express.static(__dirname + '/../public'));
-        // configure jwt handling on non-API routes
+        // configure jwt handling for authorized API routes
         app.use(jwt({
             secret: jwksRsa.expressJwtSecret({
                 cache: true,

@@ -18,18 +18,22 @@ export class WaitService {
     return new Promise((resolve, reject) => {
       let waitingOnComplete = false;
       let wrappingPromise = Promise.resolve<any>(null);
-
-      waitingOn.then(result => {
-        waitingOnComplete = true;
-        this.dialogService.closeCurrentDialog();
-        wrappingPromise.then(() => resolve(result));
-      });
-
+      let spinnerShown = false;
+      
       setTimeout(() => {
         if (!waitingOnComplete) {
           wrappingPromise = this.dialogService.popDialog(WaitSpinnerComponent, { preventClose: true });
+          spinnerShown = true;
         }
       }, this.WaitThreshold);
+
+      return waitingOn.then(result => {
+        waitingOnComplete = true;
+        if (spinnerShown) {
+          this.dialogService.closeCurrentDialog(WaitSpinnerComponent);
+        }
+        return wrappingPromise.then(() => resolve(result));
+      });
     });
   }
 }

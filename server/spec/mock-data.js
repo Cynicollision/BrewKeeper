@@ -4,8 +4,8 @@ class MockDataController {
     constructor() {
         this.collection = [];
     }
-    setCollection(recipes) {
-        this.collection = recipes;
+    setCollection(data) {
+        this.collection = data;
     }
     get(id) {
         return new Promise((resolve, reject) => {

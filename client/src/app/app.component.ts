@@ -22,8 +22,8 @@ export class AppComponent {
       map(result => result.matches)
     );
 
-  get isAuthenticated(): boolean {
-    return this.authService.isAuthenticated;
+  get isLoggedIn(): boolean {
+    return this.authService.isAuthenticated && this.authService.hasProfile;
   }
 
   get currentTitle(): string {
