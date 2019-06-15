@@ -1,6 +1,6 @@
 {
-  "name": "brewkeeper-server",
-  "version": "0.1.0",
+  "name": "brewkeeper",
+  "version": "1.0.0",
   "description": "Home brew journal app",
   "main": "app.js",
   "scripts": {
@@ -38,8 +38,8 @@
     "gulp-run-command": "^0.0.9",
     "jasmine": "^3.3.1",
     "jasmine-core": "^3.3.0",
-    "jasmine-node": "^2.0.1",
+    "jasmine-node": "^3.0.0",
     "jasmine-spec-reporter": "^4.2.1",
-    "typescript": "~3.1.6"
+    "typescript": "~3.4.5"
   }
 }
