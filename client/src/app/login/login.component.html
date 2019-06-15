@@ -1,4 +1,11 @@
-<div *ngIf="!authService.isAuthenticated">
-  <p>Please log in.</p>
-  <button mat-raised-button color="primary" (click)="authService.login()">Log In</button>
+<div class="logIn">
+  <div *ngIf="!authService.isAuthenticated">
+    <p>Welcome to Brew Keeper. Please log in:</p>
+    <button mat-raised-button color="primary" (click)="authService.login()">Log In with Auth0</button>
+  </div>
+  <div *ngIf="cancelledRegistration">
+    <p>It looks like you logged in OK but didn't finish creating your profile.</p>
+    <p>Please give us a name to call you by to complete the registration process:</p>
+    <button mat-raised-button color="primary" (click)="register()">Complete Registration</button>
+  </div>
 </div>

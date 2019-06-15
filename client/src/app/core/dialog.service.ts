@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ComponentType } from '@angular/cdk/portal';
 import { MatDialog, MatDialogRef } from '@angular/material';
+import { WaitSpinnerComponent } from './wait-spinner/wait-spinner.component';
 
 export interface DialogConfig<T> {
   data?: T;
@@ -48,8 +49,8 @@ export class DialogService {
     });
   }
 
-  public closeCurrentDialog(): void {
-    if (this.currentDialog) {
+  public closeCurrentDialog(componentType: any): void {
+    if (this.currentDialog.componentInstance && this.currentDialog.componentInstance instanceof componentType) {
       this.currentDialog.close();
     }
   }

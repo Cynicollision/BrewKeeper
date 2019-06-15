@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { RouteGuardService } from './core/route-guard.service';
 import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
 import { LoginComponent } from './login/login.component';
 import { BrewDetailComponent } from './brew-detail/brew-detail.component';
 import { BrewListComponent } from './brew-list/brew-list.component';
@@ -24,6 +25,11 @@ const routes: Routes = [
     component: LoginComponent,
     canActivate: [ RouteGuardService ],
     data: { title: 'Brew Keeper' },
+  },
+  { 
+    path: 'about', 
+    component: AboutComponent, 
+    data: { title: 'About' },
   },
   { 
     path: 'brews', 

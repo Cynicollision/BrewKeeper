@@ -12,6 +12,7 @@ import { ProfileDataService } from '../core/profile-data.service';
 export class BrewListComponent implements OnInit, OnDestroy {
   private subscriptions: any[] = [];
   public brews: ListItem[];
+  public noBrews = false;
 
   constructor(
     private navigationService: NavigationService,
@@ -24,6 +25,8 @@ export class BrewListComponent implements OnInit, OnDestroy {
     let sub = this.profileDataService.brewData.subscribe(brews => {
       this.brews = brews.map(brew => this.mapBrewToListItem(brew))
         .sort((a, b) => new Date(b.data.brewDate).getTime() - new Date(a.data.brewDate).getTime());
+
+      this.noBrews = !this.brews.length;
     });
 
     this.subscriptions.push(sub);

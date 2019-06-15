@@ -17,7 +17,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class BrewDetailComponent implements OnInit {
   data: Brew = {};
-  recipes: Recipe[] = [{id:'1', name:'foo'}];
+  recipes: Recipe[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -31,6 +31,10 @@ export class BrewDetailComponent implements OnInit {
   private _isNew = false;
   get isNew(): boolean {
     return this._isNew;
+  }
+
+  get noRecipes(): boolean {
+    return !this.recipes.length;
   }
 
   ngOnInit() {

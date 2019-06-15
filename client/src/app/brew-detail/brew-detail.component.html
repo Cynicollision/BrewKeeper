@@ -1,11 +1,13 @@
 <div id="brew-form">
   <mat-form-field>
-    <input matInput placeholder="Brew Name" [(ngModel)]="data.name">
+    <input matInput placeholder="Brew Name" [(ngModel)]="data.name" required>
+    <mat-error *ngIf="!data.name">Brew Name is required.</mat-error>
   </mat-form-field>
   <mat-form-field>
     <mat-select placeholder="Recipe" [(ngModel)]="data.recipeID">
       <mat-option *ngFor="let r of recipes" [value]="r.id">{{r.name}}</mat-option>
     </mat-select>
+    <mat-hint *ngIf="noRecipes">You haven't created any recipes yet, but you can still save your brew.</mat-hint>
   </mat-form-field>
   <mat-form-field>
     <input matInput [matDatepicker]="brewDate" [(ngModel)]="data.brewDate" placeholder="Brew date">
