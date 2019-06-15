@@ -1,9 +1,8 @@
-<button mat-fab class="create" routerLink="/recipe/0">
-  <mat-icon>add</mat-icon>
-</button>
-<app-list [collection]="recipes" (itemSelected)="viewRecipe($event)"></app-list>
+
 <div *ngIf="noRecipes">
   <h2>No Recipes!</h2>
   <p>Set up some recipes so you can categorize your brews.</p>
   <p>Recipes can be as broad as "IPA" or you can as detailed as you like.</p>
 </div>
+<button mat-raised-button color="primary" routerLink="/recipe/0"><mat-icon>add</mat-icon> Add New Recipe</button>
+<app-list [collection]="recipes" (itemSelected)="viewRecipe($event)"></app-list>

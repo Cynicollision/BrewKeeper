@@ -20,6 +20,7 @@ import {
   MatSidenavModule,
   MatSnackBarModule,
   MatProgressSpinnerModule,
+  MatTableModule,
   MatToolbarModule,
   MatDatepickerModule,
 } from '@angular/material';
@@ -80,6 +81,7 @@ import { environment } from '../environments/environment';
     MatSelectModule,
     MatSidenavModule,
     MatSnackBarModule,
+    MatTableModule,
     MatProgressSpinnerModule,
     MatToolbarModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),

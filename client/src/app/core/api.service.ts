@@ -4,8 +4,7 @@ import { environment } from '../../environments/environment';
 import { AuthService } from './auth.service';
 import { OperationResponse } from '../../../../shared/contracts/OperationResponse';
 import { Brew } from '../../../../shared/models/Brew';
-import { Profile } from '../../../../shared/models/Profile';
-import { ProfileData } from '../../../../shared/models/ProfileData';
+import { Profile, ProfileData } from '../../../../shared/models/Profile';
 import { Recipe } from '../../../../shared/models/Recipe';
 
 @Injectable({

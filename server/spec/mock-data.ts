@@ -6,10 +6,10 @@ export interface TestData extends ResourceBase {
 }
 
 export class MockDataController implements IResourceController<TestData> {
-    private collection = [];
+    protected collection = [];
 
-    setCollection(recipes: TestData[]): void {
-        this.collection = recipes;
+    setCollection(data: TestData[]): void {
+        this.collection = data;
     }
 
     get(id: string): Promise<OperationResponse<TestData>> {

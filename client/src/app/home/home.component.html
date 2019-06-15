@@ -1,3 +1,21 @@
 <div class="welcome" *ngIf="authService.isAuthenticated">
   <h2>{{welcomeMessage}}</h2>
+  <div *ngIf="hasActiveBrew">
+    <p>Welcome back! {{activeBrewsMessage}}</p>
+  </div>
+  <div *ngIf="!hasActiveBrew">
+    <p>Get brewing! You don't have any active brews.</p>
+  </div>
+  <h3>Brew stats</h3>
+  <div class="stats">
+    <table mat-table [dataSource]="profileStats" class="mat-elevation-z8">
+      <ng-container matColumnDef="name">
+        <td mat-cell *matCellDef="let stat">{{stat.name}}</td>
+      </ng-container>
+      <ng-container matColumnDef="value">
+        <td mat-cell *matCellDef="let stat">{{stat.value}}</td>
+      </ng-container>
+      <tr mat-row *matRowDef="let row; columns: ['name','value'];"></tr>
+    </table>
+  </div>  
 </div>

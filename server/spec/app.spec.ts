@@ -1,4 +1,5 @@
 import { IProfileLogic, ProfileLogic } from '../logic/profile-logic';
+import { MockBrewData } from './mock-brew-data';
 import { MockProfileData } from './mock-profile-data';
 import { MockResourceLogic } from './mock-logic';
 import { MockDataController, TestData } from './mock-data';
@@ -114,7 +115,7 @@ describe('brew keeper server', () => {
 
     describe('profile logic', () => {
         let profileLogic: IProfileLogic;
-        let mockBrewData = new MockDataController();
+        let mockBrewData = new MockBrewData();
         let mockRecipeData = new MockDataController();
 
         beforeEach(() => {
@@ -128,22 +129,30 @@ describe('brew keeper server', () => {
             expect(profileLogic).toBeTruthy();
         });
 
-        it('retrieves profile data by ID', done => {
+        it('retrieves profile data by ID and builds summary info', done => {
             mockBrewData.setCollection([
-                { id: '111', name: 'Test Brew 1', ownerProfileID: testProfileID },
-                { id: '222', name: 'Test Brew 2', ownerProfileID: testProfileID },
-                { id: '333', name: 'Test Brew 3', ownerProfileID: testProfileID },
+                { id: '111', name: 'Test Brew 1', recipeID: '1000', ownerProfileID: testProfileID, brewDate: 'Mon Dec 21 2015' },
+                { id: '222', name: 'Test Brew 2', recipeID: '1000', ownerProfileID: testProfileID, brewDate: 'Thu Sep 08 2016' },
+                { id: '333', name: 'Test Brew 3', recipeID: '1000', ownerProfileID: testProfileID, brewDate: 'Fri Apr 06 2018' },
+                { id: '444', name: 'Test Brew 4', recipeID: '1000', ownerProfileID: testProfileID, brewDate: 'Thu Feb 14 2019' },
+                { id: '555', name: 'Test Brew 5', recipeID: '1001', ownerProfileID: testProfileID, brewDate: 'Sun Jun 30 2019' },
             ]);
 
             mockRecipeData.setCollection([
-                { id: '444', name: 'Test Recipe 1', ownerProfileID: testProfileID },
-                { id: '555', name: 'Test Recipe 2', ownerProfileID: testProfileID },
+                { id: '1000', name: 'Test Recipe 1', ownerProfileID: testProfileID },
+                { id: '1001', name: 'Test Recipe 2', ownerProfileID: testProfileID },
             ]);
 
             profileLogic.getProfileData(testExternalID, testProfileID).then(response => {
                 expect(response.success).toBe(true);
-                expect(response.data.brews.length).toBe(3);
+                expect(response.data.brews.length).toBe(5);
                 expect(response.data.recipes.length).toBe(2);
+
+                expect(response.data.summary.brewCount).toBe(5);
+                expect(response.data.summary.recipeCount).toBe(2);
+                expect(response.data.summary.brewingSince).toBe('12/21/2015');
+                expect(response.data.summary.topRecipe.id).toBe('1000');
+                expect(response.data.summary.topRecipeBrewedTimes).toBe(4);
 
                 done();
             });
