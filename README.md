@@ -1,11 +1,12 @@
 # Brew Keeper
+Home brew journal for tracking bottling and refrigeration dates. 
 
-Journal for home brewers that helps track bottling and refrigeration dates. [View live on Heroku](http://brewkeeper.herokuapp.com/).
+**[Live on Heroku!](http://brewkeeper.herokuapp.com/)**
 
-[![Build Status](https://travis-ci.org/Cynicollision/BrewKeeper.svg?branch=master)](https://travis-ci.org/Cynicollision/BrewKeeper)
-
+![Brew Keeper screenshot](preview.png "Brew Keeper screenshot")
 
 ## Build/Develop
+[![Build Status](https://travis-ci.org/Cynicollision/BrewKeeper.svg?branch=master)](https://travis-ci.org/Cynicollision/BrewKeeper)
 ### Prerequisites
 ```
 npm install -g @angular/cli
